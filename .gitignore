@@ -1,3 +1,6 @@
 *.DS_Store
 .vscode/
 index_static.html
+node_modules
+package-lock.json
+package.json
