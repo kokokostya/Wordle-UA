@@ -134,7 +134,7 @@ function App(props) {
   }, [stats]);
   React.useEffect(() => {
     localStorage.setItem("result", JSON.stringify(result));
-    if (result != null) setModal("stats");
+    if (result != null) setTimeout(() => setModal("stats"), 650);
   }, [result]);
   
   // Update theme and save to local storage
@@ -164,6 +164,23 @@ function App(props) {
     }
   }
 
+  // Provide feedback letter by letter
+  function provideFeedback(newFeedback) {
+    var revealedLetter = 0;
+    revealLetter();
+    var letterTimer = setInterval(revealLetter, 150);
+    function revealLetter() {
+      if (revealedLetter < 5) {
+        let letterFeedback = [...newFeedback]
+        letterFeedback[letterFeedback.length-1] = newFeedback[newFeedback.length-1].slice(0, revealedLetter+1);
+        setFeedback(letterFeedback);
+        revealedLetter++;
+      } else {
+        clearInterval(letterTimer);
+      }
+    }
+  }
+
   function checkWord() {
     var attempt = attempts[cursor.attempt];
     var solution = words[currentIssueNumber-1];
@@ -176,7 +193,8 @@ function App(props) {
         let newFeedback = [...feedback];
         // Solved!
         if (attempt == solution) {
-          newFeedback.push(["hit","hit","hit","hit","hit"]);
+          newFeedback.push(["hit","hit","hit","hit","hit"])
+          provideFeedback(newFeedback);
           newResult = "won";
         // Check letters 
         } else {
@@ -200,7 +218,7 @@ function App(props) {
           newFeedback.push(res);
           if (cursor.attempt == 5) newResult = "lost";
         }
-        setFeedback(newFeedback);
+        provideFeedback(newFeedback);
         
         // Game over
         if (newResult != null) {
@@ -216,7 +234,6 @@ function App(props) {
           }
           setResult(newResult);
           setStats(newStats);
-          setModal("stats");
         // Game continues
         } else {
           setCursor({attempt: cursor.attempt+1, letter: 0});

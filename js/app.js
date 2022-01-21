@@ -1,8 +1,8 @@
 "use strict";
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -10,7 +10,7 @@ function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableTo
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
@@ -22,7 +22,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
@@ -207,7 +207,9 @@ function App(props) {
   }, [stats]);
   React.useEffect(function () {
     localStorage.setItem("result", JSON.stringify(result));
-    if (result != null) setModal("stats");
+    if (result != null) setTimeout(function () {
+      return setModal("stats");
+    }, 650);
   }, [result]); // Update theme and save to local storage
 
   React.useEffect(function () {
@@ -242,6 +244,25 @@ function App(props) {
         letter: cursor.letter - 1
       });
     }
+  } // Provide feedback letter by letter
+
+
+  function provideFeedback(newFeedback) {
+    var revealedLetter = 0;
+    revealLetter();
+    var letterTimer = setInterval(revealLetter, 150);
+
+    function revealLetter() {
+      if (revealedLetter < 5) {
+        var letterFeedback = _toConsumableArray(newFeedback);
+
+        letterFeedback[letterFeedback.length - 1] = newFeedback[newFeedback.length - 1].slice(0, revealedLetter + 1);
+        setFeedback(letterFeedback);
+        revealedLetter++;
+      } else {
+        clearInterval(letterTimer);
+      }
+    }
   }
 
   function checkWord() {
@@ -258,6 +279,7 @@ function App(props) {
 
         if (attempt == solution) {
           newFeedback.push(["hit", "hit", "hit", "hit", "hit"]);
+          provideFeedback(newFeedback);
           newResult = "won"; // Check letters 
         } else {
           var res = Array(5).fill("miss"); // Hit letters
@@ -282,7 +304,7 @@ function App(props) {
           if (cursor.attempt == 5) newResult = "lost";
         }
 
-        setFeedback(newFeedback); // Game over
+        provideFeedback(newFeedback); // Game over
 
         if (newResult != null) {
           var newStats = _objectSpread({}, stats);
@@ -299,8 +321,7 @@ function App(props) {
           }
 
           setResult(newResult);
-          setStats(newStats);
-          setModal("stats"); // Game continues
+          setStats(newStats); // Game continues
         } else {
           setCursor({
             attempt: cursor.attempt + 1,
