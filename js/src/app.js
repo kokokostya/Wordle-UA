@@ -536,4 +536,4 @@ function GraphBar(props) {
   )
 }
 
-ReactDOM.render(React.createElement(App), document.querySelector('#app'));
+ReactDOM.render(React.createElement(App), document.getElementById("app"));
