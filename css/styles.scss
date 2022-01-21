@@ -1,13 +1,17 @@
 :root {
+  --white: #fff;
+  --black: #000;
+
   --text: #000;
   --text-inverted: #fff;
-  --white: #fff;
+  --text-fade: #888;
   --bkgnd: #fff;
   --miss: #888;
   --found: #cb4;
   --hit: #0a5;
   --icon-gray: #aaa;
   --button-gray: #ccc;
+  --border-gray: #ddd;
   --active: #7bf;
   --overlay: rgba(255,255,255,.8);
   --message: #eee;
@@ -24,23 +28,41 @@
 }
 
 .dark {
-  --text: #fff;
-  --text-inverted: #000;
-  --bkgnd: #000;
-  --overlay: rgba(64,64,64,.5);
+  --text: #bcb;
+  --text-inverted: #00201f;
+  --text-fade: #566;
+  --bkgnd: #00201f;
+  --miss: #344;
+  --found: #cb4;
+  --hit: #0a5;
+  --icon-gray: #677;
+  --button-gray: #566;
+  --border-gray: #344;
+  --active: #aba;
+  --overlay: rgba(64,72,72,.8);
+  --message: #192929;
+  --message-success: #052;
+  --button-success: #084;
+
+  --active-shadow: 0 0 6px rgba(210,255,210,1);
+  --overlay-shadow: 0 0 25px rgba(0,0,0,.25);
 }
 
 .color-blind {
   --found: #69c;
-  --hit: #0a5;
 }
 
 html {
   font-family: -apple-system, 'Segoe UI', Roboto, Ubuntu, 'Open Sans', 'Helvetica Neue', sans-serif;
-  line-height: 1.25rem;  
+  line-height: 1.25rem;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 body {
+  height: 100%;
+  padding: 0;
   margin: 0;
   color: var(--text);
   background-color: var(--bkgnd);
@@ -48,18 +70,18 @@ body {
 
 #app {
   width: 100%;
-  max-width: 500px;
-  height: 100vh;
+  max-width: 768px;
+  height: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
 }
 
 .fade {
-  color: var(--miss);
+  color: var(--text-fade);
 
   a {
-    color: var(--miss);
+    color: var(--text-fade);
 
     &:hover {
       color: var(--text);
@@ -92,7 +114,7 @@ h3 {
 
 header, hr {
   border: 0 none;
-  border-bottom: 1px solid var(--button-gray);
+  border-bottom: 1px solid var(--border-gray);
 }
 
 header {
@@ -112,7 +134,7 @@ header {
     em {
       display: block;
       font-size: 1rem;
-      line-height: 1.5rem;
+      line-height: 1.25rem;
       font-family: serif;
       text-transform: none;
       text-align: center;
@@ -160,29 +182,55 @@ header {
   margin-left: auto;
 }
 
+#board-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  width: 100%;
+  min-width: 250px;
+  max-width: 325px;
+  margin: 0 auto;
+ }
+
 #board {
   display: flex;
   flex-direction: column;
-  width: 300px; 
-  height: 360px;
-  margin: auto auto;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  max-height: 390px;
+
+  .row {
+    flex: 1;
+  }
  }
 
  #keyboard {
-   margin: 1rem 0;
+   margin: 1rem 5px 0;
+
+   .row {
+     width: 100%;
+     margin: 0 auto 5px;
+   }
 
    button {
      &:active {
+       color: var(--text-inverted);
+      
        svg {
          fill: var(--text-inverted);
        }
      }
+
+     &.miss {
+      color: var(--text-inverted);
+    }
    }
  }
  
 .row {
   display: flex;
-  flex: 1;
   margin-bottom: 5px;
 
   &:last-child {
@@ -191,7 +239,7 @@ header {
 
   .tile, button, .spacer {
     display: flex;
-    flex: 1;
+    flex: 1 10px;
     background: none;
     border: 0 none;
     align-items: center;
@@ -199,6 +247,7 @@ header {
     font-weight: var(--bold);
     text-transform: uppercase;
     margin: 0 5px 0 0;
+    padding: 0;
     border-radius: var(--border-radius-button);
 
     &:last-child {
@@ -207,15 +256,15 @@ header {
   }
 
   .half {
-    flex: .5;
+    flex: .5 5px;
   }
 
   .one-and-a-half {
-    flex: 1.5;
+    flex: 1.5 15px;
   }
 
   .tile {
-    border: 2px solid var(--button-gray);
+    border: 2px solid var(--border-gray);
     font-size: 2rem;
     line-height: 1rem; 
 
@@ -232,6 +281,7 @@ header {
   button {
     font-size: .8rem;
     height: 3.5rem;
+    color: var(--text);
     background-color: var(--button-gray);
     cursor: pointer;
 
@@ -242,7 +292,7 @@ header {
   
   .miss, .found, .hit {
     border: 0 none;
-    color: var(--text-inverted);
+    color: var(--white);
   }
   
   .miss {
@@ -283,7 +333,7 @@ header {
 
     .message {
       padding: 1rem;
-      margin: 0 -1.5rem 1rem;
+      margin: 0 -1.5rem .5rem;
       background-color: var(--message);
       border-radius: var(--border-radius) var(--border-radius) 0 0;
       display: flex;
@@ -307,7 +357,7 @@ header {
 
       h2 {
         position: absolute;
-        top: 1.25rem;
+        top: 1rem;
         left: 50%;
         margin: 0;
         transform: translate(-50%, 0);
@@ -322,6 +372,7 @@ header {
 
   .row {
     .tile {
+      font-size: 1.15rem;
       height: 2.75rem;
     }
   }
@@ -341,7 +392,7 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: .75rem 0;
-  border-top: 1px solid var(--button-gray);
+  border-top: 1px solid var(--border-gray);
 }
 
 .switch {
@@ -431,9 +482,11 @@ header {
   padding: 1rem;
   border-radius: var(--border-radius-button);
   cursor: pointer;
+  color: var(--black);
 
   &:active {
     background-color: var(--text);
+    color: var(--text-inverted);
 
     svg {
       fill: var(--text-inverted);
@@ -464,4 +517,26 @@ header {
   from { opacity: 1; }
   30% { opacity: 1; }
   to { opacity: 0; }
+}
+
+@media (max-width: 576px) {
+  .overlay {
+    .body {
+      width: 100%;
+      min-height: 100%;
+      background-color: var(--bkgnd);
+      margin: 0;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 0 1.5rem 1rem;
+      box-sizing: border-box;
+    }
+
+    .message {
+      padding: 1rem;
+      background-color: var(--message);
+      border-radius: 0;
+    }
+
+  }
 }

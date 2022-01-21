@@ -1,5 +1,5 @@
 function App(props) {
-  const [currentIssueNumber, setCurrentIssueNumber] = React.useState(1);
+  const [currentIssueNumber, setCurrentIssueNumber] = React.useState(getDayNumber());
   const [attempts, setAttempts] = React.useState([]);
   const [feedback, setFeedback] = React.useState([]);
   const [result, setResult] = React.useState(null);
@@ -44,7 +44,7 @@ function App(props) {
 
   // Initialize state
   React.useEffect(() => {
-    setCurrentIssueNumber(getDayNumber());
+    console.log(getDayNumber())
     setTimeLeft(getTimeTillMidnight());
     timer = setInterval(countDown, 1000);
   }, []);
@@ -223,7 +223,7 @@ function App(props) {
           setCursor({attempt: cursor.attempt+1, letter: 0});
         }
       } else {
-        renderAlert("Введіть словарне слово");
+        renderAlert("Введіть словарний іменник");
       }
     }
   }
@@ -304,28 +304,32 @@ function App(props) {
         </button>
       </header>
 
-      <main id="board">
-      {[...Array(6)].map((val, i) =>
-        <div key={i} className="row">
-        {[...Array(5)].map((val, j) =>
-          <Tile 
-            key={j}
-            letter={attempts[i] && attempts[i][j]}
-            status={tileStatus(i, j)} />
+      <main id="board-container">
+        <div id="board">
+        {[...Array(6)].map((val, i) =>
+          <div key={i} className="row">
+          {[...Array(5)].map((val, j) =>
+            <Tile 
+              key={j}
+              letter={attempts[i] && attempts[i][j]}
+              status={tileStatus(i, j)} />
+          )}
+          </div>
         )}
         </div>
-      )}
       </main>
 
       <footer id="keyboard">
         <div className="row">
-          {[..."´йцукенгшщзхї"].map((letter) =>
+          <div className="spacer half"></div>
+          {[..."йцукенгшщзхї"].map((letter) =>
             <Key
               key={letter}
               letter={letter}
               clickHandler={enterLetter}
               status={letterStatus(letter)} />
           )}
+          <div className="spacer half"></div>
         </div>
         <div className="row">
           <div className="spacer"></div>
@@ -352,7 +356,11 @@ function App(props) {
               clickHandler={enterLetter}
               status={letterStatus(letter)} />
           )}
-          <button id="enter" className="one-and-a-half" onClick={checkWord}>Ввод</button>
+          <button id="enter" className="one-and-a-half" aria-label="Перевірити слово" onClick={checkWord}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+              <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+            </svg>
+          </button>
         </div>
       </footer>
       
@@ -392,7 +400,7 @@ function Modal(props) {
   if (props.type == "help") {
     title = "Як грати?";
     content = <React.Fragment>
-      <p><b>Вгадайте слово з 6 спроб.</b> Кожна здогадка мусить бути словарним словом. Після кожної спроби колір підкаже, наскільки близько ви були:</p>
+      <p><b>Вгадайте слово з 6 спроб.</b> Кожна здогадка мусить бути словарним іменником. Після кожної спроби колір підкаже, наскільки близько ви були:</p>
 
       <dl className="example">
         <dt className="row">
@@ -402,7 +410,7 @@ function Modal(props) {
           <div className="tile miss">ц</div>
           <div className="tile miss">е</div>
         </dt>
-        <dd>Буква <b>С</b> є в слові саме в цьому місці</dd>
+        <dd className="small">Буква <b>С</b> є в слові саме в цьому місці</dd>
       </dl>
 
       <dl className="example">
@@ -413,18 +421,18 @@ function Modal(props) {
           <div className="tile miss">ц</div>
           <div className="tile miss">я</div>
         </dt>
-        <dd>Буква <b>Р</b> є в слові, але не в цьому місці</dd>
+        <dd className="small">Буква <b>Р</b> є в слові, але не в цьому місці</dd>
       </dl>
 
       <dl className="example">
         <dt className="row">
-          <div className="tile miss">м</div>
-          <div className="tile miss">´</div>
-          <div className="tile miss">я</div>
-          <div className="tile miss">т</div>
           <div className="tile miss">а</div>
+          <div className="tile miss">к</div>
+          <div className="tile miss">т</div>
+          <div className="tile miss">о</div>
+          <div className="tile miss">р</div>
         </dt>
-        <dd>Жодної з цих букв немає в слові</dd>
+        <dd className="small">Жодної з цих букв немає в слові</dd>
       </dl>
 
       <hr />
