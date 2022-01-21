@@ -94,22 +94,15 @@ function App(props) {
       timeLeft = _React$useState18[0],
       setTimeLeft = _React$useState18[1];
 
-  var timer = null; // Temporary alert message
-
-  function renderAlert(str) {
-    var msg = document.createElement("div");
-    msg.classList.add("alert");
-    msg.innerHTML = str;
-    document.body.append(msg);
-    setTimeout(function () {
-      msg.remove();
-    }, 3000);
-  } // Initialize state
+  var _React$useState19 = React.useState(false),
+      _React$useState20 = _slicedToArray(_React$useState19, 2),
+      wrongAttempt = _React$useState20[0],
+      setWrongAttempt = _React$useState20[1]; // Keep track of time
 
 
   React.useEffect(function () {
     setTimeLeft(getTimeTillMidnight());
-    timer = setInterval(countDown, 1000);
+    setInterval(countDown, 1000);
   }, []);
 
   function countDown() {
@@ -123,12 +116,6 @@ function App(props) {
       setCurrentIssueNumber(currentIssueNumber + 1);
       resetGame();
     }
-  }
-
-  function resetGame() {
-    localStorage.removeItem("attempts");
-    localStorage.removeItem("feedback");
-    setResult(null);
   } // Days from Jan 20 2022 in Kyiv
 
 
@@ -218,6 +205,12 @@ function App(props) {
     localStorage.setItem("settings", JSON.stringify(settings));
   }, [settings]);
 
+  function resetGame() {
+    localStorage.removeItem("attempts");
+    localStorage.removeItem("feedback");
+    setResult(null);
+  }
+
   function enterLetter(letter) {
     if (result == null && cursor.attempt < 6 && cursor.letter < 5) {
       var newAttempts = _toConsumableArray(attempts);
@@ -243,6 +236,7 @@ function App(props) {
         attempt: cursor.attempt,
         letter: cursor.letter - 1
       });
+      setWrongAttempt(false);
     }
   } // Provide feedback letter by letter
 
@@ -271,7 +265,7 @@ function App(props) {
 
     if (result == null && cursor.attempt < 6 && cursor.letter > 4) {
       // Actual word
-      if ("dic.includes(attempt)") {
+      if (dic.includes(attempt)) {
         var newResult = null;
 
         var newFeedback = _toConsumableArray(feedback); // Solved!
@@ -329,6 +323,7 @@ function App(props) {
           });
         }
       } else {
+        setWrongAttempt(true);
         renderAlert("Введіть словарний іменник");
       }
     }
@@ -352,6 +347,17 @@ function App(props) {
     document.execCommand("copy");
     document.body.removeChild(el);
     renderAlert("Cкопійовано");
+  } // Temporary alert message
+
+
+  function renderAlert(str) {
+    var msg = document.createElement("div");
+    msg.classList.add("alert");
+    msg.innerHTML = str;
+    document.body.append(msg);
+    setTimeout(function () {
+      msg.remove();
+    }, 3000);
   } // Color-code tile
 
 
@@ -442,7 +448,7 @@ function App(props) {
   }, _toConsumableArray(Array(6)).map(function (val, i) {
     return /*#__PURE__*/React.createElement("div", {
       key: i,
-      className: "row"
+      className: "row" + (wrongAttempt && cursor.attempt == i ? " wrong" : "")
     }, _toConsumableArray(Array(5)).map(function (val, j) {
       return /*#__PURE__*/React.createElement(Tile, {
         key: j,
@@ -454,9 +460,18 @@ function App(props) {
     id: "keyboard"
   }, /*#__PURE__*/React.createElement("div", {
     className: "row"
+  }, _toConsumableArray("'йцукенгшщзхї").map(function (letter) {
+    return /*#__PURE__*/React.createElement(Key, {
+      key: letter,
+      letter: letter,
+      clickHandler: enterLetter,
+      status: letterStatus(letter)
+    });
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "row"
   }, /*#__PURE__*/React.createElement("div", {
     className: "spacer half"
-  }), _toConsumableArray("йцукенгшщзхї").map(function (letter) {
+  }), _toConsumableArray("фівапролджєґ").map(function (letter) {
     return /*#__PURE__*/React.createElement(Key, {
       key: letter,
       letter: letter,
@@ -468,19 +483,8 @@ function App(props) {
   })), /*#__PURE__*/React.createElement("div", {
     className: "row"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "spacer"
-  }), _toConsumableArray("фівапролджє").map(function (letter) {
-    return /*#__PURE__*/React.createElement(Key, {
-      key: letter,
-      letter: letter,
-      clickHandler: enterLetter,
-      status: letterStatus(letter)
-    });
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "spacer"
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "row"
-  }, /*#__PURE__*/React.createElement("button", {
+    className: "spacer half"
+  }), /*#__PURE__*/React.createElement("button", {
     id: "backspace",
     className: "one-and-a-half",
     "aria-label": "\u0412\u0438\u0434\u0430\u043B\u0438\u0442\u0438 \u0431\u0443\u043A\u0432\u0443",
@@ -494,7 +498,7 @@ function App(props) {
     d: "M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"
   }), /*#__PURE__*/React.createElement("path", {
     d: "M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"
-  }))), _toConsumableArray("ячсмитьбюґ").map(function (letter) {
+  }))), _toConsumableArray("ячсмитьбю").map(function (letter) {
     return /*#__PURE__*/React.createElement(Key, {
       key: letter,
       letter: letter,
@@ -513,16 +517,18 @@ function App(props) {
     viewBox: "0 0 16 16"
   }, /*#__PURE__*/React.createElement("path", {
     d: "M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
-  }))))), modal && /*#__PURE__*/React.createElement(Modal, {
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "spacer half"
+  }))), modal && /*#__PURE__*/React.createElement(Modal, {
     type: modal,
     handleClose: setModal,
     n: currentIssueNumber,
     stats: stats,
     settings: settings,
     setSettings: setSettings,
-    result: result,
     timeLeft: timeLeft,
     attempt: cursor.attempt + 1,
+    result: result,
     shareResult: shareResult,
     solution: words[currentIssueNumber - 1]
   }));
@@ -604,7 +610,7 @@ function Modal(props) {
       href: "https://www.powerlanguage.co.uk/wordle/"
     }, "WORDLE"), " \xA9 Josh Wardle, 2021-22"), /*#__PURE__*/React.createElement("p", null, "\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430 \u0430\u0434\u0430\u043F\u0442\u0430\u0446\u0456\u044F: ", /*#__PURE__*/React.createElement("a", {
       href: "https://www.facebook.com/kokokostya/"
-    }, "\u041A\u043E\u0441\u0442\u044F \u0427\u0435\u0440\u0435\u043F\u043E\u0432\u0441\u044C\u043A\u0438\u0439"), ", 2022"), /*#__PURE__*/React.createElement("p", null, "\u2116", props.n)));
+    }, "\u041A\u043E\u0441\u0442\u044F \u0427\u0435\u0440\u0435\u043F\u043E\u0432\u0441\u044C\u043A\u0438\u0439")), /*#__PURE__*/React.createElement("p", null, "\u2116", props.n)));
   } else if (props.type == "stats") {
     title = "Статистика";
     message = props.result == "won" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("b", null, "\u041D\u0435\u0439\u043C\u043E\u0432\u0456\u0440\u043D\u043E!"), " \u0412\u0438 \u0432\u0433\u0430\u0434\u0430\u043B\u0438 \u0437 ", props.attempt, "-\u0457 \u0441\u043F\u0440\u043E\u0431\u0438. \u0417\u043C\u043E\u0436\u0435\u0442\u0435 \u0437\u0430\u0432\u0442\u0440\u0430 \u043F\u043E\u0432\u0442\u043E\u0440\u0438\u0442\u0438?"), /*#__PURE__*/React.createElement("button", {

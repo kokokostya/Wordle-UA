@@ -298,6 +298,42 @@ header button:hover {
   margin-bottom: 0;
 }
 
+.row.wrong {
+  position: relative;
+  -webkit-animation: reject .3s forwards ease-out;
+          animation: reject .3s forwards ease-out;
+}
+
+@-webkit-keyframes reject {
+  from {
+    left: 0;
+  }
+  30% {
+    left: .5rem;
+  }
+  60% {
+    left: -.5rem;
+  }
+  to {
+    left: 0;
+  }
+}
+
+@keyframes reject {
+  from {
+    left: 0;
+  }
+  30% {
+    left: .5rem;
+  }
+  60% {
+    left: -.5rem;
+  }
+  to {
+    left: 0;
+  }
+}
+
 .row .tile, .row button, .row .spacer {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -513,6 +549,41 @@ header button:hover {
   height: 2.75rem;
 }
 
+.example .row .tile.miss, .example .row .tile.found, .example .row .tile.hit {
+  -webkit-animation: pop .5s forwards ease-out;
+          animation: pop .5s forwards ease-out;
+}
+
+@-webkit-keyframes pop {
+  from {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  30% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+  }
+  to {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes pop {
+  from {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  30% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+  }
+  to {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
 .example dt {
   -webkit-box-flex: 2;
       -ms-flex: 2;
@@ -710,7 +781,7 @@ header button:hover {
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
   }
-  .overlay .message {
+  .overlay .body .message {
     padding: 1rem;
     background-color: var(--message);
     border-radius: 0;

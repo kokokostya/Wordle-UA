@@ -28,24 +28,12 @@ function App(props) {
     colorBlind: false});
   const [modal, setModal] = React.useState(null);
   const [timeLeft, setTimeLeft] = React.useState(null);
+  const [wrongAttempt, setWrongAttempt] = React.useState(false);
 
-  var timer = null;
-
-  // Temporary alert message
-  function renderAlert(str) {
-    let msg = document.createElement("div");
-    msg.classList.add("alert");
-    msg.innerHTML = (str);
-    document.body.append(msg);
-    setTimeout(function() {
-      msg.remove();
-    }, 3000);
-  }
-
-  // Initialize state
+  // Keep track of time
   React.useEffect(() => {
     setTimeLeft(getTimeTillMidnight());
-    timer = setInterval(countDown, 1000);
+    setInterval(countDown, 1000);
   }, []);
 
   function countDown() {
@@ -54,12 +42,6 @@ function App(props) {
       setCurrentIssueNumber(currentIssueNumber + 1);
       resetGame();
     }
-  }
-  
-  function resetGame() {
-    localStorage.removeItem("attempts");
-    localStorage.removeItem("feedback");
-    setResult(null);
   }
 
   // Days from Jan 20 2022 in Kyiv
@@ -144,6 +126,12 @@ function App(props) {
     localStorage.setItem("settings", JSON.stringify(settings));
   }, [settings]);
 
+  function resetGame() {
+    localStorage.removeItem("attempts");
+    localStorage.removeItem("feedback");
+    setResult(null);
+  }
+
   function enterLetter(letter) {
     if ((result == null) && (cursor.attempt < 6) && (cursor.letter < 5)) {
       const newAttempts = [...attempts];
@@ -161,6 +149,7 @@ function App(props) {
       newAttempts[cursor.attempt] = attempts[cursor.attempt].substring(0, cursor.letter-1);
       setAttempts(newAttempts);
       setCursor({attempt: cursor.attempt, letter: cursor.letter-1});
+      setWrongAttempt(false);
     }
   }
 
@@ -188,7 +177,7 @@ function App(props) {
     // Attempts left
     if ((result == null) && (cursor.attempt < 6) && (cursor.letter > 4)) {
       // Actual word
-      if ("dic.includes(attempt)") {
+      if (dic.includes(attempt)) {
         var newResult = null;
         let newFeedback = [...feedback];
         // Solved!
@@ -239,6 +228,7 @@ function App(props) {
           setCursor({attempt: cursor.attempt+1, letter: 0});
         }
       } else {
+        setWrongAttempt(true);
         renderAlert("Введіть словарний іменник");
       }
     }
@@ -262,6 +252,17 @@ function App(props) {
     document.body.removeChild(el);
 
     renderAlert("Cкопійовано");
+  }
+
+  // Temporary alert message
+  function renderAlert(str) {
+    let msg = document.createElement("div");
+    msg.classList.add("alert");
+    msg.innerHTML = (str);
+    document.body.append(msg);
+    setTimeout(function() {
+      msg.remove();
+    }, 3000);
   }
 
   // Color-code tile
@@ -323,7 +324,7 @@ function App(props) {
       <main id="board-container">
         <div id="board">
         {[...Array(6)].map((val, i) =>
-          <div key={i} className="row">
+          <div key={i} className={"row" + ((wrongAttempt && (cursor.attempt == i)) ? " wrong" : "") }>
           {[...Array(5)].map((val, j) =>
             <Tile 
               key={j}
@@ -337,8 +338,17 @@ function App(props) {
 
       <footer id="keyboard">
         <div className="row">
+          {[..."'йцукенгшщзхї"].map((letter) =>
+            <Key
+              key={letter}
+              letter={letter}
+              clickHandler={enterLetter}
+              status={letterStatus(letter)} />
+          )}
+        </div>
+        <div className="row">
           <div className="spacer half"></div>
-          {[..."йцукенгшщзхї"].map((letter) =>
+          {[..."фівапролджєґ"].map((letter) =>
             <Key
               key={letter}
               letter={letter}
@@ -348,24 +358,14 @@ function App(props) {
           <div className="spacer half"></div>
         </div>
         <div className="row">
-          <div className="spacer"></div>
-          {[..."фівапролджє"].map((letter) =>
-            <Key
-              key={letter}
-              letter={letter}
-              clickHandler={enterLetter}
-              status={letterStatus(letter)} />
-          )}
-          <div className="spacer"></div>
-        </div>
-        <div className="row">
+          <div className="spacer half"></div>
           <button id="backspace" className="one-and-a-half" aria-label="Видалити букву" onClick={eraseLetter}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
               <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"/>
               <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/>
             </svg>
           </button>
-          {[..."ячсмитьбюґ"].map((letter) =>
+          {[..."ячсмитьбю"].map((letter) =>
             <Key
               key={letter}
               letter={letter}
@@ -377,6 +377,7 @@ function App(props) {
               <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
             </svg>
           </button>
+          <div className="spacer half"></div>
         </div>
       </footer>
       
@@ -387,9 +388,9 @@ function App(props) {
         stats={stats}
         settings={settings}
         setSettings={setSettings}
-        result={result}
         timeLeft={timeLeft}
         attempt={cursor.attempt+1}
+        result={result}
         shareResult={shareResult}
         solution={words[currentIssueNumber-1]} /> }
     </React.Fragment>
@@ -456,7 +457,7 @@ function Modal(props) {
 
       <div className="fade small">
         <p>Оригінальна гра: <a href="https://www.powerlanguage.co.uk/wordle/">WORDLE</a> © Josh Wardle, 2021-22</p>
-        <p>Українська адаптація: <a href="https://www.facebook.com/kokokostya/">Костя Череповський</a>, 2022</p>
+        <p>Українська адаптація: <a href="https://www.facebook.com/kokokostya/">Костя Череповський</a></p>
         <p>№{ props.n }</p>
       </div>
     </React.Fragment>
