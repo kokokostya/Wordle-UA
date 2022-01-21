@@ -373,7 +373,8 @@ function App(props) {
         result={result}
         timeLeft={timeLeft}
         attempt={cursor.attempt}
-        shareResult={shareResult} /> }
+        shareResult={shareResult}
+        solution={words[currentIssueNumber-1]} /> }
     </React.Fragment>
   )
 }
@@ -454,7 +455,7 @@ function Modal(props) {
       </button>
     </React.Fragment> :
     (props.result == "lost") ? <React.Fragment>
-      <p>Не засмучуйтесь. Ви добре змагались, наступного разу вам точно пощастить.</p>
+      <p>Відгадка: <b>{ props.solution }</b>. Не засмучуйтесь. Ви добре грали і наступного разу точно вгадаєте.</p>
     </React.Fragment> : null;
     content = <React.Fragment>
       <ul id="stats">
