@@ -522,7 +522,7 @@ function App(props) {
     setSettings: setSettings,
     result: result,
     timeLeft: timeLeft,
-    attempt: cursor.attempt,
+    attempt: cursor.attempt + 1,
     shareResult: shareResult,
     solution: words[currentIssueNumber - 1]
   }));
