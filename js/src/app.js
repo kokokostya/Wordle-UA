@@ -134,7 +134,7 @@ function App(props) {
   }, [stats]);
   React.useEffect(() => {
     localStorage.setItem("result", JSON.stringify(result));
-    if (result != null) setTimeout(() => setModal("stats"), 650);
+    if (result != null) setTimeout(() => setModal("stats"), 1000);
   }, [result]);
   
   // Update theme and save to local storage
@@ -168,7 +168,7 @@ function App(props) {
   function provideFeedback(newFeedback) {
     var revealedLetter = 0;
     revealLetter();
-    var letterTimer = setInterval(revealLetter, 150);
+    var letterTimer = setInterval(revealLetter, 200);
     function revealLetter() {
       if (revealedLetter < 5) {
         let letterFeedback = [...newFeedback]
