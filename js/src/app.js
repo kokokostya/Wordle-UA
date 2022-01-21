@@ -168,7 +168,7 @@ function App(props) {
   function provideFeedback(newFeedback) {
     var revealedLetter = 0;
     revealLetter();
-    var letterTimer = setInterval(revealLetter, 200);
+    var letterTimer = setInterval(revealLetter, 150);
     function revealLetter() {
       if (revealedLetter < 5) {
         let letterFeedback = [...newFeedback]

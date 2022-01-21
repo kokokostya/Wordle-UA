@@ -233,37 +233,32 @@ header button:hover {
 }
 
 #board .row .miss, #board .row .found, #board .row .hit {
-  -webkit-animation: zoominout .3s forwards ease-out;
-          animation: zoominout .3s forwards ease-out;
+  position: relative;
+  -webkit-animation: reveal .5s forwards ease-out;
+          animation: reveal .5s forwards ease-out;
 }
 
-@-webkit-keyframes zoominout {
+@-webkit-keyframes reveal {
   from {
-    -webkit-transform: scale(1);
-            transform: scale(1);
+    bottom: 0;
   }
   30% {
-    -webkit-transform: scale(1.1);
-            transform: scale(1.1);
+    bottom: .5rem;
   }
   to {
-    -webkit-transform: scale(1);
-            transform: scale(1);
+    bottom: 0;
   }
 }
 
-@keyframes zoominout {
+@keyframes reveal {
   from {
-    -webkit-transform: scale(1);
-            transform: scale(1);
+    bottom: 0;
   }
   30% {
-    -webkit-transform: scale(1.1);
-            transform: scale(1.1);
+    bottom: .5rem;
   }
   to {
-    -webkit-transform: scale(1);
-            transform: scale(1);
+    bottom: 0;
   }
 }
 
