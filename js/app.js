@@ -1,5 +1,8 @@
+const words = ["слово","рація","хвиля"];
+const dic = ["слово","рація","хвиля","праця","покер","місто","проба","колір","вівця","ооооо"];
+  
 function App(props) {
-  const [currentIssueNumber, setCurrentIssueNumber] = React.useState(getDayNumber());
+  const [currentIssueNumber, setCurrentIssueNumber] = React.useState(getIssueNumber());
   const [attempts, setAttempts] = React.useState([]);
   const [feedback, setFeedback] = React.useState([]);
   const [result, setResult] = React.useState(null);
@@ -28,9 +31,6 @@ function App(props) {
 
   var timer = null;
 
-  const words = ["слово","рація","хвиля"];
-  const dic = ["слово","рація","хвиля","праця","покер","місто","проба","колір","вівця","ооооо"];
-
   // Temporary alert message
   function renderAlert(str) {
     let msg = document.createElement("div");
@@ -44,7 +44,6 @@ function App(props) {
 
   // Initialize state
   React.useEffect(() => {
-    console.log(getDayNumber())
     setTimeLeft(getTimeTillMidnight());
     timer = setInterval(countDown, 1000);
   }, []);
@@ -64,12 +63,12 @@ function App(props) {
   }
 
   // Days from Jan 20 2022 in Kyiv
-  function getDayNumber() {
+  function getIssueNumber() {
     const first = new Date("Thu Jan 20 2022 00:00:00 GMT+0200 (EET)");
     const localNow = new Date().toLocaleString("en-US", { timeZone: "Europe/Kiev" });
     const now = new Date(localNow);
     const diff = Math.round((now-first)/(1000*60*60*24));
-    return diff;
+    return diff % words.length;
   }
 
   // HH:MM:SS till midnight in Kyiv
