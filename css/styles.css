@@ -241,6 +241,10 @@ header button:hover {
   margin: 0 auto 5px;
 }
 
+#keyboard button svg {
+  fill: var(--text);
+}
+
 #keyboard button:active {
   color: var(--text-inverted);
 }

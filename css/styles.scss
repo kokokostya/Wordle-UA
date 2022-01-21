@@ -215,6 +215,10 @@ header {
    }
 
    button {
+    svg {
+      fill: var(--text)
+    }
+
      &:active {
        color: var(--text-inverted);
       

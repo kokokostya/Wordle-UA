@@ -1,5 +1,5 @@
-const words = ["слово","рація","хвиля"];
-const dic = ["слово","рація","хвиля","праця","покер","місто","проба","колір","вівця","ооооо"];
+const words = ["слово","рація","хвиля","танок","покер","місто","проба","колір","вівця","місія"];
+const dic = [];
   
 function App(props) {
   const [currentIssueNumber, setCurrentIssueNumber] = React.useState(getIssueNumber());
@@ -228,7 +228,7 @@ function App(props) {
   }
 
   function shareResult() {
-    let str = "Український Wordle №" + currentIssueNumber + " з " + cursor.attempt + "-ї спроби:";
+    let str = "Wordle українською №" + currentIssueNumber + " з " + cursor.attempt + "-ї спроби:";
     feedback.map(attempt => {
       str += "\n";
       attempt.map(res => str += (res=="hit") ? "🟩" : (res=="found") ? "🟨" : "⬜")
