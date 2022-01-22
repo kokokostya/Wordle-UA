@@ -214,7 +214,7 @@ function App(props) {
             newStats.won += 1;
             newStats.streak += 1;
             if (newStats.streak > newStats.maxStreak) newStats.maxStreak = newStats.streak;
-            newStats.attempts[feedback.length+1] += 1;
+            newStats.attempts[cursor.attempt] += 1;
           } else {
             newStats.streak = 0;
           }
