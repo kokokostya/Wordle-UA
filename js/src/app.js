@@ -386,7 +386,7 @@ function App(props) {
         settings={settings}
         setSettings={setSettings}
         timeLeft={timeLeft}
-        attempt={cursor.attempt+1}
+        attempt={cursor.attempt}
         result={result}
         shareResult={shareResult}
         solution={props.words[currentIssueNumber-1]} /> }
