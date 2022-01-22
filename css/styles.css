@@ -339,8 +339,8 @@ header button:hover {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-flex: 1;
-      -ms-flex: 1 10px;
-          flex: 1 10px;
+      -ms-flex: 1;
+          flex: 1;
   background: none;
   border: 0 none;
   -webkit-box-align: center;
@@ -360,16 +360,28 @@ header button:hover {
   margin: 0;
 }
 
+.row .quarter {
+  -webkit-box-flex: .25;
+      -ms-flex: .25;
+          flex: .25;
+}
+
 .row .half {
   -webkit-box-flex: .5;
-      -ms-flex: .5 5px;
-          flex: .5 5px;
+      -ms-flex: .5;
+          flex: .5;
+}
+
+.row .three-quarters {
+  -webkit-box-flex: .75;
+      -ms-flex: .75;
+          flex: .75;
 }
 
 .row .one-and-a-half {
   -webkit-box-flex: 1.5;
-      -ms-flex: 1.5 15px;
-          flex: 1.5 15px;
+      -ms-flex: 1.5;
+          flex: 1.5;
 }
 
 .row .tile {

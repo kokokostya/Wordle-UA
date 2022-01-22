@@ -266,7 +266,7 @@ header {
 
   .tile, button, .spacer {
     display: flex;
-    flex: 1 10px;
+    flex: 1;
     background: none;
     border: 0 none;
     align-items: center;
@@ -282,12 +282,20 @@ header {
     }
   }
 
+  .quarter {
+    flex: .25;
+  }
+
   .half {
-    flex: .5 5px;
+    flex: .5;
+  }
+
+  .three-quarters {
+    flex: .75;
   }
 
   .one-and-a-half {
-    flex: 1.5 15px;
+    flex: 1.5;
   }
 
   .tile {
