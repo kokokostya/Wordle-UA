@@ -106,11 +106,10 @@ function App(props) {
     setTimeLeft(getTimeTillMidnight());
 
     if (getTimeTillMidnight() == {
-      "h": 0,
-      "m": 0,
-      "s": 0
+      "h": 23,
+      "m": 59,
+      "s": 59
     }) {
-      setCurrentIssueNumber(currentIssueNumber + 1);
       resetGame();
     }
   } // Dics
@@ -233,20 +232,21 @@ function App(props) {
   }
 
   function resetGame() {
+    setAttempts([]);
+    setFeedback([]);
+    setCurrentIssueNumber(getIssueNumber());
+    setResult(null);
     localStorage.removeItem("attempts");
     localStorage.removeItem("feedback");
     localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
-    setResult(null);
+    localStorage.setItem("result", JSON.stringify(null));
   } // Validate local storage and load from it
 
 
   React.useEffect(function () {
-    setCurrentIssueNumber(getIssueNumber());
     var lastPlayedIssueNumber = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
 
-    if (lastPlayedIssueNumber != getIssueNumber()) {
-      resetGame();
-    } else {
+    if (lastPlayedIssueNumber == getIssueNumber()) {
       var localAttempts = JSON.parse(localStorage.getItem("attempts"));
       var localFeedback = JSON.parse(localStorage.getItem("feedback"));
       var localResult = JSON.parse(localStorage.getItem("result"));
@@ -257,6 +257,8 @@ function App(props) {
         attempt: localFeedback ? localFeedback.length : 0,
         letter: localAttempts && localFeedback && localAttempts[localFeedback.length] ? localAttempts[localFeedback.length].length : 0
       });
+    } else {
+      resetGame();
     }
 
     var localSettings = JSON.parse(localStorage.getItem("settings"));
