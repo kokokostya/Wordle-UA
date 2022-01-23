@@ -78,12 +78,12 @@ function App(props) {
     localStorage.removeItem("attempts");
     localStorage.removeItem("feedback");
     localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
-    setCurrentIssueNumber(getIssueNumber());
     setResult(null);
   }
 
   // Validate local storage and load from it
   React.useEffect(() => {
+    setCurrentIssueNumber(getIssueNumber());
     let lastPlayedIssueNumber = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
     if (lastPlayedIssueNumber != getIssueNumber()) {
       resetGame();
@@ -91,24 +91,21 @@ function App(props) {
       let localAttempts = JSON.parse(localStorage.getItem("attempts"));
       let localFeedback = JSON.parse(localStorage.getItem("feedback"));
       let localResult = JSON.parse(localStorage.getItem("result"));
-      let localSettings = JSON.parse(localStorage.getItem("settings"));
       localAttempts && setAttempts(localAttempts);
       localFeedback && setFeedback(localFeedback);
       localResult && setResult(localResult);
-      localSettings && setSettings(localSettings);
       setCursor({
         attempt: (localFeedback) ? localFeedback.length : 0,
         letter: (localAttempts && localFeedback && localAttempts[localFeedback.length]) ? localAttempts[localFeedback.length].length : 0
       });
     }
+    let localSettings = JSON.parse(localStorage.getItem("settings"));
+    localSettings && setSettings(localSettings);
     let localStats = JSON.parse(localStorage.getItem("stats"));
     localStats && setStats(localStats);
   }, []);
     
   // Save game to local storage
-  React.useEffect(() => {
-    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(currentIssueNumber));
-  }, [currentIssueNumber]);
   React.useEffect(() => {
     localStorage.setItem("attempts", JSON.stringify(attempts));
   }, [attempts]);
@@ -215,7 +212,7 @@ function App(props) {
             newStats.won += 1;
             newStats.streak += 1;
             if (newStats.streak > newStats.maxStreak) newStats.maxStreak = newStats.streak;
-            newStats.attempts[cursor.attempt] += 1;
+            newStats.attempts[cursor.attempt+1] += 1;
           } else {
             newStats.streak = 0;
           }
