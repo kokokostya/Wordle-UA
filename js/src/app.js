@@ -1,5 +1,5 @@
 function App(props) {
-  const [currentIssueNumber, setCurrentIssueNumber] = React.useState(getIssueNumber());
+  const [currentIssueNumber, setCurrentIssueNumber] = React.useState(null);
   const [attempts, setAttempts] = React.useState([]);
   const [feedback, setFeedback] = React.useState([]);
   const [result, setResult] = React.useState(null);
@@ -46,8 +46,8 @@ function App(props) {
     const first = new Date("Thu Jan 22 2022 00:00:00 GMT+0200 (EET)");
     const localNow = new Date().toLocaleString("en-US", { timeZone: "Europe/Kiev" });
     const now = new Date(localNow);
-    const diff = Math.round((now-first)/(1000*60*60*24));
-    return diff % props.words.length;
+    const diff = Math.ceil((now-first)/(1000*60*60*24));
+    return (diff % props.words.length);
   }
 
   // HH:MM:SS till midnight in Kyiv
@@ -74,11 +74,18 @@ function App(props) {
     return obj;
   }
 
+  function resetGame() {
+    localStorage.removeItem("attempts");
+    localStorage.removeItem("feedback");
+    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
+    setCurrentIssueNumber(getIssueNumber());
+    setResult(null);
+  }
+
   // Validate local storage and load from it
   React.useEffect(() => {
     let lastPlayedIssueNumber = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
     if (lastPlayedIssueNumber != getIssueNumber()) {
-      localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
       resetGame();
     } else {
       let localAttempts = JSON.parse(localStorage.getItem("attempts"));
@@ -122,12 +129,6 @@ function App(props) {
     settings.colorBlind ? document.body.classList.add("color-blind") : document.body.classList.remove("color-blind");
     localStorage.setItem("settings", JSON.stringify(settings));
   }, [settings]);
-
-  function resetGame() {
-    localStorage.removeItem("attempts");
-    localStorage.removeItem("feedback");
-    setResult(null);
-  }
 
   function enterLetter(letter) {
     if ((result == null) && (cursor.attempt < 6) && (cursor.letter < 5)) {

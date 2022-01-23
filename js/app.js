@@ -27,7 +27,7 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function App(props) {
-  var _React$useState = React.useState(getIssueNumber()),
+  var _React$useState = React.useState(null),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       currentIssueNumber = _React$useState2[0],
       setCurrentIssueNumber = _React$useState2[1];
@@ -122,7 +122,7 @@ function App(props) {
       timeZone: "Europe/Kiev"
     });
     var now = new Date(localNow);
-    var diff = Math.round((now - first) / (1000 * 60 * 60 * 24));
+    var diff = Math.ceil((now - first) / (1000 * 60 * 60 * 24));
     return diff % props.words.length;
   } // HH:MM:SS till midnight in Kyiv
 
@@ -149,6 +149,14 @@ function App(props) {
       "s": seconds < 10 ? "0" + seconds : seconds
     };
     return obj;
+  }
+
+  function resetGame() {
+    localStorage.removeItem("attempts");
+    localStorage.removeItem("feedback");
+    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
+    setCurrentIssueNumber(getIssueNumber());
+    setResult(null);
   } // Validate local storage and load from it
 
 
@@ -156,7 +164,6 @@ function App(props) {
     var lastPlayedIssueNumber = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
 
     if (lastPlayedIssueNumber != getIssueNumber()) {
-      localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
       resetGame();
     } else {
       var localAttempts = JSON.parse(localStorage.getItem("attempts"));
@@ -201,12 +208,6 @@ function App(props) {
     settings.colorBlind ? document.body.classList.add("color-blind") : document.body.classList.remove("color-blind");
     localStorage.setItem("settings", JSON.stringify(settings));
   }, [settings]);
-
-  function resetGame() {
-    localStorage.removeItem("attempts");
-    localStorage.removeItem("feedback");
-    setResult(null);
-  }
 
   function enterLetter(letter) {
     if (result == null && cursor.attempt < 6 && cursor.letter < 5) {
