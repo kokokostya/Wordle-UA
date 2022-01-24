@@ -94,13 +94,69 @@ function App(props) {
   var _React$useState19 = React.useState(false),
       _React$useState20 = _slicedToArray(_React$useState19, 2),
       wrongAttempt = _React$useState20[0],
-      setWrongAttempt = _React$useState20[1]; // Keep track of time
-
+      setWrongAttempt = _React$useState20[1];
 
   React.useEffect(function () {
+    // Keep track of time
     setTimeLeft(getTimeTillMidnight());
     setInterval(countDown, 1000);
-  }, []);
+    setCurrentIssueNumber(getIssueNumber()); // Validate local storage and load from it
+
+    var lastPlayedIssueNumber = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
+
+    if (lastPlayedIssueNumber == getIssueNumber()) {
+      var localAttempts = JSON.parse(localStorage.getItem("attempts"));
+      var localFeedback = JSON.parse(localStorage.getItem("feedback"));
+      var localResult = JSON.parse(localStorage.getItem("result"));
+      localAttempts && setAttempts(localAttempts);
+      localFeedback && setFeedback(localFeedback);
+      localResult && setResult(localResult);
+      setCursor({
+        attempt: localFeedback ? localFeedback.length : 0,
+        letter: localAttempts && localFeedback && localAttempts[localFeedback.length] ? localAttempts[localFeedback.length].length : 0
+      });
+    } else {
+      resetGame();
+    }
+
+    var localSettings = JSON.parse(localStorage.getItem("settings"));
+    localSettings && setSettings(localSettings);
+    var localStats = JSON.parse(localStorage.getItem("stats"));
+    localStats && setStats(localStats);
+  }, []); // Save game to local storage
+
+  React.useEffect(function () {
+    localStorage.setItem("attempts", JSON.stringify(attempts));
+  }, [attempts]);
+  React.useEffect(function () {
+    localStorage.setItem("feedback", JSON.stringify(feedback));
+  }, [feedback]);
+  React.useEffect(function () {
+    localStorage.setItem("stats", JSON.stringify(stats));
+  }, [stats]);
+  React.useEffect(function () {
+    localStorage.setItem("result", JSON.stringify(result));
+    if (result != null) setTimeout(function () {
+      return setModal("stats");
+    }, 1000);
+  }, [result]); // Update theme and save to local storage
+
+  React.useEffect(function () {
+    settings.darkTheme ? document.body.classList.add("dark") : document.body.classList.remove("dark");
+    settings.colorBlind ? document.body.classList.add("color-blind") : document.body.classList.remove("color-blind");
+    localStorage.setItem("settings", JSON.stringify(settings));
+  }, [settings]);
+
+  function resetGame() {
+    setAttempts([]);
+    setFeedback([]);
+    setCurrentIssueNumber(getIssueNumber());
+    setResult(null);
+    localStorage.removeItem("attempts");
+    localStorage.removeItem("feedback");
+    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
+    localStorage.setItem("result", JSON.stringify(null));
+  }
 
   function countDown() {
     setTimeLeft(getTimeTillMidnight());
@@ -111,6 +167,87 @@ function App(props) {
       "s": 59
     }) {
       resetGame();
+    }
+  } // HH:MM:SS till midnight in Kyiv
+
+
+  function getTimeTillMidnight() {
+    var localNow = new Date().toLocaleString("en-US", {
+      timeZone: "Europe/Kiev"
+    });
+    var now = new Date(localNow);
+    var midnight = new Date(localNow);
+    midnight.setHours(24);
+    midnight.setMinutes(0);
+    midnight.setSeconds(0);
+    midnight.setMilliseconds(0);
+    var secs = (midnight.getTime() - now.getTime()) / 1000;
+    var hours = Math.floor(secs / (60 * 60));
+    var divisor_for_minutes = secs % (60 * 60);
+    var minutes = Math.floor(divisor_for_minutes / 60);
+    var divisor_for_seconds = divisor_for_minutes % 60;
+    var seconds = Math.ceil(divisor_for_seconds);
+    var obj = {
+      "h": hours < 10 ? "0" + hours : hours,
+      "m": minutes < 10 ? "0" + minutes : minutes,
+      "s": seconds < 10 ? "0" + seconds : seconds
+    };
+    return obj;
+  } // Days from Jan 22 2022 in Kyiv
+
+
+  function getIssueNumber() {
+    var firstDay = new Date("Thu Jan 22 2022 00:00:00 GMT+0200 (EET)");
+    var today = new Date();
+    var diff = (today - firstDay) / (1000 * 60 * 60 * 24);
+    return Math.ceil(diff);
+  }
+
+  function enterLetter(letter) {
+    if (result == null && cursor.attempt < 6 && cursor.letter < 5) {
+      var newAttempts = _toConsumableArray(attempts);
+
+      var newString = newAttempts[cursor.attempt] || "";
+      newString += letter;
+      newAttempts[cursor.attempt] = newString;
+      setAttempts(newAttempts);
+      setCursor({
+        attempt: cursor.attempt,
+        letter: cursor.letter + 1
+      });
+    }
+  }
+
+  function eraseLetter() {
+    if (result == null && cursor.letter > 0) {
+      var newAttempts = _toConsumableArray(attempts);
+
+      newAttempts[cursor.attempt] = attempts[cursor.attempt].substring(0, cursor.letter - 1);
+      setAttempts(newAttempts);
+      setCursor({
+        attempt: cursor.attempt,
+        letter: cursor.letter - 1
+      });
+      setWrongAttempt(false);
+    }
+  } // Provide feedback letter by letter
+
+
+  function provideFeedback(newFeedback) {
+    var revealedLetter = 0;
+    revealLetter();
+    var letterTimer = setInterval(revealLetter, 150);
+
+    function revealLetter() {
+      if (revealedLetter < 5) {
+        var letterFeedback = _toConsumableArray(newFeedback);
+
+        letterFeedback[letterFeedback.length - 1] = newFeedback[newFeedback.length - 1].slice(0, revealedLetter + 1);
+        setFeedback(letterFeedback);
+        revealedLetter++;
+      } else {
+        clearInterval(letterTimer);
+      }
     }
   } // Dics
 
@@ -193,150 +330,7 @@ function App(props) {
     }
 
     return ![];
-  }; // Days from Jan 22 2022 in Kyiv
-
-
-  function getIssueNumber() {
-    var first = new Date("Thu Jan 22 2022 00:00:00 GMT+0200 (EET)");
-    var localNow = new Date().toLocaleString("en-US", {
-      timeZone: "Europe/Kiev"
-    });
-    var now = new Date(localNow);
-    var diff = Math.ceil((now - first) / (1000 * 60 * 60 * 24));
-    return diff;
-  } // HH:MM:SS till midnight in Kyiv
-
-
-  function getTimeTillMidnight() {
-    var localNow = new Date().toLocaleString("en-US", {
-      timeZone: "Europe/Kiev"
-    });
-    var now = new Date(localNow);
-    var midnight = new Date();
-    midnight.setHours(24);
-    midnight.setMinutes(0);
-    midnight.setSeconds(0);
-    midnight.setMilliseconds(0);
-    var secs = (midnight.getTime() - now.getTime()) / 1000;
-    var hours = Math.floor(secs / (60 * 60));
-    var divisor_for_minutes = secs % (60 * 60);
-    var minutes = Math.floor(divisor_for_minutes / 60);
-    var divisor_for_seconds = divisor_for_minutes % 60;
-    var seconds = Math.ceil(divisor_for_seconds);
-    var obj = {
-      "h": hours < 10 ? "0" + hours : hours,
-      "m": minutes < 10 ? "0" + minutes : minutes,
-      "s": seconds < 10 ? "0" + seconds : seconds
-    };
-    return obj;
-  }
-
-  function resetGame() {
-    setAttempts([]);
-    setFeedback([]);
-    setCurrentIssueNumber(getIssueNumber());
-    setResult(null);
-    localStorage.removeItem("attempts");
-    localStorage.removeItem("feedback");
-    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
-    localStorage.setItem("result", JSON.stringify(null));
-  } // Validate local storage and load from it
-
-
-  React.useEffect(function () {
-    setCurrentIssueNumber(getIssueNumber());
-    var lastPlayedIssueNumber = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
-
-    if (lastPlayedIssueNumber == getIssueNumber()) {
-      var localAttempts = JSON.parse(localStorage.getItem("attempts"));
-      var localFeedback = JSON.parse(localStorage.getItem("feedback"));
-      var localResult = JSON.parse(localStorage.getItem("result"));
-      localAttempts && setAttempts(localAttempts);
-      localFeedback && setFeedback(localFeedback);
-      localResult && setResult(localResult);
-      setCursor({
-        attempt: localFeedback ? localFeedback.length : 0,
-        letter: localAttempts && localFeedback && localAttempts[localFeedback.length] ? localAttempts[localFeedback.length].length : 0
-      });
-    } else {
-      resetGame();
-    }
-
-    var localSettings = JSON.parse(localStorage.getItem("settings"));
-    localSettings && setSettings(localSettings);
-    var localStats = JSON.parse(localStorage.getItem("stats"));
-    localStats && setStats(localStats);
-  }, []); // Save game to local storage
-
-  React.useEffect(function () {
-    localStorage.setItem("attempts", JSON.stringify(attempts));
-  }, [attempts]);
-  React.useEffect(function () {
-    localStorage.setItem("feedback", JSON.stringify(feedback));
-  }, [feedback]);
-  React.useEffect(function () {
-    localStorage.setItem("stats", JSON.stringify(stats));
-  }, [stats]);
-  React.useEffect(function () {
-    localStorage.setItem("result", JSON.stringify(result));
-    if (result != null) setTimeout(function () {
-      return setModal("stats");
-    }, 1000);
-  }, [result]); // Update theme and save to local storage
-
-  React.useEffect(function () {
-    settings.darkTheme ? document.body.classList.add("dark") : document.body.classList.remove("dark");
-    settings.colorBlind ? document.body.classList.add("color-blind") : document.body.classList.remove("color-blind");
-    localStorage.setItem("settings", JSON.stringify(settings));
-  }, [settings]);
-
-  function enterLetter(letter) {
-    if (result == null && cursor.attempt < 6 && cursor.letter < 5) {
-      var newAttempts = _toConsumableArray(attempts);
-
-      var newString = newAttempts[cursor.attempt] || "";
-      newString += letter;
-      newAttempts[cursor.attempt] = newString;
-      setAttempts(newAttempts);
-      setCursor({
-        attempt: cursor.attempt,
-        letter: cursor.letter + 1
-      });
-    }
-  }
-
-  function eraseLetter() {
-    if (result == null && cursor.letter > 0) {
-      var newAttempts = _toConsumableArray(attempts);
-
-      newAttempts[cursor.attempt] = attempts[cursor.attempt].substring(0, cursor.letter - 1);
-      setAttempts(newAttempts);
-      setCursor({
-        attempt: cursor.attempt,
-        letter: cursor.letter - 1
-      });
-      setWrongAttempt(false);
-    }
-  } // Provide feedback letter by letter
-
-
-  function provideFeedback(newFeedback) {
-    var revealedLetter = 0;
-    revealLetter();
-    var letterTimer = setInterval(revealLetter, 150);
-
-    function revealLetter() {
-      if (revealedLetter < 5) {
-        var letterFeedback = _toConsumableArray(newFeedback);
-
-        letterFeedback[letterFeedback.length - 1] = newFeedback[newFeedback.length - 1].slice(0, revealedLetter + 1);
-        setFeedback(letterFeedback);
-        revealedLetter++;
-      } else {
-        clearInterval(letterTimer);
-      }
-    }
-  }
+  };
 
   function checkWord() {
     var attempt = attempts[cursor.attempt];
@@ -683,7 +677,7 @@ function Modal(props) {
       className: "tile miss"
     }, "\u0430")), /*#__PURE__*/React.createElement("dd", {
       className: "small"
-    }, "\u0416\u043E\u0434\u043D\u043E\u0457 \u0437 \u0446\u0438\u0445 \u0431\u0443\u043A\u0432 \u043D\u0435\u043C\u0430\u0454 \u0432 \u0441\u043B\u043E\u0432\u0456")), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("div", {
+    }, "\u0416\u043E\u0434\u043D\u043E\u0457 \u0437 \u0446\u0438\u0445 \u0431\u0443\u043A\u0432 \u043D\u0435\u043C\u0430\u0454 \u0432 \u0441\u043B\u043E\u0432\u0456")), /*#__PURE__*/React.createElement("p", null, "\u041D\u043E\u0432\u0435 \u0437\u0430\u0432\u0434\u0430\u043D\u043D\u044F \u0449\u043E\u0434\u043D\u044F!"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("div", {
       className: "fade small"
     }, /*#__PURE__*/React.createElement("p", null, "\u041E\u0440\u0438\u0433\u0456\u043D\u0430\u043B\u044C\u043D\u0430 \u0433\u0440\u0430: ", /*#__PURE__*/React.createElement("a", {
       href: "https://www.powerlanguage.co.uk/wordle/"
