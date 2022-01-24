@@ -458,6 +458,8 @@ function Modal(props) {
         <dd className="small">Жодної з цих букв немає в слові</dd>
       </dl>
 
+      <p>Нове завдання щодня!</p>
+
       <hr />
 
       <div className="fade small">
