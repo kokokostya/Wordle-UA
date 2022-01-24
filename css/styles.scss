@@ -10,12 +10,15 @@
   --found: #cb4;
   --hit: #0a5;
   --icon-gray: #aaa;
-  --button-gray: #ccc;
   --border-gray: #ddd;
   --active: #7bf;
   --overlay: rgba(255,255,255,.8);
   --message: #eee;
   --message-success: #bfc;
+
+  --button-gray: #ccc;
+  --button-danger: #f55;
+  --button-primary: #49f;
   --button-success: #9da;
 
   --border-radius-button: 3px;
@@ -36,12 +39,15 @@
   --found: #cb4;
   --hit: #0a5;
   --icon-gray: #677;
-  --button-gray: #566;
   --border-gray: #344;
   --active: #aba;
   --overlay: rgba(64,72,72,.8);
   --message: #192929;
   --message-success: #052;
+
+  --button-gray: #566;
+  --button-danger: #c33;
+  --button-primary: #36c;
   --button-success: #084;
 
   --active-shadow: 0 0 6px rgba(210,255,210,1);
@@ -244,6 +250,14 @@ header {
     }
    }
  }
+
+//  #backspace {
+//   background-color: var(--button-danger);
+//  }
+
+//  #enter {
+//   background-color: var(--button-primary);
+//  }
  
 .row {
   display: flex;
@@ -299,6 +313,10 @@ header {
     flex: 1.5;
   }
 
+  .two {
+    flex: 2;
+  }
+
   .tile {
     border: 2px solid var(--border-gray);
     font-size: 2rem;
@@ -322,7 +340,7 @@ header {
     cursor: pointer;
 
     &:active {
-      background-color: var(--text);
+      background-color: var(--text) !important;
     }
   }
   

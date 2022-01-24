@@ -408,7 +408,7 @@ function App(props) {
   }
 
   function shareResult() {
-    var str = "Wordle українською №" + currentIssueNumber + " з " + feedback.length + "-ї спроби:";
+    var str = "#укрWordle №" + currentIssueNumber + " з " + feedback.length + "-ї спроби:";
     feedback.map(function (attempt) {
       str += "\n";
       attempt.map(function (res) {

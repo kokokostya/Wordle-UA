@@ -239,7 +239,7 @@ function App(props) {
   }
 
   function shareResult() {
-    let str = "Wordle українською №" + currentIssueNumber + " з " + feedback.length + "-ї спроби:";
+    let str = "#укрWordle №" + currentIssueNumber + " з " + feedback.length + "-ї спроби:";
     feedback.map(attempt => {
       str += "\n";
       attempt.map(res => str += (res=="hit") ? "🟩" : (res=="found") ? "🟨" : "⬜")
