@@ -1,5 +1,5 @@
 function App(props) {
-  const [currentIssueNumber, setCurrentIssueNumber] = React.useState(null);
+  const [currentIssueNumber, setCurrentIssueNumber] = React.useState();
   const [attempts, setAttempts] = React.useState([]);
   const [feedback, setFeedback] = React.useState([]);
   const [result, setResult] = React.useState(null);
@@ -93,6 +93,7 @@ function App(props) {
 
   // Validate local storage and load from it
   React.useEffect(() => {
+    setCurrentIssueNumber(getIssueNumber());
     let lastPlayedIssueNumber = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
     if (lastPlayedIssueNumber == getIssueNumber()) {
       let localAttempts = JSON.parse(localStorage.getItem("attempts"));

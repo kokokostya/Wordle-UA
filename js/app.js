@@ -27,7 +27,7 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function App(props) {
-  var _React$useState = React.useState(null),
+  var _React$useState = React.useState(),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       currentIssueNumber = _React$useState2[0],
       setCurrentIssueNumber = _React$useState2[1];
@@ -244,6 +244,7 @@ function App(props) {
 
 
   React.useEffect(function () {
+    setCurrentIssueNumber(getIssueNumber());
     var lastPlayedIssueNumber = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
 
     if (lastPlayedIssueNumber == getIssueNumber()) {
