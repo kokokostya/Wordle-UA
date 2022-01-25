@@ -98,12 +98,21 @@ function App(props) {
 
 
   React.useEffect(function () {
-    // Keep track of time
+    // Keep track of time and reset at midnight
     setTimeLeft(getTimeTillMidnight());
-    setInterval(countDown, 1000);
-    setCurrentIssueNumber(getIssueNumber()); // Validate local storage and load from it
+    setInterval(function () {
+      setTimeLeft(getTimeTillMidnight());
 
-    var lastPlayedIssueNumber = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
+      if (JSON.stringify(getTimeTillMidnight()) == JSON.stringify({
+        "h": 23,
+        "m": 59,
+        "s": 59
+      })) {
+        resetGame();
+      }
+    }, 1000);
+    setCurrentIssueNumber(getIssueNumber());
+    var lastPlayedIssueNumber = JSON.parse(localStorage.getItem("lastPlayedIssueNumber")); // Local last played game from storage if still valid
 
     if (lastPlayedIssueNumber == getIssueNumber()) {
       var localAttempts = JSON.parse(localStorage.getItem("attempts"));
@@ -115,7 +124,7 @@ function App(props) {
       setCursor({
         attempt: localFeedback ? localFeedback.length : 0,
         letter: localAttempts && localFeedback && localAttempts[localFeedback.length] ? localAttempts[localFeedback.length].length : 0
-      });
+      }); // Reset invalid game session 
     } else {
       resetGame();
     }
@@ -149,26 +158,14 @@ function App(props) {
   }, [settings]);
 
   function resetGame() {
+    setCurrentIssueNumber(getIssueNumber());
     setAttempts([]);
     setFeedback([]);
-    setCurrentIssueNumber(getIssueNumber());
     setResult(null);
+    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
     localStorage.removeItem("attempts");
     localStorage.removeItem("feedback");
-    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
     localStorage.setItem("result", JSON.stringify(null));
-  }
-
-  function countDown() {
-    setTimeLeft(getTimeTillMidnight());
-
-    if (getTimeTillMidnight() == {
-      "h": 23,
-      "m": 59,
-      "s": 59
-    }) {
-      resetGame();
-    }
   } // HH:MM:SS till midnight in Kyiv
 
 
@@ -722,7 +719,8 @@ function Modal(props) {
       return /*#__PURE__*/React.createElement(GraphBar, {
         key: i,
         num: i + 1,
-        attempts: props.stats.attempts
+        attempts: props.stats.attempts,
+        winningAttempt: props.result == "won" ? props.attempt : null
       });
     }), /*#__PURE__*/React.createElement("h3", null, "\u041D\u0430\u0441\u0442\u0443\u043F\u043D\u0435 \u0441\u043B\u043E\u0432\u043E \u0447\u0435\u0440\u0435\u0437"), /*#__PURE__*/React.createElement("div", {
       id: "timer"
@@ -803,7 +801,7 @@ function GraphBar(props) {
   }, /*#__PURE__*/React.createElement("div", {
     className: "label"
   }, props.num), /*#__PURE__*/React.createElement("div", {
-    className: "bar" + (!props.attempts[props.num] ? " none" : ""),
+    className: "bar" + (props.winningAttempt != props.num ? " none" : ""),
     style: {
       width: width + "%"
     }

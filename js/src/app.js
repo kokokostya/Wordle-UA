@@ -31,14 +31,18 @@ function App(props) {
 
   // Initial setup on load
   React.useEffect(() => {
-    // Keep track of time
+    // Keep track of time and reset at midnight
     setTimeLeft(getTimeTillMidnight());
-    setInterval(countDown, 1000);
+    setInterval(() => {
+      setTimeLeft(getTimeTillMidnight());
+      if (JSON.stringify(getTimeTillMidnight()) == JSON.stringify({"h": 23, "m": 59, "s": 59})) {
+        resetGame();
+      }
+    }, 1000);
 
     setCurrentIssueNumber(getIssueNumber());
-
-    // Validate local storage and load from it
     let lastPlayedIssueNumber = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
+    // Local last played game from storage if still valid
     if (lastPlayedIssueNumber == getIssueNumber()) {
       let localAttempts = JSON.parse(localStorage.getItem("attempts"));
       let localFeedback = JSON.parse(localStorage.getItem("feedback"));
@@ -50,6 +54,7 @@ function App(props) {
         attempt: (localFeedback) ? localFeedback.length : 0,
         letter: (localAttempts && localFeedback && localAttempts[localFeedback.length]) ? localAttempts[localFeedback.length].length : 0
       });
+    // Reset invalid game session 
     } else {
       resetGame();
     }
@@ -82,22 +87,15 @@ function App(props) {
   }, [settings]);
 
   function resetGame() {
+    setCurrentIssueNumber(getIssueNumber());
     setAttempts([]);
     setFeedback([]);
-    setCurrentIssueNumber(getIssueNumber());
     setResult(null);
 
+    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
     localStorage.removeItem("attempts");
     localStorage.removeItem("feedback");
-    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
     localStorage.setItem("result", JSON.stringify(null));
-  }
-
-  function countDown() {
-    setTimeLeft(getTimeTillMidnight());
-    if (getTimeTillMidnight() == {"h": 23, "m": 59, "s": 59}) {
-      resetGame();
-    }
   }
 
   // HH:MM:SS till midnight in Kyiv
@@ -505,7 +503,8 @@ function Modal(props) {
           <GraphBar
             key={i}
             num={i+1}
-            attempts={props.stats.attempts} />
+            attempts={props.stats.attempts}
+            winningAttempt={props.result == "won" ? props.attempt : null} />
         )}
 
         <h3>Наступне слово через</h3>
@@ -554,7 +553,7 @@ function GraphBar(props) {
   return (
     <div className="graph">
       <div className="label">{ props.num }</div>
-      <div className={"bar" + (!props.attempts[props.num] ? " none" : "")} style={{width: width + "%"}}>{ props.attempts[props.num] }</div>
+      <div className={"bar" + (props.winningAttempt != props.num ? " none" : "")} style={{width: width + "%"}}>{ props.attempts[props.num] }</div>
     </div>
   )
 }
