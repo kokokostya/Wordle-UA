@@ -434,13 +434,13 @@ function Modal(props) {
 
       <dl className="example">
         <dt className="row">
-          <div className="tile miss">ш</div>
-          <div className="tile found">т</div>
-          <div className="tile miss">а</div>
-          <div className="tile miss">н</div>
+          <div className="tile miss">к</div>
+          <div className="tile found">р</div>
           <div className="tile miss">и</div>
+          <div className="tile miss">л</div>
+          <div className="tile miss">о</div>
         </dt>
-        <dd className="small">Буква <b>Т</b> є в слові, але не в цьому місці</dd>
+        <dd className="small">Буква <b>Р</b> є в слові, але не в цьому місці</dd>
       </dl>
 
       <dl className="example">

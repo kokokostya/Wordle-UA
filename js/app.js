@@ -649,17 +649,17 @@ function Modal(props) {
       className: "row"
     }, /*#__PURE__*/React.createElement("div", {
       className: "tile miss"
-    }, "\u0448"), /*#__PURE__*/React.createElement("div", {
+    }, "\u043A"), /*#__PURE__*/React.createElement("div", {
       className: "tile found"
-    }, "\u0442"), /*#__PURE__*/React.createElement("div", {
+    }, "\u0440"), /*#__PURE__*/React.createElement("div", {
       className: "tile miss"
-    }, "\u0430"), /*#__PURE__*/React.createElement("div", {
+    }, "\u0438"), /*#__PURE__*/React.createElement("div", {
       className: "tile miss"
-    }, "\u043D"), /*#__PURE__*/React.createElement("div", {
+    }, "\u043B"), /*#__PURE__*/React.createElement("div", {
       className: "tile miss"
-    }, "\u0438")), /*#__PURE__*/React.createElement("dd", {
+    }, "\u043E")), /*#__PURE__*/React.createElement("dd", {
       className: "small"
-    }, "\u0411\u0443\u043A\u0432\u0430 ", /*#__PURE__*/React.createElement("b", null, "\u0422"), " \u0454 \u0432 \u0441\u043B\u043E\u0432\u0456, \u0430\u043B\u0435 \u043D\u0435 \u0432 \u0446\u044C\u043E\u043C\u0443 \u043C\u0456\u0441\u0446\u0456")), /*#__PURE__*/React.createElement("dl", {
+    }, "\u0411\u0443\u043A\u0432\u0430 ", /*#__PURE__*/React.createElement("b", null, "\u0420"), " \u0454 \u0432 \u0441\u043B\u043E\u0432\u0456, \u0430\u043B\u0435 \u043D\u0435 \u0432 \u0446\u044C\u043E\u043C\u0443 \u043C\u0456\u0441\u0446\u0456")), /*#__PURE__*/React.createElement("dl", {
       className: "example"
     }, /*#__PURE__*/React.createElement("dt", {
       className: "row"
