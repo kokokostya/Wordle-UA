@@ -29,6 +29,7 @@ function App(props) {
   const [timeLeft, setTimeLeft] = React.useState(null);
   const [wrongAttempt, setWrongAttempt] = React.useState(false);
 
+  // Initial setup on load
   React.useEffect(() => {
     // Keep track of time
     setTimeLeft(getTimeTillMidnight());
@@ -69,8 +70,8 @@ function App(props) {
     localStorage.setItem("stats", JSON.stringify(stats));
   }, [stats]);
   React.useEffect(() => {
-    localStorage.setItem("result", JSON.stringify(result));
     if (result != null) setTimeout(() => setModal("stats"), 1000);
+    localStorage.setItem("result", JSON.stringify(result));
   }, [result]);
   
   // Update theme and save to local storage
@@ -413,9 +414,9 @@ function Key(props) {
 }
 
 function Modal(props) {
-  var title = null;
-  var message = null;
-  var content = null;
+  var title;
+  var message;
+  var content;
 
   if (props.type == "help") {
     title = "Як грати?";
