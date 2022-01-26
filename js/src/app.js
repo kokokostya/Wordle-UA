@@ -91,6 +91,11 @@ function App(props) {
     setAttempts([]);
     setFeedback([]);
     setResult(null);
+    setCursor({
+      attempt: 0, 
+      letter: 0
+    })
+    setModal(null);
 
     localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
     localStorage.removeItem("attempts");
