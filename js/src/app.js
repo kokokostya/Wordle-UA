@@ -18,7 +18,7 @@ function App(props) {
       3: 0,
       4: 0,
       5: 0,
-      6: 0,
+      6: 0
     }
   });
   const [settings, setSettings] = React.useState({ 
@@ -481,7 +481,7 @@ function Modal(props) {
       </button>
     </React.Fragment> :
     (props.result == "lost") ? <React.Fragment>
-      <p>Відгадка: <b>{ props.answer }</b>. Не засмучуйтесь. Ви добре грали і наступного разу точно вгадаєте.</p>
+      <p>Відгадка: <b>{ props.answer.toUpperCase() }</b>. Не засмучуйтесь. Ви добре грали і наступного разу точно вгадаєте.</p>
     </React.Fragment> : null;
     content = <React.Fragment>
       <ul id="stats">
