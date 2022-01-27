@@ -6,3 +6,4 @@ package-lock.json
 package.json
 babel.config.json
 js/wordle-ua-words
+.gitmodules
