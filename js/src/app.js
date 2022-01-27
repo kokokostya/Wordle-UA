@@ -35,7 +35,7 @@ function App(props) {
     setTimeLeft(getTimeTillMidnight());
     setInterval(() => {
       setTimeLeft(getTimeTillMidnight());
-      if (JSON.stringify(getTimeTillMidnight()) == JSON.stringify({"h": 23, "m": 59, "s": 59})) {
+      if (JSON.stringify(getTimeTillMidnight()) == JSON.stringify({"h": 23, "m": 16, "s": 40})) {
         resetGame();
       }
     }, 1000);
@@ -75,15 +75,15 @@ function App(props) {
     localStorage.setItem("stats", JSON.stringify(stats));
   }, [stats]);
   React.useEffect(() => {
-    if (result != null) setTimeout(() => setModal("stats"), 1000);
     localStorage.setItem("result", JSON.stringify(result));
+    if (result != null) setTimeout(() => setModal("stats"), 1000);
   }, [result]);
   
   // Update theme and save to local storage
   React.useEffect(() => {
+    localStorage.setItem("settings", JSON.stringify(settings));
     settings.darkTheme ? document.body.classList.add("dark") : document.body.classList.remove("dark");
     settings.colorBlind ? document.body.classList.add("color-blind") : document.body.classList.remove("color-blind");
-    localStorage.setItem("settings", JSON.stringify(settings));
   }, [settings]);
 
   function resetGame() {
@@ -96,11 +96,7 @@ function App(props) {
       letter: 0
     })
     setModal(null);
-
     localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
-    localStorage.removeItem("attempts");
-    localStorage.removeItem("feedback");
-    localStorage.setItem("result", JSON.stringify(null));
   }
 
   // HH:MM:SS till midnight in Kyiv
