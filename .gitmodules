@@ -1,3 +1,0 @@
-[submodule "js/wordle-ua-words"]
-	path = js/wordle-ua-words
-	url = https://github.com/shevchenkoartem/wordle-ua-words.git
