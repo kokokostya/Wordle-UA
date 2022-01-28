@@ -1,5 +1,4 @@
 function App(props) {
-  const [currentIssueNumber, setCurrentIssueNumber] = React.useState();
   const [attempts, setAttempts] = React.useState([]);
   const [feedback, setFeedback] = React.useState([]);
   const [result, setResult] = React.useState(null);
@@ -26,24 +25,18 @@ function App(props) {
     colorBlind: false
   });
   const [modal, setModal] = React.useState(null);
-  const [timeLeft, setTimeLeft] = React.useState(null);
+  const [timeLeft, setTimeLeft] = React.useState({
+    "h": 0, 
+    "m": 0, 
+    "s": 0
+  });
   const [wrongAttempt, setWrongAttempt] = React.useState(false);
 
-  // Initial setup on load
+  var timer;
+  
+  // Load last played game from local if still valid
   React.useEffect(() => {
-    // Keep track of time and reset at midnight
-    setTimeLeft(getTimeTillMidnight());
-    setInterval(() => {
-      setTimeLeft(getTimeTillMidnight());
-      if (JSON.stringify(getTimeTillMidnight()) == JSON.stringify({"h": 23, "m": 16, "s": 40})) {
-        resetGame();
-      }
-    }, 1000);
-
-    setCurrentIssueNumber(getIssueNumber());
-    let lastPlayedIssueNumber = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
-    // Local last played game from storage if still valid
-    if (lastPlayedIssueNumber == getIssueNumber()) {
+    if (JSON.parse(localStorage.getItem("lastPlayedIssueNumber")) == getIssueNumber()) {
       let localAttempts = JSON.parse(localStorage.getItem("attempts"));
       let localFeedback = JSON.parse(localStorage.getItem("feedback"));
       let localResult = JSON.parse(localStorage.getItem("result"));
@@ -54,7 +47,6 @@ function App(props) {
         attempt: (localFeedback) ? localFeedback.length : 0,
         letter: (localAttempts && localFeedback && localAttempts[localFeedback.length]) ? localAttempts[localFeedback.length].length : 0
       });
-    // Reset invalid game session 
     } else {
       resetGame();
     }
@@ -62,6 +54,22 @@ function App(props) {
     localSettings && setSettings(localSettings);
     let localStats = JSON.parse(localStorage.getItem("stats"));
     localStats && setStats(localStats);
+  }, []);
+
+  // Keep track of time and reset at midnight
+  React.useEffect(() => {
+    setTimeLeft(getTimeTillMidnight());
+    timer = setInterval(() => {
+      setTimeLeft(getTimeTillMidnight());
+      if (JSON.stringify(getTimeTillMidnight()) == JSON.stringify({"h": 23, "m": 59, "s": 59})) {
+        resetGame();
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+      timer = null; 
+    }
   }, []);
 
   // Accept keyboard input
@@ -108,7 +116,6 @@ function App(props) {
   }, [settings]);
 
   function resetGame() {
-    setCurrentIssueNumber(getIssueNumber());
     setAttempts([]);
     setFeedback([]);
     setResult(null);
@@ -258,7 +265,7 @@ function App(props) {
   }
 
   function shareResult() {
-    let str = "#укрWordle №" + currentIssueNumber + " з " + feedback.length + "-ї спроби:";
+    let str = "#укрWordle №" + getIssueNumber() + " з " + feedback.length + "-ї спроби:";
     feedback.map(attempt => {
       str += "\n";
       attempt.map(res => str += (res=="hit") ? "🟩" : (res=="found") ? "🟨" : "⬜")
@@ -407,7 +414,7 @@ function App(props) {
       { modal && <Modal
         type={modal}
         handleClose={setModal}
-        n={currentIssueNumber}
+        n={getIssueNumber()}
         stats={stats}
         settings={settings}
         setSettings={setSettings}

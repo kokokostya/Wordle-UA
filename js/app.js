@@ -27,35 +27,30 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function App(props) {
-  var _React$useState = React.useState(),
+  var _React$useState = React.useState([]),
       _React$useState2 = _slicedToArray(_React$useState, 2),
-      currentIssueNumber = _React$useState2[0],
-      setCurrentIssueNumber = _React$useState2[1];
+      attempts = _React$useState2[0],
+      setAttempts = _React$useState2[1];
 
   var _React$useState3 = React.useState([]),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
-      attempts = _React$useState4[0],
-      setAttempts = _React$useState4[1];
+      feedback = _React$useState4[0],
+      setFeedback = _React$useState4[1];
 
-  var _React$useState5 = React.useState([]),
+  var _React$useState5 = React.useState(null),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
-      feedback = _React$useState6[0],
-      setFeedback = _React$useState6[1];
+      result = _React$useState6[0],
+      setResult = _React$useState6[1];
 
-  var _React$useState7 = React.useState(null),
-      _React$useState8 = _slicedToArray(_React$useState7, 2),
-      result = _React$useState8[0],
-      setResult = _React$useState8[1];
-
-  var _React$useState9 = React.useState({
+  var _React$useState7 = React.useState({
     attempt: 0,
     letter: 0
   }),
-      _React$useState10 = _slicedToArray(_React$useState9, 2),
-      cursor = _React$useState10[0],
-      setCursor = _React$useState10[1];
+      _React$useState8 = _slicedToArray(_React$useState7, 2),
+      cursor = _React$useState8[0],
+      setCursor = _React$useState8[1];
 
-  var _React$useState11 = React.useState({
+  var _React$useState9 = React.useState({
     games: 0,
     won: 0,
     streak: 0,
@@ -69,52 +64,41 @@ function App(props) {
       6: 0
     }
   }),
-      _React$useState12 = _slicedToArray(_React$useState11, 2),
-      stats = _React$useState12[0],
-      setStats = _React$useState12[1];
+      _React$useState10 = _slicedToArray(_React$useState9, 2),
+      stats = _React$useState10[0],
+      setStats = _React$useState10[1];
 
-  var _React$useState13 = React.useState({
+  var _React$useState11 = React.useState({
     darkTheme: false,
     colorBlind: false
   }),
+      _React$useState12 = _slicedToArray(_React$useState11, 2),
+      settings = _React$useState12[0],
+      setSettings = _React$useState12[1];
+
+  var _React$useState13 = React.useState(null),
       _React$useState14 = _slicedToArray(_React$useState13, 2),
-      settings = _React$useState14[0],
-      setSettings = _React$useState14[1];
+      modal = _React$useState14[0],
+      setModal = _React$useState14[1];
 
-  var _React$useState15 = React.useState(null),
+  var _React$useState15 = React.useState({
+    "h": 0,
+    "m": 0,
+    "s": 0
+  }),
       _React$useState16 = _slicedToArray(_React$useState15, 2),
-      modal = _React$useState16[0],
-      setModal = _React$useState16[1];
+      timeLeft = _React$useState16[0],
+      setTimeLeft = _React$useState16[1];
 
-  var _React$useState17 = React.useState(null),
+  var _React$useState17 = React.useState(false),
       _React$useState18 = _slicedToArray(_React$useState17, 2),
-      timeLeft = _React$useState18[0],
-      setTimeLeft = _React$useState18[1];
+      wrongAttempt = _React$useState18[0],
+      setWrongAttempt = _React$useState18[1];
 
-  var _React$useState19 = React.useState(false),
-      _React$useState20 = _slicedToArray(_React$useState19, 2),
-      wrongAttempt = _React$useState20[0],
-      setWrongAttempt = _React$useState20[1]; // Initial setup on load
-
+  var timer; // Load last played game from local if still valid
 
   React.useEffect(function () {
-    // Keep track of time and reset at midnight
-    setTimeLeft(getTimeTillMidnight());
-    setInterval(function () {
-      setTimeLeft(getTimeTillMidnight());
-
-      if (JSON.stringify(getTimeTillMidnight()) == JSON.stringify({
-        "h": 23,
-        "m": 16,
-        "s": 40
-      })) {
-        resetGame();
-      }
-    }, 1000);
-    setCurrentIssueNumber(getIssueNumber());
-    var lastPlayedIssueNumber = JSON.parse(localStorage.getItem("lastPlayedIssueNumber")); // Local last played game from storage if still valid
-
-    if (lastPlayedIssueNumber == getIssueNumber()) {
+    if (JSON.parse(localStorage.getItem("lastPlayedIssueNumber")) == getIssueNumber()) {
       var localAttempts = JSON.parse(localStorage.getItem("attempts"));
       var localFeedback = JSON.parse(localStorage.getItem("feedback"));
       var localResult = JSON.parse(localStorage.getItem("result"));
@@ -124,7 +108,7 @@ function App(props) {
       setCursor({
         attempt: localFeedback ? localFeedback.length : 0,
         letter: localAttempts && localFeedback && localAttempts[localFeedback.length] ? localAttempts[localFeedback.length].length : 0
-      }); // Reset invalid game session 
+      });
     } else {
       resetGame();
     }
@@ -133,6 +117,25 @@ function App(props) {
     localSettings && setSettings(localSettings);
     var localStats = JSON.parse(localStorage.getItem("stats"));
     localStats && setStats(localStats);
+  }, []); // Keep track of time and reset at midnight
+
+  React.useEffect(function () {
+    setTimeLeft(getTimeTillMidnight());
+    timer = setInterval(function () {
+      setTimeLeft(getTimeTillMidnight());
+
+      if (JSON.stringify(getTimeTillMidnight()) == JSON.stringify({
+        "h": 23,
+        "m": 59,
+        "s": 59
+      })) {
+        resetGame();
+      }
+    }, 1000);
+    return function () {
+      clearInterval(timer);
+      timer = null;
+    };
   }, []); // Accept keyboard input
 
   var keyListener = React.useCallback(function (e) {
@@ -177,7 +180,6 @@ function App(props) {
   }, [settings]);
 
   function resetGame() {
-    setCurrentIssueNumber(getIssueNumber());
     setAttempts([]);
     setFeedback([]);
     setResult(null);
@@ -422,7 +424,7 @@ function App(props) {
   }
 
   function shareResult() {
-    var str = "#укрWordle №" + currentIssueNumber + " з " + feedback.length + "-ї спроби:";
+    var str = "#укрWordle №" + getIssueNumber() + " з " + feedback.length + "-ї спроби:";
     feedback.map(function (attempt) {
       str += "\n";
       attempt.map(function (res) {
@@ -617,7 +619,7 @@ function App(props) {
   }))), modal && /*#__PURE__*/React.createElement(Modal, {
     type: modal,
     handleClose: setModal,
-    n: currentIssueNumber,
+    n: getIssueNumber(),
     stats: stats,
     settings: settings,
     setSettings: setSettings,
