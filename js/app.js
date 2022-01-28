@@ -133,7 +133,26 @@ function App(props) {
     localSettings && setSettings(localSettings);
     var localStats = JSON.parse(localStorage.getItem("stats"));
     localStats && setStats(localStats);
-  }, []); // Save game to local storage
+  }, []); // Accept keyboard input
+
+  var keyListener = React.useCallback(function (e) {
+    if ("’йцукенгшщзхїфівапролджєячсмитьбю".includes(e.key)) {
+      e.preventDefault();
+      enterLetter(e.key);
+    } else if (e.code == "Backspace") {
+      e.preventDefault();
+      eraseLetter();
+    } else if (e.code == "Enter") {
+      e.preventDefault();
+      checkWord();
+    }
+  }, [cursor]);
+  React.useEffect(function () {
+    window.addEventListener("keyup", keyListener);
+    return function () {
+      window.removeEventListener("keyup", keyListener);
+    };
+  }, [keyListener]); // Save game to local storage
 
   React.useEffect(function () {
     localStorage.setItem("attempts", JSON.stringify(attempts));
@@ -555,7 +574,10 @@ function App(props) {
     id: "backspace",
     className: "one-and-a-half",
     "aria-label": "\u0412\u0438\u0434\u0430\u043B\u0438\u0442\u0438 \u0431\u0443\u043A\u0432\u0443",
-    onClick: eraseLetter
+    onClick: function onClick(e) {
+      eraseLetter();
+      e.target.blur();
+    }
   }, /*#__PURE__*/React.createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     width: "16",
@@ -617,7 +639,8 @@ function Key(props) {
   return /*#__PURE__*/React.createElement("button", {
     className: props.status,
     onClick: function onClick(e) {
-      return props.clickHandler(props.letter);
+      props.clickHandler(props.letter);
+      e.target.blur();
     }
   }, props.letter);
 }
