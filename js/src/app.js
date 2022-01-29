@@ -34,7 +34,7 @@ function App(props) {
 
   var timer;
   
-  // Load last played game from local if still valid
+  // Load last played game from local storage if still valid
   React.useEffect(() => {
     if (JSON.parse(localStorage.getItem("lastPlayedIssueNumber")) == getIssueNumber()) {
       let localAttempts = JSON.parse(localStorage.getItem("attempts"));
@@ -55,6 +55,28 @@ function App(props) {
     let localStats = JSON.parse(localStorage.getItem("stats"));
     localStats && setStats(localStats);
   }, []);
+
+  // Save game to local storage
+  React.useEffect(() => {
+    localStorage.setItem("attempts", JSON.stringify(attempts));
+  }, [attempts]);
+  React.useEffect(() => {
+    localStorage.setItem("feedback", JSON.stringify(feedback));
+  }, [feedback]);
+  React.useEffect(() => {
+    localStorage.setItem("stats", JSON.stringify(stats));
+  }, [stats]);
+  React.useEffect(() => {
+    localStorage.setItem("result", JSON.stringify(result));
+    if (result != null) setTimeout(() => setModal("stats"), 1000);
+  }, [result]);
+
+  // Update theme and save to local storage
+  React.useEffect(() => {
+    localStorage.setItem("settings", JSON.stringify(settings));
+    settings.darkTheme ? document.body.classList.add("dark") : document.body.classList.remove("dark");
+    settings.colorBlind ? document.body.classList.add("color-blind") : document.body.classList.remove("color-blind");
+  }, [settings]);
 
   // Keep track of time and reset at midnight
   React.useEffect(() => {
@@ -92,28 +114,6 @@ function App(props) {
       window.removeEventListener("keyup", keyListener)
     }
   }, [keyListener]);
-
-  // Save game to local storage
-  React.useEffect(() => {
-    localStorage.setItem("attempts", JSON.stringify(attempts));
-  }, [attempts]);
-  React.useEffect(() => {
-    localStorage.setItem("feedback", JSON.stringify(feedback));
-  }, [feedback]);
-  React.useEffect(() => {
-    localStorage.setItem("stats", JSON.stringify(stats));
-  }, [stats]);
-  React.useEffect(() => {
-    localStorage.setItem("result", JSON.stringify(result));
-    if (result != null) setTimeout(() => setModal("stats"), 1000);
-  }, [result]);
-  
-  // Update theme and save to local storage
-  React.useEffect(() => {
-    localStorage.setItem("settings", JSON.stringify(settings));
-    settings.darkTheme ? document.body.classList.add("dark") : document.body.classList.remove("dark");
-    settings.colorBlind ? document.body.classList.add("color-blind") : document.body.classList.remove("color-blind");
-  }, [settings]);
 
   function resetGame() {
     setAttempts([]);

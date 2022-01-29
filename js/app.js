@@ -95,7 +95,7 @@ function App(props) {
       wrongAttempt = _React$useState18[0],
       setWrongAttempt = _React$useState18[1];
 
-  var timer; // Load last played game from local if still valid
+  var timer; // Load last played game from local storage if still valid
 
   React.useEffect(function () {
     if (JSON.parse(localStorage.getItem("lastPlayedIssueNumber")) == getIssueNumber()) {
@@ -117,7 +117,29 @@ function App(props) {
     localSettings && setSettings(localSettings);
     var localStats = JSON.parse(localStorage.getItem("stats"));
     localStats && setStats(localStats);
-  }, []); // Keep track of time and reset at midnight
+  }, []); // Save game to local storage
+
+  React.useEffect(function () {
+    localStorage.setItem("attempts", JSON.stringify(attempts));
+  }, [attempts]);
+  React.useEffect(function () {
+    localStorage.setItem("feedback", JSON.stringify(feedback));
+  }, [feedback]);
+  React.useEffect(function () {
+    localStorage.setItem("stats", JSON.stringify(stats));
+  }, [stats]);
+  React.useEffect(function () {
+    localStorage.setItem("result", JSON.stringify(result));
+    if (result != null) setTimeout(function () {
+      return setModal("stats");
+    }, 1000);
+  }, [result]); // Update theme and save to local storage
+
+  React.useEffect(function () {
+    localStorage.setItem("settings", JSON.stringify(settings));
+    settings.darkTheme ? document.body.classList.add("dark") : document.body.classList.remove("dark");
+    settings.colorBlind ? document.body.classList.add("color-blind") : document.body.classList.remove("color-blind");
+  }, [settings]); // Keep track of time and reset at midnight
 
   React.useEffect(function () {
     setTimeLeft(getTimeTillMidnight());
@@ -155,29 +177,7 @@ function App(props) {
     return function () {
       window.removeEventListener("keyup", keyListener);
     };
-  }, [keyListener]); // Save game to local storage
-
-  React.useEffect(function () {
-    localStorage.setItem("attempts", JSON.stringify(attempts));
-  }, [attempts]);
-  React.useEffect(function () {
-    localStorage.setItem("feedback", JSON.stringify(feedback));
-  }, [feedback]);
-  React.useEffect(function () {
-    localStorage.setItem("stats", JSON.stringify(stats));
-  }, [stats]);
-  React.useEffect(function () {
-    localStorage.setItem("result", JSON.stringify(result));
-    if (result != null) setTimeout(function () {
-      return setModal("stats");
-    }, 1000);
-  }, [result]); // Update theme and save to local storage
-
-  React.useEffect(function () {
-    localStorage.setItem("settings", JSON.stringify(settings));
-    settings.darkTheme ? document.body.classList.add("dark") : document.body.classList.remove("dark");
-    settings.colorBlind ? document.body.classList.add("color-blind") : document.body.classList.remove("color-blind");
-  }, [settings]);
+  }, [keyListener]);
 
   function resetGame() {
     setAttempts([]);
