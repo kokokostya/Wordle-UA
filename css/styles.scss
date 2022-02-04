@@ -21,6 +21,8 @@
   --button-primary: #49f;
   --button-success: #9da;
 
+  --button-hover: brightness(90%);
+
   --border-radius-button: 3px;
   --border-radius: 6px;
 
@@ -49,6 +51,8 @@
   --button-danger: #c33;
   --button-primary: #36c;
   --button-success: #084;
+
+  --button-hover: brightness(110%);
 
   --active-shadow: 0 0 6px rgba(210,255,210,1);
   --overlay-shadow: 0 0 25px rgba(0,0,0,.25);
@@ -233,13 +237,22 @@ header {
    }
 
    button {
+    font-size: .8rem;
+    height: 3.5rem;
+    cursor: pointer;
+
     svg {
       fill: var(--text)
     }
 
+    &:hover {
+      filter: var(--button-hover);
+    }
+
      &:active {
        color: var(--text-inverted);
-      
+       background-color: var(--text) !important;
+
        svg {
          fill: var(--text-inverted);
        }
@@ -297,6 +310,11 @@ header {
     }
   }
 
+  button {
+    color: var(--text);
+    background-color: var(--button-gray);
+  }
+
   .quarter {
     flex: .25;
   }
@@ -332,18 +350,6 @@ header {
     }
   }
 
-  button {
-    font-size: .8rem;
-    height: 3.5rem;
-    color: var(--text);
-    background-color: var(--button-gray);
-    cursor: pointer;
-
-    &:active {
-      background-color: var(--text) !important;
-    }
-  }
-  
   .miss, .found, .hit {
     border: 0 none;
     color: var(--white);

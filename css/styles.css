@@ -18,6 +18,7 @@
   --button-danger: #f55;
   --button-primary: #49f;
   --button-success: #9da;
+  --button-hover: brightness(90%);
   --border-radius-button: 3px;
   --border-radius: 6px;
   --active-shadow: 0 0 6px rgba(48,124,255,1);
@@ -43,6 +44,7 @@
   --button-danger: #c33;
   --button-primary: #36c;
   --button-success: #084;
+  --button-hover: brightness(110%);
   --active-shadow: 0 0 6px rgba(210,255,210,1);
   --overlay-shadow: 0 0 25px rgba(0,0,0,.25);
 }
@@ -276,12 +278,24 @@ header button:hover {
   margin: 0 auto 5px;
 }
 
+#keyboard button {
+  font-size: .8rem;
+  height: 3.5rem;
+  cursor: pointer;
+}
+
 #keyboard button svg {
   fill: var(--text);
 }
 
+#keyboard button:hover {
+  -webkit-filter: var(--button-hover);
+          filter: var(--button-hover);
+}
+
 #keyboard button:active {
   color: var(--text-inverted);
+  background-color: var(--text) !important;
 }
 
 #keyboard button:active svg {
@@ -365,6 +379,11 @@ header button:hover {
   margin: 0;
 }
 
+.row button {
+  color: var(--text);
+  background-color: var(--button-gray);
+}
+
 .row .quarter {
   -webkit-box-flex: .25;
       -ms-flex: .25;
@@ -409,18 +428,6 @@ header button:hover {
   border-color: var(--active);
   -webkit-box-shadow: var(--active-shadow);
           box-shadow: var(--active-shadow);
-}
-
-.row button {
-  font-size: .8rem;
-  height: 3.5rem;
-  color: var(--text);
-  background-color: var(--button-gray);
-  cursor: pointer;
-}
-
-.row button:active {
-  background-color: var(--text) !important;
 }
 
 .row .miss, .row .found, .row .hit {
