@@ -15,8 +15,8 @@
   --message: #eee;
   --message-success: #bfc;
   --button-gray: #ccc;
-  --button-danger: #f55;
-  --button-primary: #49f;
+  --button-danger: #f88;
+  --button-primary: #8be;
   --button-success: #9da;
   --button-hover: brightness(90%);
   --border-radius-button: 3px;
@@ -41,8 +41,8 @@
   --message: #192929;
   --message-success: #052;
   --button-gray: #566;
-  --button-danger: #c33;
-  --button-primary: #36c;
+  --button-danger: #a44;
+  --button-primary: #47a;
   --button-success: #084;
   --button-hover: brightness(110%);
   --active-shadow: 0 0 6px rgba(210,255,210,1);

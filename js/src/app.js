@@ -368,7 +368,7 @@ function App(props) {
 
       <footer id="keyboard">
         <div className="row">
-          {[..."'йцукенгшщзхї"].map((letter) =>
+          {[..."йцукенгшщзхї"].map((letter) =>
             <Key
               key={letter}
               letter={letter}
@@ -377,7 +377,6 @@ function App(props) {
           )}
         </div>
         <div className="row">
-          <div className="spacer quarter"></div>
           {[..."фівапролджє"].map((letter) =>
             <Key
               key={letter}
@@ -385,29 +384,26 @@ function App(props) {
               clickHandler={enterLetter}
               status={letterStatus(letter)} />
           )}
-          <button id="backspace" className="one-and-a-half" aria-label="Видалити букву" onClick={(e) => { eraseLetter(); e.target.blur() }}>
+          <button id="backspace" aria-label="Видалити букву" onClick={(e) => { eraseLetter(); e.target.blur() }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
               <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"/>
               <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/>
             </svg>
           </button>
-          <div className="spacer quarter"></div>
         </div>
         <div className="row">
-          <div className="spacer three-quarters"></div>
-          {[..."ячсмитьбюґ"].map((letter) =>
+          {[..."'ячсмитьбюґ"].map((letter) =>
             <Key
               key={letter}
               letter={letter}
               clickHandler={enterLetter}
               status={letterStatus(letter)} />
           )}
-          <button id="enter" className="one-and-a-half" aria-label="Перевірити слово" onClick={checkWord}>
+          <button id="enter" aria-label="Перевірити слово" onClick={checkWord}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
               <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
             </svg>
           </button>
-          <div className="spacer three-quarters"></div>
         </div>
       </footer>
       
