@@ -17,8 +17,8 @@
   --message-success: #bfc;
 
   --button-gray: #ccc;
-  --button-danger: #f88;
-  --button-primary: #8be;
+  --button-danger: #aaa;
+  --button-primary: #aaa;
   --button-success: #9da;
 
   --button-hover: brightness(90%);
@@ -48,8 +48,8 @@
   --message-success: #052;
 
   --button-gray: #566;
-  --button-danger: #a44;
-  --button-primary: #47a;
+  --button-danger: #405050;
+  --button-primary: #405050;
   --button-success: #084;
 
   --button-hover: brightness(110%);
@@ -264,13 +264,13 @@ header {
    }
  }
 
-//  #backspace {
-//   background-color: var(--button-danger);
-//  }
+ #backspace {
+  background-color: var(--button-danger);
+ }
 
-//  #enter {
-//   background-color: var(--button-primary);
-//  }
+ #enter {
+  background-color: var(--button-primary);
+ }
  
 .row {
   display: flex;

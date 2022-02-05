@@ -15,8 +15,8 @@
   --message: #eee;
   --message-success: #bfc;
   --button-gray: #ccc;
-  --button-danger: #f88;
-  --button-primary: #8be;
+  --button-danger: #aaa;
+  --button-primary: #aaa;
   --button-success: #9da;
   --button-hover: brightness(90%);
   --border-radius-button: 3px;
@@ -41,8 +41,8 @@
   --message: #192929;
   --message-success: #052;
   --button-gray: #566;
-  --button-danger: #a44;
-  --button-primary: #47a;
+  --button-danger: #405050;
+  --button-primary: #405050;
   --button-success: #084;
   --button-hover: brightness(110%);
   --active-shadow: 0 0 6px rgba(210,255,210,1);
@@ -304,6 +304,14 @@ header button:hover {
 
 #keyboard button.miss {
   color: var(--text-inverted);
+}
+
+#backspace {
+  background-color: var(--button-danger);
+}
+
+#enter {
+  background-color: var(--button-primary);
 }
 
 .row {
