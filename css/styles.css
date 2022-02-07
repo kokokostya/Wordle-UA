@@ -18,7 +18,7 @@
   --button-danger: #aaa;
   --button-primary: #aaa;
   --button-success: #9da;
-  --button-hover: brightness(90%);
+  --button-hover: brightness(95%);
   --border-radius-button: 3px;
   --border-radius: 6px;
   --active-shadow: 0 0 6px rgba(48,124,255,1);
@@ -44,7 +44,7 @@
   --button-danger: #405050;
   --button-primary: #405050;
   --button-success: #084;
-  --button-hover: brightness(110%);
+  --button-hover: brightness(107%);
   --active-shadow: 0 0 6px rgba(210,255,210,1);
   --overlay-shadow: 0 0 25px rgba(0,0,0,.25);
 }
@@ -750,6 +750,11 @@ header button:hover {
   border-radius: var(--border-radius-button);
   cursor: pointer;
   color: var(--black);
+}
+
+#share:hover {
+  -webkit-filter: var(--button-hover);
+          filter: var(--button-hover);
 }
 
 #share:active {
