@@ -186,10 +186,7 @@ header button:hover {
 }
 
 #app {
-  width: 100%;
-  max-width: 768px;
   height: 100%;
-  margin: 0 auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -269,8 +266,14 @@ header button:hover {
   }
 }
 
-#keyboard {
+#keyboard-container {
   margin: 1rem 5px 0;
+}
+
+#keyboard {
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
 }
 
 #keyboard .row {
