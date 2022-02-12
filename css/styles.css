@@ -113,7 +113,7 @@ header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding: .75rem 0 1rem;
+  padding: .75rem .75rem 1rem;
   margin-bottom: 1rem;
   position: relative;
 }
@@ -815,6 +815,10 @@ header button:hover {
 }
 
 @media (max-width: 576px) {
+  header {
+    padding-left: 0;
+    padding-right: 0;
+  }
   .overlay .body {
     width: 100%;
     min-height: 100%;

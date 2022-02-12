@@ -724,7 +724,7 @@ function Modal(props) {
       className: "metric"
     }, "\u0417\u0456\u0433\u0440\u0430\u043D\u043E")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
       className: "value"
-    }, Math.round(1000 * props.stats.won / props.stats.games) / 10, "%"), /*#__PURE__*/React.createElement("span", {
+    }, props.stats.won > 0 ? Math.round(1000 * props.stats.won / props.stats.games) / 10 + "%" : 0), /*#__PURE__*/React.createElement("span", {
       className: "metric"
     }, "\u0412\u0438\u0433\u0440\u0430\u043D\u043E")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
       className: "value"

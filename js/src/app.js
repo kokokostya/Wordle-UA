@@ -512,7 +512,7 @@ function Modal(props) {
             <span className="metric">Зіграно</span>
           </li>
           <li>
-            <span className="value">{ Math.round(1000*props.stats.won/props.stats.games)/10 }%</span>
+            <span className="value">{ props.stats.won > 0 ? Math.round(1000*props.stats.won/props.stats.games)/10 + "%" : 0 }</span>
             <span className="metric">Виграно</span>
           </li>
           <li>
