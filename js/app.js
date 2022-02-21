@@ -424,13 +424,14 @@ function App(props) {
   }
 
   function shareResult() {
-    var str = "#укрWordle №" + getIssueNumber() + " з " + feedback.length + "-ї спроби:";
+    var str = "#укрWordle №" + getIssueNumber() + " " + feedback.length + "/6:";
     feedback.map(function (attempt) {
       str += "\n";
       attempt.map(function (res) {
         return str += res == "hit" ? "🟩" : res == "found" ? "🟨" : "⬜";
       });
     });
+    str += "\nhttps://wordle-ua.net/";
     var el = document.createElement("textarea");
     el.value = str;
     el.setAttribute("readonly", "");

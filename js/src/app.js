@@ -265,11 +265,12 @@ function App(props) {
   }
 
   function shareResult() {
-    let str = "#укрWordle №" + getIssueNumber() + " з " + feedback.length + "-ї спроби:";
+    let str = "#укрWordle №" + getIssueNumber() + " " + feedback.length + "/6:";
     feedback.map(attempt => {
       str += "\n";
       attempt.map(res => str += (res=="hit") ? "🟩" : (res=="found") ? "🟨" : "⬜")
     });
+    str += "\nhttps://wordle-ua.net/";
     
     let el = document.createElement("textarea");
     el.value = str;
