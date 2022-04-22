@@ -206,7 +206,7 @@ function App(props) {
 
     if ((result == null) && (cursor.attempt < 6) && (cursor.letter > 4)) {
       // Actual word || Easter egg
-      if (cw(attempt) || ((cursor.attempt == 0) && (attempt == "русні")) || ((cursor.attempt == 1) && (attempts[0] == "русні") && (attempt == "пизда"))) {
+      if (cw(attempt) || ((cursor.attempt == 0) && (attempt == "русні")) || ((cursor.attempt == 1) && (attempts[0] == "русні") && (attempts[1] == "пизда"))) {
         var newResult = null;
         let newFeedback = [...feedback];
         // Solved!
@@ -237,6 +237,11 @@ function App(props) {
           if (cursor.attempt == 5) newResult = "lost";
         }
         provideFeedback(newFeedback);
+
+        // Easter egg
+        if ((cursor.attempt == 1) && (attempts[0] == "русні") && (attempts[1] == "пизда")) {
+          document.body.classList.add("ukraine");
+        }
         
         // Game over
         if (newResult != null) {
@@ -333,6 +338,12 @@ function App(props) {
     <React.Fragment>
       <header>
         <h1>Wordle <em>українською</em></h1>
+        
+        <div id="russianShip">
+          <div></div>
+          <span>Російський корабль, йди нахуй</span>
+        </div>
+        
         <button id="btn-help" className="icon" aria-label="Як грати?" onClick={() => setModal("help")}>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -446,7 +457,7 @@ function Modal(props) {
   if (props.type == "help") {
     title = "Як грати?";
     content = <React.Fragment>
-      <p><b>Вгадайте слово з 6 спроб.</b> Кожна здогадка мусить бути словниковим іменником, але не власною назвою. Після кожної спроби колір підкаже, наскільки близько ви були:</p>
+      <p><b>Вгадайте слово з шести спроб.</b> Кожна здогадка мусить бути словниковим іменником, але не власною назвою. Після кожної спроби колір підкаже, наскільки близько ви були:</p>
 
       <dl className="example">
         <dt className="row">
