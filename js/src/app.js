@@ -204,10 +204,9 @@ function App(props) {
     var attempt = attempts[cursor.attempt];
     var answer = gw();
 
-    // Attempts left
     if ((result == null) && (cursor.attempt < 6) && (cursor.letter > 4)) {
-      // Actual word
-      if (cw(attempt)) {
+      // Actual word || Easter egg
+      if (cw(attempt) || ((cursor.attempt == 0) && (attempt == "русні")) || ((cursor.attempt == 1) && (attempts[0] == "русні") && (attempt == "пизда"))) {
         var newResult = null;
         let newFeedback = [...feedback];
         // Solved!
@@ -218,7 +217,7 @@ function App(props) {
         // Check letters 
         } else {
           let res = Array(5).fill("miss");
-          // Hit letters
+          // Hits
           [...attempt].map((ltr, i) => {
             if (ltr == answer[i]) {
               res[i] = "hit";
