@@ -341,7 +341,7 @@ function App(props) {
         
         <div id="russianShip">
           <div></div>
-          <span>Російський корабль, йди нахуй</span>
+          <span>Російський корабель, йди нахуй</span>
         </div>
         
         <button id="btn-help" className="icon" aria-label="Як грати?" onClick={() => setModal("help")}>
