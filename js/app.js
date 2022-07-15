@@ -713,7 +713,9 @@ function Modal(props) {
     }, "\u0441\u043B\u043E\u0432\u0430"), "."), /*#__PURE__*/React.createElement("p", null, "\u2116", props.n)));
   } else if (props.type == "stats") {
     title = "Статистика";
-    message = props.result == "won" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("b", null, "\u041D\u0435\u0439\u043C\u043E\u0432\u0456\u0440\u043D\u043E!"), " \u0412\u0438 \u0432\u0433\u0430\u0434\u0430\u043B\u0438 \u0437 ", props.attempt, "-\u0457 \u0441\u043F\u0440\u043E\u0431\u0438. \u0417\u043C\u043E\u0436\u0435\u0442\u0435 \u0437\u0430\u0432\u0442\u0440\u0430 \u043F\u043E\u0432\u0442\u043E\u0440\u0438\u0442\u0438?"), /*#__PURE__*/React.createElement("button", {
+    message = props.result == "won" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement(Congrat, {
+      attempt: props.attempt
+    }), " \u0412\u0438 \u0432\u0433\u0430\u0434\u0430\u043B\u0438 \u0437 ", props.attempt, "-\u0457 \u0441\u043F\u0440\u043E\u0431\u0438. \u0417\u043C\u043E\u0436\u0435\u0442\u0435 \u0437\u0430\u0432\u0442\u0440\u0430 \u043F\u043E\u0432\u0442\u043E\u0440\u0438\u0442\u0438?"), /*#__PURE__*/React.createElement("button", {
       id: "share",
       onClick: props.shareResult
     }, /*#__PURE__*/React.createElement("svg", {
@@ -815,6 +817,37 @@ function Modal(props) {
     fillRule: "evenodd",
     d: "M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"
   })))), /*#__PURE__*/React.createElement("main", null, content))), document.querySelector("#modal"));
+}
+
+function Congrat(props) {
+  var string = "";
+
+  switch (props.attempt) {
+    case 1:
+      string = "Чітер!";
+      break;
+
+    case 2:
+      string = "Серйозно???";
+      break;
+
+    case 3:
+      string = "Неймовірно!";
+      break;
+
+    case 4:
+      string = "Так тримати!";
+      break;
+
+    case 5:
+      string = "Непогано.";
+      break;
+
+    case 6:
+      string = "Фух!";
+  }
+
+  return /*#__PURE__*/React.createElement("b", null, string);
 }
 
 function GraphBar(props) {
