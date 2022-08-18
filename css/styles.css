@@ -624,7 +624,7 @@ header button:hover {
 
 .overlay .body .message {
   padding: 1rem;
-  margin: 0 -1.5rem .5rem;
+  margin: 0 -1.5rem .75rem;
   background-color: var(--message);
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   display: -webkit-box;
@@ -641,10 +641,6 @@ header button:hover {
 
 .overlay .body .message.success {
   background-color: var(--message-success);
-}
-
-.overlay .body .message.success button {
-  background-color: var(--button-success);
 }
 
 .overlay .body header {
@@ -816,7 +812,7 @@ header button:hover {
   font-family: monospace;
   font-size: 2rem;
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 #timer .small {
@@ -834,9 +830,11 @@ header button:hover {
   font-weight: var(--bold);
   border: 0 none;
   padding: 1rem;
+  margin: 0 auto 1rem;
   border-radius: var(--border-radius-button);
   cursor: pointer;
   color: var(--black);
+  background-color: var(--button-success);
 }
 
 #share:hover {
@@ -859,7 +857,7 @@ header button:hover {
 
 .alert {
   position: fixed;
-  bottom: 0;
+  bottom: .33rem;
   margin-left: 50%;
   padding: .5rem 1rem;
   -webkit-transform: translate(-50%, -50%);

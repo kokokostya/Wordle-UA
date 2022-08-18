@@ -496,7 +496,7 @@ header {
 
     .message {
       padding: 1rem;
-      margin: 0 -1.5rem .5rem;
+      margin: 0 -1.5rem .75rem;
       background-color: var(--message);
       border-radius: var(--border-radius) var(--border-radius) 0 0;
       display: flex;
@@ -508,10 +508,6 @@ header {
 
       &.success {
         background-color: var(--message-success);
-
-        button {
-          background-color: var(--button-success);
-        }
       }
     }
 
@@ -639,7 +635,7 @@ header {
   font-family: monospace;
   font-size: 2rem;
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 
   .small {
     font-size: 1.25rem;
@@ -653,9 +649,11 @@ header {
   font-weight: var(--bold);
   border: 0 none;
   padding: 1rem;
+  margin: 0 auto 1rem;
   border-radius: var(--border-radius-button);
   cursor: pointer;
   color: var(--black);
+  background-color: var(--button-success);
 
   &:hover {
     filter: var(--button-hover);
@@ -677,7 +675,7 @@ header {
 
 .alert {
   position: fixed;
-  bottom: 0;
+  bottom: .33rem;
   margin-left: 50%;
   padding: .5rem 1rem;
   transform: translate(-50%, -50%);
