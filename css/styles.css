@@ -857,7 +857,7 @@ header button:hover {
 
 .alert {
   position: fixed;
-  bottom: .33rem;
+  bottom: 0;
   margin-left: 50%;
   padding: .5rem 1rem;
   -webkit-transform: translate(-50%, -50%);
