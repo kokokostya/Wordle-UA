@@ -5,6 +5,7 @@
   --text-inverted: #fff;
   --text-fade: #888;
   --bkgnd: #fff;
+  --bkgnd-transparent: rgba(255,255,255,.75);
   --miss: #888;
   --found: #cb4;
   --hit: #0a5;
@@ -32,6 +33,7 @@
   --text-inverted: #00201f;
   --text-fade: #566;
   --bkgnd: #00201f;
+  --bkgnd-transparent: rgba(24,27,27,.75);
   --miss: #344;
   --found: #cb4;
   --hit: #0a5;
@@ -104,6 +106,14 @@ body.ukraine {
           backdrop-filter: blur(10px);
 }
 
+.rel {
+  position: relative;
+}
+
+.nobr {
+  white-space: nowrap;
+}
+
 .fade {
   color: var(--text-fade);
 }
@@ -120,21 +130,33 @@ body.ukraine {
   font-size: .9rem;
 }
 
-h1, h2, h3 {
+h1, .h1, h2, .h2, h3, .h3 {
   text-align: center;
   text-transform: uppercase;
+  font-weight: 700;
 }
 
-h1 {
+h1 em, .h1 em, h2 em, .h2 em, h3 em, .h3 em {
+  display: block;
+  font-family: serif;
+  text-transform: none;
+  text-align: center;
+  letter-spacing: 1px;
+  font-size: 1rem;
+  line-height: 1rem;
+  margin-top: 2px;
+}
+
+h1, .h1 {
   font-size: 2rem;
   letter-spacing: 2px;
 }
 
-h2 {
+h2, .h2 {
   font-size: 1.25rem;
 }
 
-h3 {
+h3, .h3 {
   font-size: 1rem;
   margin-top: 1.5rem;
 }
@@ -144,11 +166,15 @@ header, hr {
   border-bottom: 1px solid var(--border);
 }
 
+hr {
+  margin: 1rem 0;
+}
+
 header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding: .75rem .75rem 1rem;
+  padding: 1rem;
   margin-bottom: 1rem;
   position: relative;
 }
@@ -158,21 +184,11 @@ header h1 {
       -ms-flex-order: 2;
           order: 2;
   position: absolute;
-  top: .85rem;
+  top: .75rem;
   left: 50%;
   margin: 0;
   -webkit-transform: translate(-50%, 0);
           transform: translate(-50%, 0);
-}
-
-header h1 em {
-  display: block;
-  font-size: 1rem;
-  line-height: 1.25rem;
-  font-family: serif;
-  text-transform: none;
-  text-align: center;
-  letter-spacing: 1px;
 }
 
 header #russianShip {
@@ -181,6 +197,21 @@ header #russianShip {
 
 header button {
   fill: var(--icon);
+  margin-right: 1.25rem;
+}
+
+header button.icon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0;
+}
+
+header button:last-child {
+  margin-right: 0;
 }
 
 header button:hover {
@@ -249,7 +280,6 @@ header button:hover {
   -webkit-box-ordinal-group: 2;
       -ms-flex-order: 1;
           order: 1;
-  margin-right: auto;
 }
 
 #btn-stats {
@@ -262,10 +292,16 @@ header button:hover {
   -webkit-box-ordinal-group: 5;
       -ms-flex-order: 4;
           order: 4;
-  margin-left: .5rem;
 }
 
-#btn-close {
+.avg-stats {
+  background: -webkit-gradient(linear, left top, left bottom, from(red), color-stop(10%, #ff9a00), color-stop(20%, #d0de21), color-stop(30%, #4fdc4a), color-stop(40%, #3fdad8), color-stop(50%, #2fc9e2), color-stop(60%, #1c7fee), color-stop(70%, #5f15f2), color-stop(80%, #ba0cf8), color-stop(90%, #fb07d9), to(red)) 0 0/100% 400%;
+  background: linear-gradient(red 0%, #ff9a00 10%, #d0de21 20%, #4fdc4a 30%, #3fdad8 40%, #2fc9e2 50%, #1c7fee 60%, #5f15f2 70%, #ba0cf8 80%, #fb07d9 90%, red 100%) 0 0/100% 400%;
+  -webkit-animation: loop-bg 60s linear infinite;
+          animation: loop-bg 60s linear infinite;
+}
+
+.ml-auto {
   margin-left: auto;
 }
 
@@ -598,35 +634,62 @@ header button:hover {
           animation: movein .3s forwards ease-out;
 }
 
-@-webkit-keyframes movein {
-  from {
-    top: 1rem;
-  }
-  30% {
-    top: 1rem;
-  }
-  to {
-    top: 0;
-  }
-}
-
-@keyframes movein {
-  from {
-    top: 1rem;
-  }
-  30% {
-    top: 1rem;
-  }
-  to {
-    top: 0;
-  }
-}
-
-.overlay .body .message {
-  padding: 1rem;
-  margin: 0 -1.5rem .75rem;
+.overlay .body .hint {
+  padding: .25rem .5rem;
+  text-align: center;
+  border-radius: 3px;
+  margin: 1rem 0;
   background-color: var(--message);
-  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.overlay .body .hint.success {
+  background-color: var(--message-success);
+}
+
+.overlay .body .hint + hr {
+  display: none;
+}
+
+.overlay .body.avg-stats {
+  -webkit-animation: movein .3s forwards ease-out, loop-bg 90s linear infinite;
+          animation: movein .3s forwards ease-out, loop-bg 90s linear infinite;
+}
+
+.overlay .body.avg-stats header {
+  padding-bottom: 5rem;
+}
+
+.overlay .body.avg-stats header h2 {
+  top: 2rem;
+  color: var(--white);
+  width: 100%;
+}
+
+.overlay .body.avg-stats header h2 .example {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.overlay .body.avg-stats header h2 .example .row {
+  width: 60%;
+}
+
+.overlay .body.avg-stats header h2 em {
+  margin-top: 10px;
+}
+
+.overlay .body.avg-stats header .icon svg {
+  fill: var(--white);
+}
+
+.overlay .body.avg-stats main {
+  background: var(--bkgnd);
+  border-radius: 5px;
+  padding: 1rem;
+}
+
+.overlay .body.avg-stats main .metric {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -635,16 +698,51 @@ header button:hover {
           align-items: center;
 }
 
-.overlay .body .message p {
-  margin: 0 .5rem 0;
+.overlay .body.avg-stats main .metric .trophy {
+  font-size: 2.25rem;
 }
 
-.overlay .body .message.success {
-  background-color: var(--message-success);
+.overlay .body.avg-stats main .metric .standing {
+  margin: 0 .5rem;
+  font-size: 1.5rem;
+  text-align: center;
+  width: 4rem;
+  font-weight: var(--bold);
+}
+
+.overlay .body.avg-stats main .metric .standing .small {
+  font-size: .7rem;
+  line-height: .9rem;
+}
+
+.overlay .body.avg-stats main .legend {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 0.33rem;
+  background: var(--bkgnd-transparent);
+}
+
+.overlay .body.avg-stats main .graph .bar-container .bar {
+  width: 8px;
+  padding: 0;
+}
+
+.overlay .body.avg-stats footer {
+  padding-top: 1rem;
+  text-align: center;
+}
+
+.overlay .body.avg-stats footer a {
+  color: var(--white);
+  text-decoration: none;
+  text-transform: uppercase;
 }
 
 .overlay .body header {
   border: 0 none;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .overlay .body header h2 {
@@ -779,6 +877,32 @@ header button:hover {
   margin-top: .33rem;
 }
 
+.legend span {
+  margin-right: 8px;
+  color: var(--text-fade);
+}
+
+.legend span:last-child {
+  margin-right: 0;
+}
+
+.legend span::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  margin-right: 4px;
+}
+
+.legend span.my::before {
+  background-color: var(--hit);
+}
+
+.legend span.others::before {
+  background-color: var(--button-success);
+}
+
 .graph {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -794,7 +918,11 @@ header button:hover {
   font-size: .75rem;
 }
 
-.graph .bar {
+.graph .bar-container {
+  width: 100%;
+}
+
+.graph .bar-container .bar {
   background-color: var(--hit);
   width: 5%;
   font-size: .9rem;
@@ -802,36 +930,54 @@ header button:hover {
   color: var(--text-inverted);
   text-align: right;
   padding-right: 5px;
+  min-height: 8px;
 }
 
-.graph .bar.none {
+.graph .bar-container .bar.none {
   background-color: var(--miss);
 }
 
+.graph .bar-container .bar.average {
+  background-color: var(--button-success);
+}
+
+#top-message {
+  margin: -1rem 0 1.5rem;
+}
+
 #timer {
-  font-family: monospace;
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 1.5rem;
+  width: 5rem;
+  display: inline-block;
+  text-align: left;
+  margin-left: .33rem;
 }
 
-#timer .small {
-  font-size: 1.25rem;
+#stats-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 1rem 0;
 }
 
-#share {
+#stats-buttons button {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  padding: 1rem;
+  margin: 0 .5rem;
+  border-radius: var(--border-radius-button);
+}
+
+#share {
   font-size: 1rem;
   font-weight: var(--bold);
   border: 0 none;
-  padding: 1rem;
-  margin: 0 auto 1rem;
-  border-radius: var(--border-radius-button);
   cursor: pointer;
   color: var(--black);
   background-color: var(--button-success);
@@ -853,6 +999,20 @@ header button:hover {
 
 #share svg {
   margin-right: .5rem;
+}
+
+#btn-avg-stats {
+  opacity: .85;
+}
+
+#btn-avg-stats:hover {
+  opacity: 1;
+}
+
+#btn-avg-stats svg {
+  fill: var(--white);
+  height: 1rem;
+  width: 1rem;
 }
 
 .alert {
@@ -896,11 +1056,43 @@ header button:hover {
   }
 }
 
-@media (max-width: 576px) {
-  header {
-    padding-left: 0;
-    padding-right: 0;
+@-webkit-keyframes movein {
+  from {
+    top: 1rem;
   }
+  30% {
+    top: 1rem;
+  }
+  to {
+    top: 0;
+  }
+}
+
+@keyframes movein {
+  from {
+    top: 1rem;
+  }
+  30% {
+    top: 1rem;
+  }
+  to {
+    top: 0;
+  }
+}
+
+@-webkit-keyframes loop-bg {
+  to {
+    background-position: 0 -400%;
+  }
+}
+
+@keyframes loop-bg {
+  to {
+    background-position: 0 -400%;
+  }
+}
+
+@media (max-width: 576px) {
   .overlay .body {
     width: 100%;
     min-height: 100%;

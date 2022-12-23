@@ -1,11 +1,5 @@
 "use strict";
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -13,6 +7,12 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -95,16 +95,36 @@ function App(props) {
       wrongAttempt = _React$useState18[0],
       setWrongAttempt = _React$useState18[1];
 
-  var timer; // Load last played game from local storage if still valid
+  var _React$useState19 = React.useState(null),
+      _React$useState20 = _slicedToArray(_React$useState19, 2),
+      UID = _React$useState20[0],
+      setUID = _React$useState20[1];
+
+  var _React$useState21 = React.useState({
+    issue: 0,
+    gamesPercentile: 0,
+    wonPercentile: 0,
+    maxStreakPercentile: 0,
+    attempts: {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+      6: 0
+    }
+  }),
+      _React$useState22 = _slicedToArray(_React$useState21, 2),
+      averageStats = _React$useState22[0],
+      setAverageStats = _React$useState22[1];
+
+  var timer; // Load from local storage if still valid
 
   React.useEffect(function () {
     if (JSON.parse(localStorage.getItem("lastPlayedIssueNumber")) == getIssueNumber()) {
-      var localAttempts = JSON.parse(localStorage.getItem("attempts"));
-      var localFeedback = JSON.parse(localStorage.getItem("feedback"));
-      var localResult = JSON.parse(localStorage.getItem("result"));
-      localAttempts && setAttempts(localAttempts);
-      localFeedback && setFeedback(localFeedback);
-      localResult && setResult(localResult);
+      var localAttempts = tryLoadingFromLocalStorage("attempts", setAttempts);
+      var localFeedback = tryLoadingFromLocalStorage("feedback", setFeedback);
+      tryLoadingFromLocalStorage("result", setResult);
       setCursor({
         attempt: localFeedback ? localFeedback.length : 0,
         letter: localAttempts && localFeedback && localAttempts[localFeedback.length] ? localAttempts[localFeedback.length].length : 0
@@ -113,11 +133,30 @@ function App(props) {
       resetGame();
     }
 
-    var localSettings = JSON.parse(localStorage.getItem("settings"));
-    localSettings && setSettings(localSettings);
-    var localStats = JSON.parse(localStorage.getItem("stats"));
-    localStats && setStats(localStats);
-  }, []); // Save game to local storage
+    tryLoadingFromLocalStorage("settings", setSettings);
+    tryLoadingFromLocalStorage("stats", setStats);
+    tryLoadingFromLocalStorage("UID", setUID, Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36));
+  }, []);
+
+  function tryLoadingFromLocalStorage(item, setter) {
+    var deafaultValue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    var loadedItem;
+
+    try {
+      loadedItem = JSON.parse(localStorage.getItem(item));
+    } catch (e) {
+      loadedItem = null;
+    }
+
+    if (loadedItem) {
+      setter(loadedItem);
+    } else if (deafaultValue) {
+      setter(deafaultValue);
+    }
+
+    return loadedItem;
+  } // Save to local storage
+
 
   React.useEffect(function () {
     localStorage.setItem("attempts", JSON.stringify(attempts));
@@ -133,12 +172,15 @@ function App(props) {
     if (result != null) setTimeout(function () {
       return setModal("stats");
     }, 1000);
-  }, [result]); // Update theme and save to local storage
+  }, [result]);
+  React.useEffect(function () {
+    localStorage.setItem("UID", JSON.stringify(UID));
+  }, [UID]); // Update theme and save to local storage
 
   React.useEffect(function () {
-    localStorage.setItem("settings", JSON.stringify(settings));
     settings.darkTheme ? document.body.classList.add("dark") : document.body.classList.remove("dark");
     settings.colorBlind ? document.body.classList.add("color-blind") : document.body.classList.remove("color-blind");
+    localStorage.setItem("settings", JSON.stringify(settings));
   }, [settings]); // Keep track of time and reset at midnight
 
   React.useEffect(function () {
@@ -189,8 +231,28 @@ function App(props) {
     });
     setModal(null);
     localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
-  } // HH:MM:SS till midnight in Kyiv
+  } // Send own stats, receive average
 
+
+  function _updateAverageStats(stats) {
+    var sendOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    var request = new Request("https://ukr.warspotting.net/wordle/" // "http://192.168.0.143:8000/wordle/"
+    );
+    fetch(request, {
+      method: "POST",
+      body: JSON.stringify(_objectSpread({
+        uid: UID
+      }, stats))
+    }).then(function (response) {
+      return response.json();
+    }).then(function (data) {
+      data && !sendOnly && setAverageStats(_objectSpread({
+        issue: getIssueNumber()
+      }, data));
+    })["catch"](function (error) {
+      console.error("Error when fetching average stats:", error);
+    });
+  }
 
   function getTimeTillMidnight() {
     var localNow = new Date().toLocaleString("en-US", {
@@ -414,7 +476,8 @@ function App(props) {
           }
 
           setResult(newResult);
-          setStats(newStats); // Game continues
+          setStats(newStats);
+          UID && _updateAverageStats(newStats); // Game continues
         } else {
           setCursor({
             attempt: cursor.attempt + 1,
@@ -494,6 +557,14 @@ function App(props) {
       });
     });
     return letterStatus;
+  } // Switch modal state gracefully
+
+
+  function switchModal(type) {
+    setModal(null);
+    setTimeout(function () {
+      setModal(type);
+    }, "100");
   }
 
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h1", null, "Wordle ", /*#__PURE__*/React.createElement("em", null, "\u0443\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u043E\u044E")), /*#__PURE__*/React.createElement("div", {
@@ -516,7 +587,7 @@ function App(props) {
     d: "M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"
   }))), /*#__PURE__*/React.createElement("button", {
     id: "btn-stats",
-    className: "icon",
+    className: "icon ml-auto",
     "aria-label": "\u041C\u043E\u044F \u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043A\u0430",
     onClick: function onClick() {
       return setModal("stats");
@@ -621,13 +692,19 @@ function App(props) {
     handleClose: setModal,
     n: getIssueNumber(),
     stats: stats,
+    averageStats: averageStats,
     settings: settings,
     setSettings: setSettings,
     timeLeft: timeLeft,
     attempt: feedback && feedback.length,
     result: result,
     shareResult: shareResult,
-    answer: gw()
+    updateAverageStats: function updateAverageStats() {
+      return _updateAverageStats(stats, false);
+    },
+    switchModal: switchModal,
+    answer: gw(),
+    uid: UID
   }));
 }
 
@@ -651,6 +728,32 @@ function Modal(props) {
   var title;
   var message;
   var content;
+  var comparing = props.type == "avg-stats";
+  var myTotal = Object.entries(props.stats.attempts).map(function (pair) {
+    return pair[1];
+  }).reduce(function (s, a) {
+    return s + a;
+  }, 0);
+  var averageTotal = 1;
+  var total = comparing ? Math.max(myTotal, averageTotal) : myTotal;
+  var myMax = Math.max.apply(Math, _toConsumableArray(Object.entries(props.stats.attempts).map(function (pair) {
+    return pair[1];
+  })));
+  var averageMax = comparing ? Math.max.apply(Math, _toConsumableArray(Object.entries(props.averageStats.attempts).map(function (pair) {
+    return pair[1] * total;
+  }))) : 0;
+  var max = comparing ? Math.max(myMax, averageMax) : myMax;
+  var myGraphWidths = {};
+
+  for (var key in props.stats.attempts) {
+    myGraphWidths[key] = props.stats.attempts[key] / max * 100;
+  }
+
+  var avgGraphWidths = {};
+
+  for (var _key in props.averageStats.attempts) {
+    avgGraphWidths[_key] = props.averageStats.attempts[_key] * total / max * 100;
+  }
 
   if (props.type == "help") {
     title = "Як грати?";
@@ -710,13 +813,18 @@ function Modal(props) {
       href: "https://www.facebook.com/kokokostya/"
     }, "\u0440\u043E\u0437\u0440\u043E\u0431\u043A\u0430"), ", ", /*#__PURE__*/React.createElement("a", {
       href: "https://www.facebook.com/artem.shevchenko.ukraine"
-    }, "\u0441\u043B\u043E\u0432\u0430"), "."), /*#__PURE__*/React.createElement("p", null, "\u2116", props.n)));
+    }, "\u0441\u043B\u043E\u0432\u0430"), "."), /*#__PURE__*/React.createElement("p", null, "\u2116", props.n, " \u2022 \u0412\u0430\u0448 ID: ", props.uid)));
   } else if (props.type == "stats") {
     title = "Статистика";
-    message = props.result == "won" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement(Congrat, {
+    content = /*#__PURE__*/React.createElement(React.Fragment, null, props.result == "won" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      id: "top-message",
+      className: "small hint success"
+    }, /*#__PURE__*/React.createElement(Congrat, {
       attempt: props.attempt
-    }), " \u0412\u0438 \u0432\u0433\u0430\u0434\u0430\u043B\u0438 \u0437 ", props.attempt, "-\u0457 \u0441\u043F\u0440\u043E\u0431\u0438. \u0417\u043C\u043E\u0436\u0435\u0442\u0435 \u0437\u0430\u0432\u0442\u0440\u0430 \u043F\u043E\u0432\u0442\u043E\u0440\u0438\u0442\u0438?")) : props.result == "lost" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", null, "\u0412\u0456\u0434\u0433\u0430\u0434\u043A\u0430: ", /*#__PURE__*/React.createElement("b", null, props.answer.toUpperCase()), ". \u041D\u0435 \u0437\u0430\u0441\u043C\u0443\u0447\u0443\u0439\u0442\u0435\u0441\u044C. \u0412\u0438 \u0434\u043E\u0431\u0440\u0435 \u0433\u0440\u0430\u043B\u0438 \u0456 \u043D\u0430\u0441\u0442\u0443\u043F\u043D\u043E\u0433\u043E \u0440\u0430\u0437\u0443 \u0442\u043E\u0447\u043D\u043E \u0432\u0433\u0430\u0434\u0430\u0454\u0442\u0435.")) : null;
-    content = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("ul", {
+    }), " \u0412\u0438 \u0432\u0433\u0430\u0434\u0430\u043B\u0438 \u0437 ", props.attempt, "-\u0457 \u0441\u043F\u0440\u043E\u0431\u0438. \u0417\u043C\u043E\u0436\u0435\u0442\u0435 \u0437\u0430\u0432\u0442\u0440\u0430 \u043F\u043E\u0432\u0442\u043E\u0440\u0438\u0442\u0438?")) : props.result == "lost" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      id: "top-message",
+      className: "small hint"
+    }, "\u0412\u0456\u0434\u0433\u0430\u0434\u043A\u0430: ", /*#__PURE__*/React.createElement("b", null, props.answer.toUpperCase()), ". \u041D\u0435 \u0437\u0430\u0441\u043C\u0443\u0447\u0443\u0439\u0442\u0435\u0441\u044C. \u0412\u0438 \u0434\u043E\u0431\u0440\u0435 \u0433\u0440\u0430\u043B\u0438 \u0456 \u043D\u0430\u0441\u0442\u0443\u043F\u043D\u043E\u0433\u043E \u0440\u0430\u0437\u0443 \u0442\u043E\u0447\u043D\u043E \u0432\u0433\u0430\u0434\u0430\u0454\u0442\u0435.")) : null, /*#__PURE__*/React.createElement("ul", {
       id: "stats"
     }, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
       className: "value"
@@ -726,7 +834,7 @@ function Modal(props) {
       className: "value"
     }, props.stats.won > 0 ? Math.round(1000 * props.stats.won / props.stats.games) / 10 + "%" : 0), /*#__PURE__*/React.createElement("span", {
       className: "metric"
-    }, "\u0412\u0438\u0433\u0440\u0430\u043D\u043E")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
+    }, props.stats.won, " \u0412\u0438\u0433\u0440\u0430\u043D\u043E")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
       className: "value"
     }, props.stats.streak), /*#__PURE__*/React.createElement("span", {
       className: "metric"
@@ -734,18 +842,24 @@ function Modal(props) {
       className: "value"
     }, props.stats.maxStreak), /*#__PURE__*/React.createElement("span", {
       className: "metric"
-    }, "\u0420\u0435\u043A\u043E\u0440\u0434 \u043F\u0456\u0434\u0440\u044F\u0434"))), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), _toConsumableArray(Array(6)).map(function (val, i) {
+    }, "\u0420\u0435\u043A\u043E\u0440\u0434 \u043F\u0456\u0434\u0440\u044F\u0434"))), /*#__PURE__*/React.createElement("h3", {
+      onClick: props.updateAverageStats
+    }, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), _toConsumableArray(Array(6)).map(function (val, i) {
       return /*#__PURE__*/React.createElement(GraphBar, {
         key: i,
         num: i + 1,
-        attempts: props.stats.attempts,
+        attemptsCount: props.stats.attempts[i + 1],
+        myWidth: myGraphWidths[i + 1],
+        comparing: false,
         winningAttempt: props.result == "won" ? props.attempt : null
       });
-    }), /*#__PURE__*/React.createElement("h3", null, "\u041D\u0430\u0441\u0442\u0443\u043F\u043D\u0435 \u0441\u043B\u043E\u0432\u043E \u0447\u0435\u0440\u0435\u0437"), /*#__PURE__*/React.createElement("div", {
+    }), /*#__PURE__*/React.createElement("h3", null, "\u041D\u0430\u0441\u0442\u0443\u043F\u043D\u0435 \u0441\u043B\u043E\u0432\u043E \u0447\u0435\u0440\u0435\u0437", /*#__PURE__*/React.createElement("span", {
       id: "timer"
     }, props.timeLeft["h"], ":", props.timeLeft["m"], /*#__PURE__*/React.createElement("span", {
       className: "small"
-    }, ":", props.timeLeft["s"])), props.result == "won" ? /*#__PURE__*/React.createElement("button", {
+    }, ":", props.timeLeft["s"]))), /*#__PURE__*/React.createElement("div", {
+      id: "stats-buttons"
+    }, props.result == "won" ? /*#__PURE__*/React.createElement("button", {
       id: "share",
       onClick: props.shareResult
     }, /*#__PURE__*/React.createElement("svg", {
@@ -755,7 +869,90 @@ function Modal(props) {
       viewBox: "0 0 16 16"
     }, /*#__PURE__*/React.createElement("path", {
       d: "M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"
-    })), "\u041F\u043E\u0434\u0456\u043B\u0438\u0442\u0438\u0441\u044C \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442\u043E\u043C") : null);
+    })), "\u041F\u043E\u0434\u0456\u043B\u0438\u0442\u0438\u0441\u044C") : null, props.averageStats.issue == props.n ? /*#__PURE__*/React.createElement("button", {
+      id: "btn-avg-stats",
+      className: "icon avg-stats btn-share",
+      onClick: function onClick() {
+        return props.switchModal("avg-stats");
+      }
+    }, /*#__PURE__*/React.createElement("svg", {
+      xmlns: "http://www.w3.org/2000/svg",
+      width: "14",
+      height: "14",
+      viewBox: "0 0 14 14"
+    }, /*#__PURE__*/React.createElement("path", {
+      d: "M12.4444 1.55556H10.8889V0H3.11111V1.55556H1.55556C0.7 1.55556 0 2.25556 0 3.11111V3.88889C0 5.87222 1.49333 7.49 3.41444 7.73111C3.90444 8.89778 4.95444 9.77667 6.22222 10.0333V12.4444H3.11111V14H10.8889V12.4444H7.77778V10.0333C9.04556 9.77667 10.0956 8.89778 10.5856 7.73111C12.5067 7.49 14 5.87222 14 3.88889V3.11111C14 2.25556 13.3 1.55556 12.4444 1.55556ZM1.55556 3.88889V3.11111H3.11111V6.08222C2.20889 5.75556 1.55556 4.9 1.55556 3.88889ZM12.4444 3.88889C12.4444 4.9 11.7911 5.75556 10.8889 6.08222V3.11111H12.4444V3.88889Z"
+    }))) : null));
+  } else if (props.type == "avg-stats") {
+    title = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+      className: "example"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "row"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "tile hit"
+    }, "2"), /*#__PURE__*/React.createElement("span", {
+      className: "tile hit"
+    }, "0"), /*#__PURE__*/React.createElement("span", {
+      className: "tile hit"
+    }, "2"), /*#__PURE__*/React.createElement("span", {
+      className: "tile miss"
+    }, "2"))), /*#__PURE__*/React.createElement("em", null, "\u041D\u0430\u0440\u0435\u0448\u0442\u0456 \u0432\u0456\u043D \u043F\u043E\u0437\u0430\u0434\u0443!", /*#__PURE__*/React.createElement("br", null), "\u0412 \u0446\u0435 \u0432\u0430\u0436\u043A\u043E \u043F\u043E\u0432\u0456\u0440\u0438\u0442\u0438, \u0430\u043B\u0435:"));
+    content = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      className: "metric"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "trophy"
+    }, pTrophy(props.averageStats.gamesPercentile)), /*#__PURE__*/React.createElement("div", {
+      className: "standing"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "small"
+    }, "\u0422\u043E\u043F"), Math.round(props.averageStats.gamesPercentile * 1000) / 10, "%", /*#__PURE__*/React.createElement("div", {
+      className: "small"
+    }, "\u0433\u0440\u0430\u0432\u0446\u0456\u0432")), /*#__PURE__*/React.createElement("div", null, "\u0412\u0438 \u0437\u0456\u0433\u0440\u0430\u043B\u0438 ", /*#__PURE__*/React.createElement("b", null, props.stats.games, " ", nTimes(props.stats.games), " \u0437 ", props.n))), props.stats.games / props.n >= 0.9 && /*#__PURE__*/React.createElement("div", {
+      className: "small hint"
+    }, "\uD83D\uDC6E\u200D\u2640\uFE0F \u0422\u0435\u043F\u0435\u0440 \u043E\u0444\u0456\u0446\u0456\u0439\u043D\u043E: \u0432\u0438 \u2014 \u0437\u0430\u0434\u0440\u043E\u0442."), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("div", {
+      className: "metric"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "trophy"
+    }, pTrophy(props.averageStats.wonPercentile)), /*#__PURE__*/React.createElement("div", {
+      className: "standing"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "small"
+    }, "\u0422\u043E\u043F"), Math.round(props.averageStats.wonPercentile * 1000) / 10, "%", /*#__PURE__*/React.createElement("div", {
+      className: "small"
+    }, "\u0433\u0440\u0430\u0432\u0446\u0456\u0432")), /*#__PURE__*/React.createElement("div", null, "\u0412\u0438 \u0432\u0456\u0434\u0433\u0430\u0434\u0430\u043B\u0438 ", /*#__PURE__*/React.createElement("b", null, props.stats.won > 0 ? Math.round(1000 * props.stats.won / props.stats.games) / 10 : 0, "% \u0441\u043B\u0456\u0432"), " ", /*#__PURE__*/React.createElement("span", {
+      className: "fade nobr small"
+    }, "\u0430\u0431\u043E ", props.stats.won, " \u0437 ", props.stats.games, " \u0440\u0430\u0437\u0456\u0432"))), Math.round(1000 * props.stats.won / props.stats.games) / 10 >= 95 && /*#__PURE__*/React.createElement("div", {
+      className: "small hint"
+    }, "\uD83E\uDDD0 \u0417\u0456\u0437\u043D\u0430\u0439\u0442\u0435\u0441\u044F, \u0447\u0456\u0442\u0435\u0440\u0438\u043B\u0438?"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("div", {
+      className: "metric"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "trophy"
+    }, pTrophy(props.averageStats.maxStreakPercentile)), /*#__PURE__*/React.createElement("div", {
+      className: "standing"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "small"
+    }, "\u0422\u043E\u043F"), Math.round(props.averageStats.maxStreakPercentile * 1000) / 10, "%", /*#__PURE__*/React.createElement("div", {
+      className: "small"
+    }, "\u0433\u0440\u0430\u0432\u0446\u0456\u0432")), /*#__PURE__*/React.createElement("div", null, "\u0412\u0430\u0448 \u0440\u0435\u043A\u043E\u0440\u0434 \u2014 ", /*#__PURE__*/React.createElement("b", null, props.stats.maxStreak, " ", nTimes(props.stats.maxStreak), " \u043F\u0456\u0434\u0440\u044F\u0434"))), props.stats.maxStreak / props.n > 0.8 && /*#__PURE__*/React.createElement("div", {
+      className: "small hint"
+    }, "\uD83E\uDDE0 \u0412 \u0447\u043E\u043C\u0443 \u0432\u0430\u0448 \u0441\u0435\u043A\u0440\u0435\u0442?"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("div", {
+      className: "rel"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "legend small"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "label my"
+    }, "\u0432\u0438"), /*#__PURE__*/React.createElement("span", {
+      className: "label others"
+    }, "\u0456\u043D\u0448\u0456")), _toConsumableArray(Array(6)).map(function (val, i) {
+      return /*#__PURE__*/React.createElement(GraphBar, {
+        key: i,
+        num: i + 1,
+        myWidth: myGraphWidths[i + 1],
+        averageWidth: avgGraphWidths[i + 1],
+        comparing: true,
+        winningAttempt: props.result == "won" ? props.attempt : null
+      });
+    })));
   } else if (props.type == "settings") {
     title = "Налаштування";
     content = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
@@ -791,15 +988,47 @@ function Modal(props) {
     })));
   }
 
+  function nTimes(n) {
+    var lastDigit = n % 10;
+    if ([11, 12, 13, 14].includes(n % 100)) lastDigit = 5;
+
+    switch (lastDigit) {
+      case 1:
+        return "раз";
+
+      case 2:
+      case 3:
+      case 4:
+        return "рази";
+
+      default:
+        return "разів";
+    }
+  }
+
+  function pTrophy(p) {
+    if (p <= .02) {
+      return "🤯";
+    } else if (p <= .05) {
+      return "🤌";
+    } else if (p <= .1) {
+      return "👍";
+    } else if (p <= .2) {
+      return "👌";
+    } else {
+      return "💩";
+    }
+  }
+
   return ReactDOM.createPortal( /*#__PURE__*/React.createElement("div", {
     className: "overlay"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "body"
+    className: "body" + (props.type == "avg-stats" ? " avg-stats" : "")
   }, message && /*#__PURE__*/React.createElement("div", {
     className: "message" + (props.result == "won" ? " success" : "")
   }, message), /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h2", null, title), /*#__PURE__*/React.createElement("button", {
     id: "btn-close",
-    className: "icon",
+    className: "icon ml-auto",
     "aria-label": "\u041F\u043E\u0432\u0435\u0440\u043D\u0443\u0442\u0438\u0441\u044C \u0434\u043E \u0433\u0440\u0438",
     onClick: function onClick(e) {
       return props.handleClose(null);
@@ -816,7 +1045,10 @@ function Modal(props) {
   }), /*#__PURE__*/React.createElement("path", {
     fillRule: "evenodd",
     d: "M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"
-  })))), /*#__PURE__*/React.createElement("main", null, content))), document.querySelector("#modal"));
+  })))), /*#__PURE__*/React.createElement("main", null, content), props.type == "avg-stats" && /*#__PURE__*/React.createElement("footer", null, /*#__PURE__*/React.createElement("a", {
+    className: "",
+    href: "https://twitter.com/hashtag/%D1%83%D0%BA%D1%80Wordle"
+  }, "#\u0443\u043A\u0440", /*#__PURE__*/React.createElement("b", null, "wordle"))))), document.querySelector("#modal"));
 }
 
 function Congrat(props) {
@@ -851,21 +1083,23 @@ function Congrat(props) {
 }
 
 function GraphBar(props) {
-  var max = Math.max.apply(Math, _toConsumableArray(Object.entries(props.attempts).map(function (pair) {
-    return pair[1];
-  })));
-  var width = Math.round(100 * props.attempts[props.num] / max);
-  if (width < 5) width = 5;
   return /*#__PURE__*/React.createElement("div", {
     className: "graph"
   }, /*#__PURE__*/React.createElement("div", {
     className: "label"
   }, props.num), /*#__PURE__*/React.createElement("div", {
-    className: "bar" + (props.winningAttempt != props.num ? " none" : ""),
-    style: {
-      width: width + "%"
-    }
-  }, props.attempts[props.num]));
+    className: "bar-container"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bar" + (!props.comparing && props.winningAttempt != props.num || props.comparing && props.myWidth == 0 ? " none" : ""),
+    style: props.myWidth > 5 ? {
+      width: props.myWidth + "%"
+    } : null
+  }, !props.comparing && props.attemptsCount), props.comparing && /*#__PURE__*/React.createElement("div", {
+    className: "bar average",
+    style: props.averageWidth > 5 ? {
+      width: props.averageWidth + "%"
+    } : null
+  })));
 }
 
 ReactDOM.render(React.createElement(App), document.getElementById("app"));
