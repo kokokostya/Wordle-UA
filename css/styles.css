@@ -747,7 +747,7 @@ header button:hover {
 }
 
 .overlay .body.avg-stats main .graph-horizontal .bar-container .bar {
-  width: 1px;
+  min-width: 1px;
   padding: 0;
 }
 
