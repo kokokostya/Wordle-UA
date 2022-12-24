@@ -214,7 +214,7 @@ function App(props) {
 
   // Send own stats, receive average
   function updateAverageStats(stats) {
-    console.log("Average stats requested...")
+    console.log("Запит статистики...")
     const request = new Request(
       "https://ukr.warspotting.net/wordle/"
       // "http://192.168.0.143:8000/wordle/"
@@ -228,14 +228,14 @@ function App(props) {
     })
     .then(response => response.json())
     .then(data => {
-      console.log("Average stats received.")
+      console.log("Статистику отримано.")
       data && setAverageStats({
         issue: getIssueNumber(),
         ...data
       });
     })
     .catch((error) => {
-      console.error("Error when requesting average stats:", error);
+      console.error("Помилка при запиті статистики:", error);
     });
   }
 
@@ -740,43 +740,25 @@ function Modal(props) {
     </React.Fragment>
 
     content = <React.Fragment>
-      <div className="metric">
-        <div className="trophy">{ pTrophy(props.averageStats.gamesPercentile) }</div>
-        <div className="standing">
-          <div className="small">Краще за</div>
-          { Math.round(props.averageStats.gamesPercentile*1000)/10 }<small>%</small>
-          <div className="small">гравців</div>
-        </div>
-        <div>Ви зіграли <b>{ props.stats.games } { nTimes(props.stats.games) } з { props.n }</b></div>
-      </div>
+      <Metric value={props.averageStats.gamesPercentile}>
+        Ви зіграли <b>{ props.stats.games } { nTimes(props.stats.games) } з { props.n }</b>
+      </Metric>
       
       { (props.stats.games/props.n >= .9) && <div className="small hint">👮‍♀️ Тепер офіційно: ви — задрот.</div> }
       
       <hr />
 
-      <div className="metric">
-        <div className="trophy">{ pTrophy(props.averageStats.wonPercentile) }</div>
-        <div className="standing">
-          <div className="small">Краще за</div>
-          { Math.round(props.averageStats.wonPercentile*1000)/10 }<small>%</small>
-          <div className="small">гравців</div>
-        </div>
-        <div>Ви вгадали <b>{ props.stats.won > 0 ? Math.round(1000*props.stats.won/props.stats.games)/10 : 0 }<small>%</small> слів</b> <span className="fade nobr small">або { props.stats.won } з { props.stats.games }</span></div>
-      </div>
+      <Metric value={props.averageStats.wonPercentile}>
+        Ви вгадали <b>{ props.stats.won > 0 ? Math.round(1000*props.stats.won/props.stats.games)/10 : 0 }<small>%</small> слів</b> <span className="fade nobr small">або { props.stats.won } з { props.stats.games }</span>
+      </Metric>
       
       { (props.stats.won/props.stats.games == 1) && (props.stats.games >= 100) && <div className="small hint">😳 В нас одне питання: як???</div> }
       
       <hr />
 
-      <div className="metric">
-        <div className="trophy">{ pTrophy(props.averageStats.maxStreakPercentile) }</div>
-        <div className="standing">
-          <div className="small">Краще за</div>
-          { Math.round(props.averageStats.maxStreakPercentile*1000)/10 }<small>%</small>
-          <div className="small">гравців</div>
-        </div>
-        <div>Ваш рекорд: <b>{ props.stats.maxStreak } { nTimes(props.stats.maxStreak) } підряд</b></div>
-      </div>
+      <Metric value={props.averageStats.maxStreakPercentile}>
+        Ваш рекорд: <b>{ props.stats.maxStreak } { nTimes(props.stats.maxStreak) } підряд</b>
+      </Metric>
       
       <div className="graph-vertical-container">
         { props.averageStats.maxStreakLeaderboard.map((leader) =>
@@ -842,41 +824,6 @@ function Modal(props) {
     </React.Fragment>
   }
 
-  function nTimes(n) {
-    var lastDigit = n % 10;
-    if ([11, 12, 13, 14].includes(n % 100)) lastDigit = 5;
-    switch (lastDigit) {
-      case 1:
-        return "раз";
-      case 2:
-      case 3:
-      case 4:
-        return "рази";
-      default:
-        return "разів";
-    }
-  }
-
-  function pTrophy(p) {
-    if (p >= .99) {
-      return "🤯"
-    } else if (p >= .95) {
-      return "🤌"
-    } else if (p >= .9) {
-      return "😲"
-    } else if (p >= .8) {
-      return "🌟"
-    } else if (p >= .7) {
-      return "💪"
-    } else if (p >= .6) {
-      return "👍"
-    } else if (p >= .5) {
-      return "👌"
-    } else {
-      return "💩"
-    }
-  }
-
   return ReactDOM.createPortal(
     <div className="overlay">
       <div className={"body" + ((props.type == "avg-stats") ? " avg-stats rainbow" : "")}>
@@ -926,6 +873,20 @@ function Congrat(props) {
   )
 }
 
+function Metric(props) {
+  return (
+    <div className="metric">
+      <div className="trophy">{ pTrophy(props.value) }</div>
+      <div className="standing">
+        <div className="small">Краще за</div>
+        { Math.round(props.value*1000)/10 }<small>%</small>
+        <div className="small">гравців</div>
+      </div>
+      <div className="desc">{ props.children }</div>
+    </div>
+  )
+}
+
 function GraphBarHorizontal(props) {
   return (
     <div className="graph-horizontal">
@@ -951,6 +912,41 @@ function GraphBarVertical(props) {
       <div className="label">{ props.uid == props.myUid ? "Ви" : "#" + props.pos }</div>
     </div>
   )
+}
+
+function nTimes(n) {
+  var lastDigit = n % 10;
+  if ([11, 12, 13, 14].includes(n % 100)) lastDigit = 5;
+  switch (lastDigit) {
+    case 1:
+      return "раз";
+    case 2:
+    case 3:
+    case 4:
+      return "рази";
+    default:
+      return "разів";
+  }
+}
+
+function pTrophy(p) {
+  if (p >= .99) {
+    return "🤯"
+  } else if (p >= .95) {
+    return "🤌"
+  } else if (p >= .9) {
+    return "😲"
+  } else if (p >= .8) {
+    return "🌟"
+  } else if (p >= .7) {
+    return "💪"
+  } else if (p >= .6) {
+    return "👍"
+  } else if (p >= .5) {
+    return "👌"
+  } else {
+    return "💩"
+  }
 }
 
 ReactDOM.render(React.createElement(App), document.getElementById("app"));

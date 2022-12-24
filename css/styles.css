@@ -718,7 +718,15 @@ header button:hover {
 
 .overlay .body.avg-stats main .metric .standing .small {
   font-size: .7rem;
-  line-height: .9rem;
+  line-height: .85rem;
+}
+
+.overlay .body.avg-stats main .metric .standing .small:first-child {
+  margin-bottom: .05rem;
+}
+
+.overlay .body.avg-stats main .metric .desc {
+  line-height: 1.2rem;
 }
 
 .overlay .body.avg-stats main .hint {
