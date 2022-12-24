@@ -183,7 +183,7 @@ hr {
 
 header {
   display: flex;
-  padding: 1rem;
+  padding: 1rem 1.25rem;
   margin-bottom: 1rem;
   position: relative;
 
@@ -202,7 +202,7 @@ header {
 
   button {
     fill: var(--icon);
-    margin: 0 .75rem 0 0;
+    margin: 0 1rem 0 0;
     padding: 0 .25rem;
 
     &:last-child {
@@ -948,6 +948,14 @@ background-color: var(--button-primary);
 }
 
 @media (max-width: 576px) {
+  header {
+    padding: 1rem;
+  
+    button {
+      margin: 0 .75rem 0 0;
+    }
+  }
+  
   .overlay {
     .body {
       width: 100%;

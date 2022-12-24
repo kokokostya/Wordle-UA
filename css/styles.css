@@ -175,7 +175,7 @@ header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding: 1rem;
+  padding: 1rem 1.25rem;
   margin-bottom: 1rem;
   position: relative;
 }
@@ -198,7 +198,7 @@ header #russianShip {
 
 header button {
   fill: var(--icon);
-  margin: 0 .75rem 0 0;
+  margin: 0 1rem 0 0;
   padding: 0 .25rem;
 }
 
@@ -1177,6 +1177,12 @@ header button:hover {
 }
 
 @media (max-width: 576px) {
+  header {
+    padding: 1rem;
+  }
+  header button {
+    margin: 0 .75rem 0 0;
+  }
   .overlay .body {
     width: 100%;
     min-height: 100%;
