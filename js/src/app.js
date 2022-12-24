@@ -779,15 +779,6 @@ function Modal(props) {
       </div>
       
       { inLeaderboard && <div className="small hint">🧠 В чому ваш секрет?</div> }
-
-      { (
-          props.averageStats.gamesPercentile < .5 || 
-          props.averageStats.wonPercentile < .5 || 
-          props.averageStats.maxStreakPercentile < .5 || 
-          props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1] && 
-          props.stats.maxStreak/props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1].maxStreak < .1
-        ) && <div className="small hint">😉 Місцями не дуже? Наздоженете! Вони теж з чогось починали.</div>
-      }
       
       <hr />
       
@@ -807,7 +798,17 @@ function Modal(props) {
             winningAttempt={props.result == "won" ? props.attempt : null} />
         )}
       </div>
-      { (props.stats.attempts[1] >= 10) && <div className="small hint">🧐 Ви часом не чітер?</div> }
+
+      { (props.stats.attempts[1] >= 10) && <div className="small hint">🧐 {props.stats.attempts[1]} з першої спроби??? Ви часом не чітер?</div> }
+
+      { (
+          props.averageStats.gamesPercentile < .5 || 
+          props.averageStats.wonPercentile < .5 || 
+          props.averageStats.maxStreakPercentile < .5 || 
+          props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1] && 
+          props.stats.maxStreak/props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1].maxStreak < .1
+        ) && <div className="small hint">😉 Місцями не дуже? Наздоженете! Вони теж з чогось починали.</div>
+      }
     </React.Fragment>
   } else if (props.type == "settings") {
     title = "Налаштування";

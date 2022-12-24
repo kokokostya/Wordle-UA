@@ -980,9 +980,7 @@ function Modal(props) {
       height: myHeight
     })), inLeaderboard && /*#__PURE__*/React.createElement("div", {
       className: "small hint"
-    }, "\uD83E\uDDE0 \u0412 \u0447\u043E\u043C\u0443 \u0432\u0430\u0448 \u0441\u0435\u043A\u0440\u0435\u0442?"), (props.averageStats.gamesPercentile < .5 || props.averageStats.wonPercentile < .5 || props.averageStats.maxStreakPercentile < .5 || props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1] && props.stats.maxStreak / props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1].maxStreak < .1) && /*#__PURE__*/React.createElement("div", {
-      className: "small hint"
-    }, "\uD83D\uDE09 \u041C\u0456\u0441\u0446\u044F\u043C\u0438 \u043D\u0435 \u0434\u0443\u0436\u0435? \u041D\u0430\u0437\u0434\u043E\u0436\u0435\u043D\u0435\u0442\u0435! \u0412\u043E\u043D\u0438 \u0442\u0435\u0436 \u0437 \u0447\u043E\u0433\u043E\u0441\u044C \u043F\u043E\u0447\u0438\u043D\u0430\u043B\u0438."), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), /*#__PURE__*/React.createElement("div", {
+    }, "\uD83E\uDDE0 \u0412 \u0447\u043E\u043C\u0443 \u0432\u0430\u0448 \u0441\u0435\u043A\u0440\u0435\u0442?"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), /*#__PURE__*/React.createElement("div", {
       className: "rel"
     }, /*#__PURE__*/React.createElement("div", {
       className: "legend small"
@@ -1001,7 +999,9 @@ function Modal(props) {
       });
     })), props.stats.attempts[1] >= 10 && /*#__PURE__*/React.createElement("div", {
       className: "small hint"
-    }, "\uD83E\uDDD0 \u0412\u0438 \u0447\u0430\u0441\u043E\u043C \u043D\u0435 \u0447\u0456\u0442\u0435\u0440?"));
+    }, "\uD83E\uDDD0 ", props.stats.attempts[1], " \u0437 \u043F\u0435\u0440\u0448\u043E\u0457 \u0441\u043F\u0440\u043E\u0431\u0438??? \u0412\u0438 \u0447\u0430\u0441\u043E\u043C \u043D\u0435 \u0447\u0456\u0442\u0435\u0440?"), (props.averageStats.gamesPercentile < .5 || props.averageStats.wonPercentile < .5 || props.averageStats.maxStreakPercentile < .5 || props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1] && props.stats.maxStreak / props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1].maxStreak < .1) && /*#__PURE__*/React.createElement("div", {
+      className: "small hint"
+    }, "\uD83D\uDE09 \u041C\u0456\u0441\u0446\u044F\u043C\u0438 \u043D\u0435 \u0434\u0443\u0436\u0435? \u041D\u0430\u0437\u0434\u043E\u0436\u0435\u043D\u0435\u0442\u0435! \u0412\u043E\u043D\u0438 \u0442\u0435\u0436 \u0437 \u0447\u043E\u0433\u043E\u0441\u044C \u043F\u043E\u0447\u0438\u043D\u0430\u043B\u0438."));
   } else if (props.type == "settings") {
     title = "Налаштування";
     content = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
