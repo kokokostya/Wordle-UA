@@ -631,7 +631,7 @@ background-color: var(--button-primary);
         .graph-horizontal {
           .bar-container {
             .bar {
-              width: 1px;
+              min-width: 1px;
               padding: 0;
             }
           }
