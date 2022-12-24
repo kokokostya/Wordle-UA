@@ -931,7 +931,7 @@ function GraphBarHorizontal(props) {
     <div className="graph-horizontal">
       <div className="label">{ props.num }</div>
       <div className="bar-container">
-        <div className={"bar" + ((!props.comparing && props.winningAttempt != props.num || props.comparing && props.myWidth == 0) ? " none" : "")} style={(props.myWidth > 5) ? {width: props.myWidth + "%"} : null}>
+        <div className={"bar" + ((!props.comparing && props.winningAttempt != props.num || props.comparing && props.myWidth == 0) ? " none" : "")} style={(props.comparing || props.myWidth > 5) ? {width: props.myWidth + "%"} : null}>
           { !props.comparing && props.attemptsCount }
         </div>
         { props.comparing && <div className="bar average" style={(props.averageWidth > 5) ? {width: props.averageWidth + "%"} : null}></div> }

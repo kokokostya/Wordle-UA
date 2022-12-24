@@ -1168,7 +1168,7 @@ function GraphBarHorizontal(props) {
     className: "bar-container"
   }, /*#__PURE__*/React.createElement("div", {
     className: "bar" + (!props.comparing && props.winningAttempt != props.num || props.comparing && props.myWidth == 0 ? " none" : ""),
-    style: props.myWidth > 5 ? {
+    style: props.comparing || props.myWidth > 5 ? {
       width: props.myWidth + "%"
     } : null
   }, !props.comparing && props.attemptsCount), props.comparing && /*#__PURE__*/React.createElement("div", {
