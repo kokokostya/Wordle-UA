@@ -153,7 +153,7 @@ function App(props) {
     localStorage.setItem("UID", JSON.stringify(UID));
   }, [UID]);
   React.useEffect(() => {
-    UID && stats.games >= 0 && updateAverageStats(stats);
+    UID && stats.games > 0 && updateAverageStats(stats);
   }, [stats]);
 
   // Update theme and save to local storage
