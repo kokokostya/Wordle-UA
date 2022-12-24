@@ -20,6 +20,72 @@ function App(props) {
       6: 0
     }
   });
+  const [averageStats, setAverageStats] = React.useState({
+    issue: 0,
+    gamesPercentile: 0, 
+    wonPercentile: 0,
+    maxStreakPercentile: 0,
+    maxStreakLeaderboard: [
+      {
+        uid: "uid",
+        pos: 1,
+        maxStreak: 0
+      },
+      {
+        uid: "uid",
+        pos: 2,
+        maxStreak: 0
+      },
+      {
+        uid: "uid",
+        pos: 3,
+        maxStreak: 0
+      },
+      {
+        uid: "uid",
+        pos: 4,
+        maxStreak: 0
+      },
+      {
+        uid: "uid",
+        pos: 5,
+        maxStreak: 0
+      },
+      {
+        uid: "uid",
+        pos: 6,
+        maxStreak: 0
+      },
+      {
+        uid: "uid",
+        pos: 7,
+        maxStreak: 0
+      },
+      {
+        uid: "uid",
+        pos: 8,
+        maxStreak: 0
+      },
+      {
+        uid: "uid",
+        pos: 9,
+        maxStreak: 0
+      },
+      {
+        uid: "uid",
+        pos: 10,
+        maxStreak: 0
+      }
+    ],
+    attempts: {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+      6: 0
+    }
+  });
   const [settings, setSettings] = React.useState({ 
     darkTheme: false, 
     colorBlind: false
@@ -32,20 +98,6 @@ function App(props) {
   });
   const [wrongAttempt, setWrongAttempt] = React.useState(false);
   const [UID, setUID] = React.useState(null);
-  const [averageStats, setAverageStats] = React.useState({
-    issue: 0,
-    gamesPercentile: 0, 
-    wonPercentile: 0,
-    maxStreakPercentile: 0,
-    attempts: {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-      6: 0
-    }
-  });
 
   var timer;
   
@@ -65,6 +117,7 @@ function App(props) {
     tryLoadingFromLocalStorage("settings", setSettings);
     tryLoadingFromLocalStorage("stats", setStats);
     tryLoadingFromLocalStorage("UID", setUID, Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36));
+    
   }, []);
 
   function tryLoadingFromLocalStorage(item, setter, deafaultValue=false) {
@@ -99,6 +152,9 @@ function App(props) {
   React.useEffect(() => {
     localStorage.setItem("UID", JSON.stringify(UID));
   }, [UID]);
+  React.useEffect(() => {
+    UID && stats.games >= 0 && updateAverageStats(stats);
+  }, [stats]);
 
   // Update theme and save to local storage
   React.useEffect(() => {
@@ -157,7 +213,8 @@ function App(props) {
   }
 
   // Send own stats, receive average
-  function updateAverageStats(stats, sendOnly=true) {
+  function updateAverageStats(stats) {
+    console.log("Average stats requested...")
     const request = new Request(
       "https://ukr.warspotting.net/wordle/"
       // "http://192.168.0.143:8000/wordle/"
@@ -171,13 +228,14 @@ function App(props) {
     })
     .then(response => response.json())
     .then(data => {
-      data && !sendOnly && setAverageStats({
+      console.log("Average stats received.")
+      data && setAverageStats({
         issue: getIssueNumber(),
         ...data
       });
     })
     .catch((error) => {
-      console.error("Error when fetching average stats:", error);
+      console.error("Error when requesting average stats:", error);
     });
   }
 
@@ -310,7 +368,6 @@ function App(props) {
           }
           setResult(newResult);
           setStats(newStats);
-          UID && updateAverageStats(newStats);
         // Game continues
         } else {
           setCursor({attempt: cursor.attempt+1, letter: 0});
@@ -494,7 +551,6 @@ function App(props) {
         attempt={feedback && feedback.length}
         result={result}
         shareResult={shareResult}
-        updateAverageStats={() => updateAverageStats(stats, false)}
         switchModal={switchModal}
         answer={gw()}
         uid={UID} /> }
@@ -517,25 +573,33 @@ function Key(props) {
 
 function Modal(props) {
   var title;
-  var message;
   var content;
 
+  // Calculating bar widths for attempts graph
   const comparing = props.type == "avg-stats"
   const myTotal = Object.entries(props.stats.attempts).map(pair => pair[1]).reduce((s, a) => s + a, 0);
   const averageTotal = 1;
   const total = comparing ? Math.max(myTotal, averageTotal) : myTotal;
   const myMax = Math.max(...Object.entries(props.stats.attempts).map(pair => pair[1]));
   const averageMax = comparing ? Math.max(...Object.entries(props.averageStats.attempts).map(pair => pair[1]*total)) : 0;
-  const max = comparing ? Math.max(myMax, averageMax) : myMax;
-
+  const maxAttempts = comparing ? Math.max(myMax, averageMax) : myMax;
   var myGraphWidths = {};
   for (const key in props.stats.attempts) {
-    myGraphWidths[key] = props.stats.attempts[key]/max*100;
+    myGraphWidths[key] = props.stats.attempts[key]/maxAttempts*100;
   }
   var avgGraphWidths = {};
   for (const key in props.averageStats.attempts) {
-    avgGraphWidths[key] = props.averageStats.attempts[key]*total/max*100;
+    avgGraphWidths[key] = props.averageStats.attempts[key]*total/maxAttempts*100;
   }
+
+  // Calculating bar heights for streak leaderboard graph
+  const absMaxStreak = Math.max(...props.averageStats.maxStreakLeaderboard.map((leader) => leader.maxStreak)) || 100;
+  const leaderboardGraphHeights = {}
+  props.averageStats.maxStreakLeaderboard.forEach(leader => {
+    leaderboardGraphHeights[leader.uid] = leader.maxStreak/absMaxStreak*100;
+  });
+  const myHeight = props.stats.maxStreak/absMaxStreak*100;
+  const inLeaderboard = props.averageStats.maxStreakLeaderboard.map((leader) => leader.uid).includes(props.uid)
 
   if (props.type == "help") {
     title = "Як грати?";
@@ -603,7 +667,7 @@ function Modal(props) {
           <span className="metric">Зіграно</span>
         </li>
         <li>
-          <span className="value">{ props.stats.won > 0 ? Math.round(1000*props.stats.won/props.stats.games)/10 + "%" : 0 }</span>
+          <span className="value">{ props.stats.won > 0 ? Math.round(1000*props.stats.won/props.stats.games)/10 : 0 }<small>%</small></span>
           <span className="metric">{ props.stats.won } Виграно</span>
         </li>
         <li>
@@ -616,9 +680,9 @@ function Modal(props) {
         </li>
       </ul>
 
-      <h3 onClick={props.updateAverageStats}>Виграшні спроби</h3>
+      <h3>Виграшні спроби</h3>
       {[...Array(6)].map((val, i) =>
-        <GraphBar
+        <GraphBarHorizontal
           key={i}
           num={i+1}
           attemptsCount={props.stats.attempts[i+1]}
@@ -626,7 +690,7 @@ function Modal(props) {
           comparing={false}
           winningAttempt={props.result == "won" ? props.attempt : null} />
       )}
-
+      
       <h3>
         Наступне слово через
         <span id="timer">
@@ -634,79 +698,125 @@ function Modal(props) {
           <span className="small">:{ props.timeLeft["s"] }</span>
         </span>
       </h3>
-        
-      <div id="stats-buttons">
-        {
-          (props.result == "won") ? <button id="share" onClick={props.shareResult}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-              <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
-            </svg>
-            Поділитись
-          </button> : null
-        }
 
-        {
-          (props.averageStats.issue == props.n) ? <button id="btn-avg-stats" className="icon avg-stats btn-share" onClick={() => props.switchModal("avg-stats")}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
-              <path d="M12.4444 1.55556H10.8889V0H3.11111V1.55556H1.55556C0.7 1.55556 0 2.25556 0 3.11111V3.88889C0 5.87222 1.49333 7.49 3.41444 7.73111C3.90444 8.89778 4.95444 9.77667 6.22222 10.0333V12.4444H3.11111V14H10.8889V12.4444H7.77778V10.0333C9.04556 9.77667 10.0956 8.89778 10.5856 7.73111C12.5067 7.49 14 5.87222 14 3.88889V3.11111C14 2.25556 13.3 1.55556 12.4444 1.55556ZM1.55556 3.88889V3.11111H3.11111V6.08222C2.20889 5.75556 1.55556 4.9 1.55556 3.88889ZM12.4444 3.88889C12.4444 4.9 11.7911 5.75556 10.8889 6.08222V3.11111H12.4444V3.88889Z"/>
-            </svg>
-          </button> : null
-        }
-      </div>
+      { ((props.result == "won") || (props.stats.games >= 10)) &&
+        <div id="stats-buttons">
+          {
+            (props.result == "won") &&
+              <button id="btn-share" onClick={props.shareResult}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
+                </svg>
+                Поділитись
+              </button> 
+          }
+          {
+            (props.stats.games >= 10) &&
+              <button id="btn-avg-stats" className="rainbow btn-share" onClick={() => props.switchModal("avg-stats")}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+                  <path d="M12.4444 1.55556H10.8889V0H3.11111V1.55556H1.55556C0.7 1.55556 0 2.25556 0 3.11111V3.88889C0 5.87222 1.49333 7.49 3.41444 7.73111C3.90444 8.89778 4.95444 9.77667 6.22222 10.0333V12.4444H3.11111V14H10.8889V12.4444H7.77778V10.0333C9.04556 9.77667 10.0956 8.89778 10.5856 7.73111C12.5067 7.49 14 5.87222 14 3.88889V3.11111C14 2.25556 13.3 1.55556 12.4444 1.55556ZM1.55556 3.88889V3.11111H3.11111V6.08222C2.20889 5.75556 1.55556 4.9 1.55556 3.88889ZM12.4444 3.88889C12.4444 4.9 11.7911 5.75556 10.8889 6.08222V3.11111H12.4444V3.88889Z"/>
+                </svg>
+                <span>Я молодець?</span>
+              </button>
+          }
+        </div>
+      }
+
+      { (props.stats.games >= 10) ? 
+        <hr /> 
+        : 
+        <div className="small hint">Зіграйте <b>{ props.stats.games ? "ще" : null } {10 - props.stats.games} { nTimes(10 - props.stats.games) }</b> щоб побачити, як ви грали порівняно з іншими.</div> 
+      }
+      
+      <p className="small fade">Щось не так зі статистикою? <a href="https://www.facebook.com/kokokostya/">Напишіть нам</a>.</p>
     </React.Fragment>
   } else if (props.type == "avg-stats") {
     title = <React.Fragment>
-      <span className="example">
-        <span className="row">
-          <span className="tile hit">2</span>
-          <span className="tile hit">0</span>
-          <span className="tile hit">2</span>
-          <span className="tile miss">2</span>
-        </span>
-      </span>
-      <em>Нарешті він позаду!<br />В це важко повірити, але:</em>
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+        <path d="M12.4444 1.55556H10.8889V0H3.11111V1.55556H1.55556C0.7 1.55556 0 2.25556 0 3.11111V3.88889C0 5.87222 1.49333 7.49 3.41444 7.73111C3.90444 8.89778 4.95444 9.77667 6.22222 10.0333V12.4444H3.11111V14H10.8889V12.4444H7.77778V10.0333C9.04556 9.77667 10.0956 8.89778 10.5856 7.73111C12.5067 7.49 14 5.87222 14 3.88889V3.11111C14 2.25556 13.3 1.55556 12.4444 1.55556ZM1.55556 3.88889V3.11111H3.11111V6.08222C2.20889 5.75556 1.55556 4.9 1.55556 3.88889ZM12.4444 3.88889C12.4444 4.9 11.7911 5.75556 10.8889 6.08222V3.11111H12.4444V3.88889Z"/>
+      </svg>
+      Ви молодець
+      <em>Ось як ви грали на тлі інших</em>
     </React.Fragment>
+
     content = <React.Fragment>
       <div className="metric">
         <div className="trophy">{ pTrophy(props.averageStats.gamesPercentile) }</div>
         <div className="standing">
-          <div className="small">Топ</div>
-          { Math.round(props.averageStats.gamesPercentile*1000)/10 }%
+          <div className="small">Краще за</div>
+          { Math.round(props.averageStats.gamesPercentile*1000)/10 }<small>%</small>
           <div className="small">гравців</div>
         </div>
         <div>Ви зіграли <b>{ props.stats.games } { nTimes(props.stats.games) } з { props.n }</b></div>
       </div>
-      { (props.stats.games/props.n >= 0.9) && <div className="small hint">👮‍♀️ Тепер офіційно: ви — задрот.</div> }
+      
+      { (props.stats.games/props.n >= .9) && <div className="small hint">👮‍♀️ Тепер офіційно: ви — задрот.</div> }
+      
       <hr />
+
       <div className="metric">
         <div className="trophy">{ pTrophy(props.averageStats.wonPercentile) }</div>
         <div className="standing">
-          <div className="small">Топ</div>
-          { Math.round(props.averageStats.wonPercentile*1000)/10 }%
+          <div className="small">Краще за</div>
+          { Math.round(props.averageStats.wonPercentile*1000)/10 }<small>%</small>
           <div className="small">гравців</div>
         </div>
-        <div>Ви відгадали <b>{ props.stats.won > 0 ? Math.round(1000*props.stats.won/props.stats.games)/10 : 0 }% слів</b> <span className="fade nobr small">або { props.stats.won } з { props.stats.games } разів</span></div>
+        <div>Ви вгадали <b>{ props.stats.won > 0 ? Math.round(1000*props.stats.won/props.stats.games)/10 : 0 }<small>%</small> слів</b> <span className="fade nobr small">або { props.stats.won } з { props.stats.games }</span></div>
       </div>
-      { (Math.round(1000*props.stats.won/props.stats.games)/10 >= 95) && <div className="small hint">🧐 Зізнайтеся, чітерили?</div> }
+      
+      { (props.stats.won/props.stats.games == 1) && (props.stats.games >= 100) && <div className="small hint">😳 В нас одне питання: як???</div> }
+      
       <hr />
+
       <div className="metric">
         <div className="trophy">{ pTrophy(props.averageStats.maxStreakPercentile) }</div>
         <div className="standing">
-          <div className="small">Топ</div>
-          { Math.round(props.averageStats.maxStreakPercentile*1000)/10 }%
+          <div className="small">Краще за</div>
+          { Math.round(props.averageStats.maxStreakPercentile*1000)/10 }<small>%</small>
           <div className="small">гравців</div>
         </div>
-        <div>Ваш рекорд — <b>{ props.stats.maxStreak } { nTimes(props.stats.maxStreak) } підряд</b></div>
+        <div>Ваш рекорд: <b>{ props.stats.maxStreak } { nTimes(props.stats.maxStreak) } підряд</b></div>
       </div>
-      { (props.stats.maxStreak/props.n > 0.8) && <div className="small hint">🧠 В чому ваш секрет?</div> }
+      
+      <div className="graph-vertical-container">
+        { props.averageStats.maxStreakLeaderboard.map((leader) =>
+          <GraphBarVertical
+            uid={leader.uid}
+            pos={leader.pos}
+            value={leader.maxStreak}
+            myUid={props.uid}
+            height={leaderboardGraphHeights[leader.uid]} />
+        )}
+        { !inLeaderboard && <GraphBarVertical
+            uid={props.uid}
+            pos={-1}
+            value={props.stats.maxStreak}
+            myUid={props.uid}
+            height={myHeight} />
+        }
+      </div>
+      
+      { inLeaderboard && <div className="small hint">🧠 В чому ваш секрет?</div> }
+
+      { (
+          props.averageStats.gamesPercentile < .5 || 
+          props.averageStats.wonPercentile < .5 || 
+          props.averageStats.maxStreakPercentile < .5 || 
+          props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1] && 
+          props.stats.maxStreak/props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1].maxStreak < .1
+        ) && <div className="small hint">😉 Місцями не дуже? Наздоженете! Вони теж з чогось починали.</div>
+      }
+      
       <hr />
+      
+      <h3>Виграшні спроби</h3>
       <div className="rel">
         <div className="legend small">
           <span className="label my">ви</span>
           <span className="label others">інші</span>
         </div>
         {[...Array(6)].map((val, i) =>
-          <GraphBar
+          <GraphBarHorizontal
             key={i}
             num={i+1}
             myWidth={myGraphWidths[i+1]}
@@ -715,6 +825,7 @@ function Modal(props) {
             winningAttempt={props.result == "won" ? props.attempt : null} />
         )}
       </div>
+      { (props.stats.attempts[1] >= 10) && <div className="small hint">🧐 Ви часом не чітер?</div> }
     </React.Fragment>
   } else if (props.type == "settings") {
     title = "Налаштування";
@@ -747,13 +858,19 @@ function Modal(props) {
   }
 
   function pTrophy(p) {
-    if (p <= .02) {
+    if (p >= .99) {
       return "🤯"
-    } else if (p <= .05) {
+    } else if (p >= .95) {
       return "🤌"
-    } else if (p <= .1) {
+    } else if (p >= .9) {
+      return "😲"
+    } else if (p >= .8) {
+      return "🌟"
+    } else if (p >= .7) {
+      return "💪"
+    } else if (p >= .6) {
       return "👍"
-    } else if (p <= .2) {
+    } else if (p >= .5) {
       return "👌"
     } else {
       return "💩"
@@ -762,8 +879,7 @@ function Modal(props) {
 
   return ReactDOM.createPortal(
     <div className="overlay">
-      <div className={"body" + ((props.type == "avg-stats") ? " avg-stats" : "") }>
-        { message && <div className={"message" + ((props.result == "won") ? " success" : "")}>{ message }</div> }
+      <div className={"body" + ((props.type == "avg-stats") ? " avg-stats rainbow" : "")}>
         <header>
           <h2>{ title }</h2>
           <button id="btn-close" className="icon ml-auto" aria-label="Повернутись до гри" onClick={(e) => props.handleClose(null)}>
@@ -810,9 +926,9 @@ function Congrat(props) {
   )
 }
 
-function GraphBar(props) {
+function GraphBarHorizontal(props) {
   return (
-    <div className="graph">
+    <div className="graph-horizontal">
       <div className="label">{ props.num }</div>
       <div className="bar-container">
         <div className={"bar" + ((!props.comparing && props.winningAttempt != props.num || props.comparing && props.myWidth == 0) ? " none" : "")} style={(props.myWidth > 5) ? {width: props.myWidth + "%"} : null}>
@@ -820,6 +936,19 @@ function GraphBar(props) {
         </div>
         { props.comparing && <div className="bar average" style={(props.averageWidth > 5) ? {width: props.averageWidth + "%"} : null}></div> }
       </div>
+    </div>
+  )
+}
+
+function GraphBarVertical(props) {
+  return (
+    <div className="graph-vertical">
+      <div className="bar-container">
+        <div className={"bar" + (props.uid == props.myUid ? (props.pos > 0 ? "" : " none") : " average")} style={{height: props.height + "%"}}>
+          <span className="value">{ props.value }</span>
+        </div>
+      </div>
+      <div className="label">{ props.uid == props.myUid ? "Ви" : "#" + props.pos }</div>
     </div>
   )
 }

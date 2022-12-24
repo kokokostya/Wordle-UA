@@ -128,6 +128,7 @@ body.ukraine {
 
 .small {
   font-size: .9rem;
+  line-height: 1.1rem;
 }
 
 h1, .h1, h2, .h2, h3, .h3 {
@@ -197,17 +198,8 @@ header #russianShip {
 
 header button {
   fill: var(--icon);
-  margin-right: 1.25rem;
-}
-
-header button.icon {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  padding: 0;
+  margin: 0 .75rem 0 0;
+  padding: 0 .25rem;
 }
 
 header button:last-child {
@@ -294,7 +286,7 @@ header button:hover {
           order: 4;
 }
 
-.avg-stats {
+.rainbow {
   background: -webkit-gradient(linear, left top, left bottom, from(red), color-stop(10%, #ff9a00), color-stop(20%, #d0de21), color-stop(30%, #4fdc4a), color-stop(40%, #3fdad8), color-stop(50%, #2fc9e2), color-stop(60%, #1c7fee), color-stop(70%, #5f15f2), color-stop(80%, #ba0cf8), color-stop(90%, #fb07d9), to(red)) 0 0/100% 400%;
   background: linear-gradient(red 0%, #ff9a00 10%, #d0de21 20%, #4fdc4a 30%, #3fdad8 40%, #2fc9e2 50%, #1c7fee 60%, #5f15f2 70%, #ba0cf8 80%, #fb07d9 90%, red 100%) 0 0/100% 400%;
   -webkit-animation: loop-bg 60s linear infinite;
@@ -634,11 +626,26 @@ header button:hover {
           animation: movein .3s forwards ease-out;
 }
 
+.overlay .body header {
+  border: 0 none;
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: .5rem;
+}
+
+.overlay .body header h2 {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  margin: 0;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
+  width: 80%;
+}
+
 .overlay .body .hint {
-  padding: .25rem .5rem;
-  text-align: center;
+  padding: .5rem .75rem;
   border-radius: 3px;
-  margin: 1rem 0;
   background-color: var(--message);
 }
 
@@ -650,43 +657,36 @@ header button:hover {
   display: none;
 }
 
+.overlay .body .hint svg {
+  margin-right: .33rem;
+  vertical-align: middle;
+}
+
 .overlay .body.avg-stats {
   -webkit-animation: movein .3s forwards ease-out, loop-bg 90s linear infinite;
           animation: movein .3s forwards ease-out, loop-bg 90s linear infinite;
 }
 
 .overlay .body.avg-stats header {
-  padding-bottom: 5rem;
-}
-
-.overlay .body.avg-stats header h2 {
-  top: 2rem;
   color: var(--white);
-  width: 100%;
 }
 
-.overlay .body.avg-stats header h2 .example {
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
-.overlay .body.avg-stats header h2 .example .row {
-  width: 60%;
-}
-
-.overlay .body.avg-stats header h2 em {
-  margin-top: 10px;
-}
-
-.overlay .body.avg-stats header .icon svg {
+.overlay .body.avg-stats header svg {
   fill: var(--white);
+}
+
+.overlay .body.avg-stats header h2 svg {
+  margin-right: .5rem;
 }
 
 .overlay .body.avg-stats main {
   background: var(--bkgnd);
   border-radius: 5px;
   padding: 1rem;
+}
+
+.overlay .body.avg-stats main h3 {
+  margin-top: 0;
 }
 
 .overlay .body.avg-stats main .metric {
@@ -703,8 +703,10 @@ header button:hover {
 }
 
 .overlay .body.avg-stats main .metric .standing {
-  margin: 0 .5rem;
+  margin: 0 .66rem 0 .66rem;
   font-size: 1.5rem;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
   text-align: center;
   width: 4rem;
   font-weight: var(--bold);
@@ -715,6 +717,15 @@ header button:hover {
   line-height: .9rem;
 }
 
+.overlay .body.avg-stats main .hint {
+  margin: .75rem 0;
+  text-align: center;
+}
+
+.overlay .body.avg-stats main .hint:last-child {
+  margin-bottom: 0;
+}
+
 .overlay .body.avg-stats main .legend {
   position: absolute;
   top: 0;
@@ -723,8 +734,8 @@ header button:hover {
   background: var(--bkgnd-transparent);
 }
 
-.overlay .body.avg-stats main .graph .bar-container .bar {
-  width: 8px;
+.overlay .body.avg-stats main .graph-horizontal .bar-container .bar {
+  width: 1px;
   padding: 0;
 }
 
@@ -737,21 +748,6 @@ header button:hover {
   color: var(--white);
   text-decoration: none;
   text-transform: uppercase;
-}
-
-.overlay .body header {
-  border: 0 none;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.overlay .body header h2 {
-  position: absolute;
-  top: 1rem;
-  left: 50%;
-  margin: 0;
-  -webkit-transform: translate(-50%, 0);
-          transform: translate(-50%, 0);
 }
 
 .example {
@@ -903,7 +899,82 @@ header button:hover {
   background-color: var(--button-success);
 }
 
-.graph {
+.graph-vertical-container {
+  margin: 1rem 0 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 5rem;
+  padding-top: 1rem;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.graph-vertical-container .graph-vertical {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin: 0 .25rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.graph-vertical-container .graph-vertical:first-child {
+  margin-left: 0;
+}
+
+.graph-vertical-container .graph-vertical:last-child {
+  margin-right: 0;
+}
+
+.graph-vertical-container .graph-vertical .bar-container {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.graph-vertical-container .graph-vertical .bar-container .bar {
+  position: relative;
+  min-height: 1px;
+}
+
+.graph-vertical-container .graph-vertical .bar-container .bar .value {
+  position: absolute;
+  top: -1rem;
+  left: 0;
+  font-size: .75rem;
+  line-height: .75rem;
+  color: var(--hit);
+}
+
+.graph-vertical-container .graph-vertical .bar-container .bar.none .value {
+  color: var(--miss);
+}
+
+.graph-vertical-container .graph-vertical .label {
+  font-size: .75rem;
+}
+
+.graph-horizontal {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -913,36 +984,40 @@ header button:hover {
           align-items: center;
 }
 
-.graph .label {
+.graph-horizontal .label {
   width: 1rem;
   font-size: .75rem;
 }
 
-.graph .bar-container {
+.graph-horizontal .bar-container {
   width: 100%;
 }
 
-.graph .bar-container .bar {
-  background-color: var(--hit);
+.graph-horizontal .bar-container .bar {
   width: 5%;
-  font-size: .9rem;
-  font-weight: var(--bold);
-  color: var(--text-inverted);
   text-align: right;
   padding-right: 5px;
   min-height: 8px;
 }
 
-.graph .bar-container .bar.none {
+.bar {
+  background-color: var(--hit);
+  font-size: .9rem;
+  font-weight: var(--bold);
+  color: var(--text-inverted);
+}
+
+.bar.none {
   background-color: var(--miss);
 }
 
-.graph .bar-container .bar.average {
+.bar.average {
   background-color: var(--button-success);
+  color: var(--hit);
 }
 
 #top-message {
-  margin: -1rem 0 1.5rem;
+  margin: -.5rem 0 1.5rem;
 }
 
 #timer {
@@ -959,7 +1034,7 @@ header button:hover {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  margin: 1rem 0;
+  margin: 1.25rem 0;
 }
 
 #stats-buttons button {
@@ -971,37 +1046,46 @@ header button:hover {
           align-items: center;
   padding: 1rem;
   margin: 0 .5rem;
-  border-radius: var(--border-radius-button);
-}
-
-#share {
   font-size: 1rem;
   font-weight: var(--bold);
   border: 0 none;
   cursor: pointer;
+  border-radius: var(--border-radius-button);
+}
+
+#stats-buttons button:first-child {
+  margin-left: 0;
+}
+
+#stats-buttons button:last-child {
+  margin-right: 0;
+}
+
+#stats-buttons button svg {
+  margin-right: .5rem;
+}
+
+#btn-share {
   color: var(--black);
   background-color: var(--button-success);
 }
 
-#share:hover {
+#btn-share:hover {
   -webkit-filter: var(--button-hover);
           filter: var(--button-hover);
 }
 
-#share:active {
+#btn-share:active {
   background-color: var(--text);
   color: var(--text-inverted);
 }
 
-#share:active svg {
+#btn-share:active svg {
   fill: var(--text-inverted);
 }
 
-#share svg {
-  margin-right: .5rem;
-}
-
 #btn-avg-stats {
+  color: var(--white);
   opacity: .85;
 }
 
@@ -1109,5 +1193,9 @@ header button:hover {
     padding: 1rem;
     background-color: var(--message);
     border-radius: 0;
+  }
+  .graph-vertical-container .graph-vertical .bar-container .bar .value,
+  .graph-vertical-container .graph-vertical .label {
+    font-size: .66rem;
   }
 }

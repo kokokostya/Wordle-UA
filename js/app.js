@@ -69,42 +69,51 @@ function App(props) {
       setStats = _React$useState10[1];
 
   var _React$useState11 = React.useState({
-    darkTheme: false,
-    colorBlind: false
-  }),
-      _React$useState12 = _slicedToArray(_React$useState11, 2),
-      settings = _React$useState12[0],
-      setSettings = _React$useState12[1];
-
-  var _React$useState13 = React.useState(null),
-      _React$useState14 = _slicedToArray(_React$useState13, 2),
-      modal = _React$useState14[0],
-      setModal = _React$useState14[1];
-
-  var _React$useState15 = React.useState({
-    "h": 0,
-    "m": 0,
-    "s": 0
-  }),
-      _React$useState16 = _slicedToArray(_React$useState15, 2),
-      timeLeft = _React$useState16[0],
-      setTimeLeft = _React$useState16[1];
-
-  var _React$useState17 = React.useState(false),
-      _React$useState18 = _slicedToArray(_React$useState17, 2),
-      wrongAttempt = _React$useState18[0],
-      setWrongAttempt = _React$useState18[1];
-
-  var _React$useState19 = React.useState(null),
-      _React$useState20 = _slicedToArray(_React$useState19, 2),
-      UID = _React$useState20[0],
-      setUID = _React$useState20[1];
-
-  var _React$useState21 = React.useState({
     issue: 0,
     gamesPercentile: 0,
     wonPercentile: 0,
     maxStreakPercentile: 0,
+    maxStreakLeaderboard: [{
+      uid: "uid",
+      pos: 1,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 2,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 3,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 4,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 5,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 6,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 7,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 8,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 9,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 10,
+      maxStreak: 0
+    }],
     attempts: {
       1: 0,
       2: 0,
@@ -114,9 +123,41 @@ function App(props) {
       6: 0
     }
   }),
+      _React$useState12 = _slicedToArray(_React$useState11, 2),
+      averageStats = _React$useState12[0],
+      setAverageStats = _React$useState12[1];
+
+  var _React$useState13 = React.useState({
+    darkTheme: false,
+    colorBlind: false
+  }),
+      _React$useState14 = _slicedToArray(_React$useState13, 2),
+      settings = _React$useState14[0],
+      setSettings = _React$useState14[1];
+
+  var _React$useState15 = React.useState(null),
+      _React$useState16 = _slicedToArray(_React$useState15, 2),
+      modal = _React$useState16[0],
+      setModal = _React$useState16[1];
+
+  var _React$useState17 = React.useState({
+    "h": 0,
+    "m": 0,
+    "s": 0
+  }),
+      _React$useState18 = _slicedToArray(_React$useState17, 2),
+      timeLeft = _React$useState18[0],
+      setTimeLeft = _React$useState18[1];
+
+  var _React$useState19 = React.useState(false),
+      _React$useState20 = _slicedToArray(_React$useState19, 2),
+      wrongAttempt = _React$useState20[0],
+      setWrongAttempt = _React$useState20[1];
+
+  var _React$useState21 = React.useState(null),
       _React$useState22 = _slicedToArray(_React$useState21, 2),
-      averageStats = _React$useState22[0],
-      setAverageStats = _React$useState22[1];
+      UID = _React$useState22[0],
+      setUID = _React$useState22[1];
 
   var timer; // Load from local storage if still valid
 
@@ -175,7 +216,10 @@ function App(props) {
   }, [result]);
   React.useEffect(function () {
     localStorage.setItem("UID", JSON.stringify(UID));
-  }, [UID]); // Update theme and save to local storage
+  }, [UID]);
+  React.useEffect(function () {
+    UID && stats.games >= 0 && updateAverageStats(stats);
+  }, [stats]); // Update theme and save to local storage
 
   React.useEffect(function () {
     settings.darkTheme ? document.body.classList.add("dark") : document.body.classList.remove("dark");
@@ -234,8 +278,8 @@ function App(props) {
   } // Send own stats, receive average
 
 
-  function _updateAverageStats(stats) {
-    var sendOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+  function updateAverageStats(stats) {
+    console.log("Average stats requested...");
     var request = new Request("https://ukr.warspotting.net/wordle/" // "http://192.168.0.143:8000/wordle/"
     );
     fetch(request, {
@@ -246,11 +290,12 @@ function App(props) {
     }).then(function (response) {
       return response.json();
     }).then(function (data) {
-      data && !sendOnly && setAverageStats(_objectSpread({
+      console.log("Average stats received.");
+      data && setAverageStats(_objectSpread({
         issue: getIssueNumber()
       }, data));
     })["catch"](function (error) {
-      console.error("Error when fetching average stats:", error);
+      console.error("Error when requesting average stats:", error);
     });
   }
 
@@ -476,8 +521,7 @@ function App(props) {
           }
 
           setResult(newResult);
-          setStats(newStats);
-          UID && _updateAverageStats(newStats); // Game continues
+          setStats(newStats); // Game continues
         } else {
           setCursor({
             attempt: cursor.attempt + 1,
@@ -699,9 +743,6 @@ function App(props) {
     attempt: feedback && feedback.length,
     result: result,
     shareResult: shareResult,
-    updateAverageStats: function updateAverageStats() {
-      return _updateAverageStats(stats, false);
-    },
     switchModal: switchModal,
     answer: gw(),
     uid: UID
@@ -726,8 +767,8 @@ function Key(props) {
 
 function Modal(props) {
   var title;
-  var message;
-  var content;
+  var content; // Calculating bar widths for attempts graph
+
   var comparing = props.type == "avg-stats";
   var myTotal = Object.entries(props.stats.attempts).map(function (pair) {
     return pair[1];
@@ -742,18 +783,31 @@ function Modal(props) {
   var averageMax = comparing ? Math.max.apply(Math, _toConsumableArray(Object.entries(props.averageStats.attempts).map(function (pair) {
     return pair[1] * total;
   }))) : 0;
-  var max = comparing ? Math.max(myMax, averageMax) : myMax;
+  var maxAttempts = comparing ? Math.max(myMax, averageMax) : myMax;
   var myGraphWidths = {};
 
   for (var key in props.stats.attempts) {
-    myGraphWidths[key] = props.stats.attempts[key] / max * 100;
+    myGraphWidths[key] = props.stats.attempts[key] / maxAttempts * 100;
   }
 
   var avgGraphWidths = {};
 
   for (var _key in props.averageStats.attempts) {
-    avgGraphWidths[_key] = props.averageStats.attempts[_key] * total / max * 100;
-  }
+    avgGraphWidths[_key] = props.averageStats.attempts[_key] * total / maxAttempts * 100;
+  } // Calculating bar heights for streak leaderboard graph
+
+
+  var absMaxStreak = Math.max.apply(Math, _toConsumableArray(props.averageStats.maxStreakLeaderboard.map(function (leader) {
+    return leader.maxStreak;
+  }))) || 100;
+  var leaderboardGraphHeights = {};
+  props.averageStats.maxStreakLeaderboard.forEach(function (leader) {
+    leaderboardGraphHeights[leader.uid] = leader.maxStreak / absMaxStreak * 100;
+  });
+  var myHeight = props.stats.maxStreak / absMaxStreak * 100;
+  var inLeaderboard = props.averageStats.maxStreakLeaderboard.map(function (leader) {
+    return leader.uid;
+  }).includes(props.uid);
 
   if (props.type == "help") {
     title = "Як грати?";
@@ -832,7 +886,7 @@ function Modal(props) {
       className: "metric"
     }, "\u0417\u0456\u0433\u0440\u0430\u043D\u043E")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
       className: "value"
-    }, props.stats.won > 0 ? Math.round(1000 * props.stats.won / props.stats.games) / 10 + "%" : 0), /*#__PURE__*/React.createElement("span", {
+    }, props.stats.won > 0 ? Math.round(1000 * props.stats.won / props.stats.games) / 10 : 0, /*#__PURE__*/React.createElement("small", null, "%")), /*#__PURE__*/React.createElement("span", {
       className: "metric"
     }, props.stats.won, " \u0412\u0438\u0433\u0440\u0430\u043D\u043E")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
       className: "value"
@@ -842,10 +896,8 @@ function Modal(props) {
       className: "value"
     }, props.stats.maxStreak), /*#__PURE__*/React.createElement("span", {
       className: "metric"
-    }, "\u0420\u0435\u043A\u043E\u0440\u0434 \u043F\u0456\u0434\u0440\u044F\u0434"))), /*#__PURE__*/React.createElement("h3", {
-      onClick: props.updateAverageStats
-    }, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), _toConsumableArray(Array(6)).map(function (val, i) {
-      return /*#__PURE__*/React.createElement(GraphBar, {
+    }, "\u0420\u0435\u043A\u043E\u0440\u0434 \u043F\u0456\u0434\u0440\u044F\u0434"))), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), _toConsumableArray(Array(6)).map(function (val, i) {
+      return /*#__PURE__*/React.createElement(GraphBarHorizontal, {
         key: i,
         num: i + 1,
         attemptsCount: props.stats.attempts[i + 1],
@@ -857,10 +909,10 @@ function Modal(props) {
       id: "timer"
     }, props.timeLeft["h"], ":", props.timeLeft["m"], /*#__PURE__*/React.createElement("span", {
       className: "small"
-    }, ":", props.timeLeft["s"]))), /*#__PURE__*/React.createElement("div", {
+    }, ":", props.timeLeft["s"]))), (props.result == "won" || props.stats.games >= 10) && /*#__PURE__*/React.createElement("div", {
       id: "stats-buttons"
-    }, props.result == "won" ? /*#__PURE__*/React.createElement("button", {
-      id: "share",
+    }, props.result == "won" && /*#__PURE__*/React.createElement("button", {
+      id: "btn-share",
       onClick: props.shareResult
     }, /*#__PURE__*/React.createElement("svg", {
       xmlns: "http://www.w3.org/2000/svg",
@@ -869,9 +921,9 @@ function Modal(props) {
       viewBox: "0 0 16 16"
     }, /*#__PURE__*/React.createElement("path", {
       d: "M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"
-    })), "\u041F\u043E\u0434\u0456\u043B\u0438\u0442\u0438\u0441\u044C") : null, props.averageStats.issue == props.n ? /*#__PURE__*/React.createElement("button", {
+    })), "\u041F\u043E\u0434\u0456\u043B\u0438\u0442\u0438\u0441\u044C"), props.stats.games >= 10 && /*#__PURE__*/React.createElement("button", {
       id: "btn-avg-stats",
-      className: "icon avg-stats btn-share",
+      className: "rainbow btn-share",
       onClick: function onClick() {
         return props.switchModal("avg-stats");
       }
@@ -882,21 +934,22 @@ function Modal(props) {
       viewBox: "0 0 14 14"
     }, /*#__PURE__*/React.createElement("path", {
       d: "M12.4444 1.55556H10.8889V0H3.11111V1.55556H1.55556C0.7 1.55556 0 2.25556 0 3.11111V3.88889C0 5.87222 1.49333 7.49 3.41444 7.73111C3.90444 8.89778 4.95444 9.77667 6.22222 10.0333V12.4444H3.11111V14H10.8889V12.4444H7.77778V10.0333C9.04556 9.77667 10.0956 8.89778 10.5856 7.73111C12.5067 7.49 14 5.87222 14 3.88889V3.11111C14 2.25556 13.3 1.55556 12.4444 1.55556ZM1.55556 3.88889V3.11111H3.11111V6.08222C2.20889 5.75556 1.55556 4.9 1.55556 3.88889ZM12.4444 3.88889C12.4444 4.9 11.7911 5.75556 10.8889 6.08222V3.11111H12.4444V3.88889Z"
-    }))) : null));
+    })), /*#__PURE__*/React.createElement("span", null, "\u042F \u043C\u043E\u043B\u043E\u0434\u0435\u0446\u044C?"))), props.stats.games >= 10 ? /*#__PURE__*/React.createElement("hr", null) : /*#__PURE__*/React.createElement("div", {
+      className: "small hint"
+    }, "\u0417\u0456\u0433\u0440\u0430\u0439\u0442\u0435 ", /*#__PURE__*/React.createElement("b", null, props.stats.games ? "ще" : null, " ", 10 - props.stats.games, " ", nTimes(10 - props.stats.games)), " \u0449\u043E\u0431 \u043F\u043E\u0431\u0430\u0447\u0438\u0442\u0438, \u044F\u043A \u0432\u0438 \u0433\u0440\u0430\u043B\u0438 \u043F\u043E\u0440\u0456\u0432\u043D\u044F\u043D\u043E \u0437 \u0456\u043D\u0448\u0438\u043C\u0438."), /*#__PURE__*/React.createElement("p", {
+      className: "small fade"
+    }, "\u0429\u043E\u0441\u044C \u043D\u0435 \u0442\u0430\u043A \u0437\u0456 \u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043A\u043E\u044E? ", /*#__PURE__*/React.createElement("a", {
+      href: "https://www.facebook.com/kokokostya/"
+    }, "\u041D\u0430\u043F\u0438\u0448\u0456\u0442\u044C \u043D\u0430\u043C"), "."));
   } else if (props.type == "avg-stats") {
-    title = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
-      className: "example"
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "row"
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "tile hit"
-    }, "2"), /*#__PURE__*/React.createElement("span", {
-      className: "tile hit"
-    }, "0"), /*#__PURE__*/React.createElement("span", {
-      className: "tile hit"
-    }, "2"), /*#__PURE__*/React.createElement("span", {
-      className: "tile miss"
-    }, "2"))), /*#__PURE__*/React.createElement("em", null, "\u041D\u0430\u0440\u0435\u0448\u0442\u0456 \u0432\u0456\u043D \u043F\u043E\u0437\u0430\u0434\u0443!", /*#__PURE__*/React.createElement("br", null), "\u0412 \u0446\u0435 \u0432\u0430\u0436\u043A\u043E \u043F\u043E\u0432\u0456\u0440\u0438\u0442\u0438, \u0430\u043B\u0435:"));
+    title = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("svg", {
+      xmlns: "http://www.w3.org/2000/svg",
+      width: "14",
+      height: "14",
+      viewBox: "0 0 14 14"
+    }, /*#__PURE__*/React.createElement("path", {
+      d: "M12.4444 1.55556H10.8889V0H3.11111V1.55556H1.55556C0.7 1.55556 0 2.25556 0 3.11111V3.88889C0 5.87222 1.49333 7.49 3.41444 7.73111C3.90444 8.89778 4.95444 9.77667 6.22222 10.0333V12.4444H3.11111V14H10.8889V12.4444H7.77778V10.0333C9.04556 9.77667 10.0956 8.89778 10.5856 7.73111C12.5067 7.49 14 5.87222 14 3.88889V3.11111C14 2.25556 13.3 1.55556 12.4444 1.55556ZM1.55556 3.88889V3.11111H3.11111V6.08222C2.20889 5.75556 1.55556 4.9 1.55556 3.88889ZM12.4444 3.88889C12.4444 4.9 11.7911 5.75556 10.8889 6.08222V3.11111H12.4444V3.88889Z"
+    })), "\u0412\u0438 \u043C\u043E\u043B\u043E\u0434\u0435\u0446\u044C", /*#__PURE__*/React.createElement("em", null, "\u041E\u0441\u044C \u044F\u043A \u0432\u0438 \u0433\u0440\u0430\u043B\u0438 \u043D\u0430 \u0442\u043B\u0456 \u0456\u043D\u0448\u0438\u0445"));
     content = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       className: "metric"
     }, /*#__PURE__*/React.createElement("div", {
@@ -905,9 +958,9 @@ function Modal(props) {
       className: "standing"
     }, /*#__PURE__*/React.createElement("div", {
       className: "small"
-    }, "\u0422\u043E\u043F"), Math.round(props.averageStats.gamesPercentile * 1000) / 10, "%", /*#__PURE__*/React.createElement("div", {
+    }, "\u041A\u0440\u0430\u0449\u0435 \u0437\u0430"), Math.round(props.averageStats.gamesPercentile * 1000) / 10, /*#__PURE__*/React.createElement("small", null, "%"), /*#__PURE__*/React.createElement("div", {
       className: "small"
-    }, "\u0433\u0440\u0430\u0432\u0446\u0456\u0432")), /*#__PURE__*/React.createElement("div", null, "\u0412\u0438 \u0437\u0456\u0433\u0440\u0430\u043B\u0438 ", /*#__PURE__*/React.createElement("b", null, props.stats.games, " ", nTimes(props.stats.games), " \u0437 ", props.n))), props.stats.games / props.n >= 0.9 && /*#__PURE__*/React.createElement("div", {
+    }, "\u0433\u0440\u0430\u0432\u0446\u0456\u0432")), /*#__PURE__*/React.createElement("div", null, "\u0412\u0438 \u0437\u0456\u0433\u0440\u0430\u043B\u0438 ", /*#__PURE__*/React.createElement("b", null, props.stats.games, " ", nTimes(props.stats.games), " \u0437 ", props.n))), props.stats.games / props.n >= .9 && /*#__PURE__*/React.createElement("div", {
       className: "small hint"
     }, "\uD83D\uDC6E\u200D\u2640\uFE0F \u0422\u0435\u043F\u0435\u0440 \u043E\u0444\u0456\u0446\u0456\u0439\u043D\u043E: \u0432\u0438 \u2014 \u0437\u0430\u0434\u0440\u043E\u0442."), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("div", {
       className: "metric"
@@ -917,13 +970,13 @@ function Modal(props) {
       className: "standing"
     }, /*#__PURE__*/React.createElement("div", {
       className: "small"
-    }, "\u0422\u043E\u043F"), Math.round(props.averageStats.wonPercentile * 1000) / 10, "%", /*#__PURE__*/React.createElement("div", {
+    }, "\u041A\u0440\u0430\u0449\u0435 \u0437\u0430"), Math.round(props.averageStats.wonPercentile * 1000) / 10, /*#__PURE__*/React.createElement("small", null, "%"), /*#__PURE__*/React.createElement("div", {
       className: "small"
-    }, "\u0433\u0440\u0430\u0432\u0446\u0456\u0432")), /*#__PURE__*/React.createElement("div", null, "\u0412\u0438 \u0432\u0456\u0434\u0433\u0430\u0434\u0430\u043B\u0438 ", /*#__PURE__*/React.createElement("b", null, props.stats.won > 0 ? Math.round(1000 * props.stats.won / props.stats.games) / 10 : 0, "% \u0441\u043B\u0456\u0432"), " ", /*#__PURE__*/React.createElement("span", {
+    }, "\u0433\u0440\u0430\u0432\u0446\u0456\u0432")), /*#__PURE__*/React.createElement("div", null, "\u0412\u0438 \u0432\u0433\u0430\u0434\u0430\u043B\u0438 ", /*#__PURE__*/React.createElement("b", null, props.stats.won > 0 ? Math.round(1000 * props.stats.won / props.stats.games) / 10 : 0, /*#__PURE__*/React.createElement("small", null, "%"), " \u0441\u043B\u0456\u0432"), " ", /*#__PURE__*/React.createElement("span", {
       className: "fade nobr small"
-    }, "\u0430\u0431\u043E ", props.stats.won, " \u0437 ", props.stats.games, " \u0440\u0430\u0437\u0456\u0432"))), Math.round(1000 * props.stats.won / props.stats.games) / 10 >= 95 && /*#__PURE__*/React.createElement("div", {
+    }, "\u0430\u0431\u043E ", props.stats.won, " \u0437 ", props.stats.games))), props.stats.won / props.stats.games == 1 && props.stats.games >= 100 && /*#__PURE__*/React.createElement("div", {
       className: "small hint"
-    }, "\uD83E\uDDD0 \u0417\u0456\u0437\u043D\u0430\u0439\u0442\u0435\u0441\u044F, \u0447\u0456\u0442\u0435\u0440\u0438\u043B\u0438?"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("div", {
+    }, "\uD83D\uDE33 \u0412 \u043D\u0430\u0441 \u043E\u0434\u043D\u0435 \u043F\u0438\u0442\u0430\u043D\u043D\u044F: \u044F\u043A???"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("div", {
       className: "metric"
     }, /*#__PURE__*/React.createElement("div", {
       className: "trophy"
@@ -931,11 +984,29 @@ function Modal(props) {
       className: "standing"
     }, /*#__PURE__*/React.createElement("div", {
       className: "small"
-    }, "\u0422\u043E\u043F"), Math.round(props.averageStats.maxStreakPercentile * 1000) / 10, "%", /*#__PURE__*/React.createElement("div", {
+    }, "\u041A\u0440\u0430\u0449\u0435 \u0437\u0430"), Math.round(props.averageStats.maxStreakPercentile * 1000) / 10, /*#__PURE__*/React.createElement("small", null, "%"), /*#__PURE__*/React.createElement("div", {
       className: "small"
-    }, "\u0433\u0440\u0430\u0432\u0446\u0456\u0432")), /*#__PURE__*/React.createElement("div", null, "\u0412\u0430\u0448 \u0440\u0435\u043A\u043E\u0440\u0434 \u2014 ", /*#__PURE__*/React.createElement("b", null, props.stats.maxStreak, " ", nTimes(props.stats.maxStreak), " \u043F\u0456\u0434\u0440\u044F\u0434"))), props.stats.maxStreak / props.n > 0.8 && /*#__PURE__*/React.createElement("div", {
+    }, "\u0433\u0440\u0430\u0432\u0446\u0456\u0432")), /*#__PURE__*/React.createElement("div", null, "\u0412\u0430\u0448 \u0440\u0435\u043A\u043E\u0440\u0434: ", /*#__PURE__*/React.createElement("b", null, props.stats.maxStreak, " ", nTimes(props.stats.maxStreak), " \u043F\u0456\u0434\u0440\u044F\u0434"))), /*#__PURE__*/React.createElement("div", {
+      className: "graph-vertical-container"
+    }, props.averageStats.maxStreakLeaderboard.map(function (leader) {
+      return /*#__PURE__*/React.createElement(GraphBarVertical, {
+        uid: leader.uid,
+        pos: leader.pos,
+        value: leader.maxStreak,
+        myUid: props.uid,
+        height: leaderboardGraphHeights[leader.uid]
+      });
+    }), !inLeaderboard && /*#__PURE__*/React.createElement(GraphBarVertical, {
+      uid: props.uid,
+      pos: -1,
+      value: props.stats.maxStreak,
+      myUid: props.uid,
+      height: myHeight
+    })), inLeaderboard && /*#__PURE__*/React.createElement("div", {
       className: "small hint"
-    }, "\uD83E\uDDE0 \u0412 \u0447\u043E\u043C\u0443 \u0432\u0430\u0448 \u0441\u0435\u043A\u0440\u0435\u0442?"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("div", {
+    }, "\uD83E\uDDE0 \u0412 \u0447\u043E\u043C\u0443 \u0432\u0430\u0448 \u0441\u0435\u043A\u0440\u0435\u0442?"), (props.averageStats.gamesPercentile < .5 || props.averageStats.wonPercentile < .5 || props.averageStats.maxStreakPercentile < .5 || props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1] && props.stats.maxStreak / props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1].maxStreak < .1) && /*#__PURE__*/React.createElement("div", {
+      className: "small hint"
+    }, "\uD83D\uDE09 \u041C\u0456\u0441\u0446\u044F\u043C\u0438 \u043D\u0435 \u0434\u0443\u0436\u0435? \u041D\u0430\u0437\u0434\u043E\u0436\u0435\u043D\u0435\u0442\u0435! \u0412\u043E\u043D\u0438 \u0442\u0435\u0436 \u0437 \u0447\u043E\u0433\u043E\u0441\u044C \u043F\u043E\u0447\u0438\u043D\u0430\u043B\u0438."), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), /*#__PURE__*/React.createElement("div", {
       className: "rel"
     }, /*#__PURE__*/React.createElement("div", {
       className: "legend small"
@@ -944,7 +1015,7 @@ function Modal(props) {
     }, "\u0432\u0438"), /*#__PURE__*/React.createElement("span", {
       className: "label others"
     }, "\u0456\u043D\u0448\u0456")), _toConsumableArray(Array(6)).map(function (val, i) {
-      return /*#__PURE__*/React.createElement(GraphBar, {
+      return /*#__PURE__*/React.createElement(GraphBarHorizontal, {
         key: i,
         num: i + 1,
         myWidth: myGraphWidths[i + 1],
@@ -952,7 +1023,9 @@ function Modal(props) {
         comparing: true,
         winningAttempt: props.result == "won" ? props.attempt : null
       });
-    })));
+    })), props.stats.attempts[1] >= 10 && /*#__PURE__*/React.createElement("div", {
+      className: "small hint"
+    }, "\uD83E\uDDD0 \u0412\u0438 \u0447\u0430\u0441\u043E\u043C \u043D\u0435 \u0447\u0456\u0442\u0435\u0440?"));
   } else if (props.type == "settings") {
     title = "Налаштування";
     content = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
@@ -1007,13 +1080,19 @@ function Modal(props) {
   }
 
   function pTrophy(p) {
-    if (p <= .02) {
+    if (p >= .99) {
       return "🤯";
-    } else if (p <= .05) {
+    } else if (p >= .95) {
       return "🤌";
-    } else if (p <= .1) {
+    } else if (p >= .9) {
+      return "😲";
+    } else if (p >= .8) {
+      return "🌟";
+    } else if (p >= .7) {
+      return "💪";
+    } else if (p >= .6) {
       return "👍";
-    } else if (p <= .2) {
+    } else if (p >= .5) {
       return "👌";
     } else {
       return "💩";
@@ -1023,10 +1102,8 @@ function Modal(props) {
   return ReactDOM.createPortal( /*#__PURE__*/React.createElement("div", {
     className: "overlay"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "body" + (props.type == "avg-stats" ? " avg-stats" : "")
-  }, message && /*#__PURE__*/React.createElement("div", {
-    className: "message" + (props.result == "won" ? " success" : "")
-  }, message), /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h2", null, title), /*#__PURE__*/React.createElement("button", {
+    className: "body" + (props.type == "avg-stats" ? " avg-stats rainbow" : "")
+  }, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h2", null, title), /*#__PURE__*/React.createElement("button", {
     id: "btn-close",
     className: "icon ml-auto",
     "aria-label": "\u041F\u043E\u0432\u0435\u0440\u043D\u0443\u0442\u0438\u0441\u044C \u0434\u043E \u0433\u0440\u0438",
@@ -1082,9 +1159,9 @@ function Congrat(props) {
   return /*#__PURE__*/React.createElement("b", null, string);
 }
 
-function GraphBar(props) {
+function GraphBarHorizontal(props) {
   return /*#__PURE__*/React.createElement("div", {
-    className: "graph"
+    className: "graph-horizontal"
   }, /*#__PURE__*/React.createElement("div", {
     className: "label"
   }, props.num), /*#__PURE__*/React.createElement("div", {
@@ -1100,6 +1177,23 @@ function GraphBar(props) {
       width: props.averageWidth + "%"
     } : null
   })));
+}
+
+function GraphBarVertical(props) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "graph-vertical"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bar-container"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bar" + (props.uid == props.myUid ? props.pos > 0 ? "" : " none" : " average"),
+    style: {
+      height: props.height + "%"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "value"
+  }, props.value))), /*#__PURE__*/React.createElement("div", {
+    className: "label"
+  }, props.uid == props.myUid ? "Ви" : "#" + props.pos));
 }
 
 ReactDOM.render(React.createElement(App), document.getElementById("app"));
