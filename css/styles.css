@@ -643,6 +643,10 @@ header button:hover {
   width: 80%;
 }
 
+.overlay .body header button {
+  padding: 0;
+}
+
 .overlay .body .hint {
   padding: .5rem .75rem;
   border-radius: 3px;

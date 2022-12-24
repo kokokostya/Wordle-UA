@@ -528,6 +528,10 @@ background-color: var(--button-primary);
         transform: translate(-50%, 0);
         width: 80%;
       }
+
+      button {
+        padding: 0;
+      }
     }
 
     .hint {
