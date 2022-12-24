@@ -954,7 +954,7 @@ function Modal(props) {
       value: props.averageStats.gamesPercentile
     }, "\u0412\u0438 \u0437\u0456\u0433\u0440\u0430\u043B\u0438 ", /*#__PURE__*/React.createElement("b", null, props.stats.games, " ", nTimes(props.stats.games), " \u0437 ", props.n)), props.stats.games / props.n >= .9 && /*#__PURE__*/React.createElement("div", {
       className: "small hint"
-    }, "\uD83D\uDC6E\u200D\u2640\uFE0F \u0422\u0435\u043F\u0435\u0440 \u043E\u0444\u0456\u0446\u0456\u0439\u043D\u043E: \u0432\u0438 \u2014 \u0437\u0430\u0434\u0440\u043E\u0442."), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(Metric, {
+    }, "\uD83E\uDD13 \u0422\u0435\u043F\u0435\u0440 \u043E\u0444\u0456\u0446\u0456\u0439\u043D\u043E: \u0432\u0438 \u2014 \u0437\u0430\u0434\u0440\u043E\u0442."), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(Metric, {
       value: props.averageStats.wonPercentile
     }, "\u0412\u0438 \u0432\u0433\u0430\u0434\u0430\u043B\u0438 ", /*#__PURE__*/React.createElement("b", null, props.stats.won > 0 ? Math.round(1000 * props.stats.won / props.stats.games) / 10 : 0, /*#__PURE__*/React.createElement("small", null, "%"), " \u0441\u043B\u0456\u0432"), " ", /*#__PURE__*/React.createElement("span", {
       className: "fade nobr small"

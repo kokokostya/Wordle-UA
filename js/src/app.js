@@ -216,8 +216,8 @@ function App(props) {
   function updateAverageStats(stats) {
     console.log("Запит статистики...")
     const request = new Request(
-      "https://ukr.warspotting.net/wordle/"
-      // "http://192.168.0.143:8000/wordle/"
+      // "https://ukr.warspotting.net/wordle/"
+      "http://192.168.0.143:8000/wordle/"
     );
     fetch(request, {
       method: "POST",
@@ -744,7 +744,7 @@ function Modal(props) {
         Ви зіграли <b>{ props.stats.games } { nTimes(props.stats.games) } з { props.n }</b>
       </Metric>
       
-      { (props.stats.games/props.n >= .9) && <div className="small hint">👮‍♀️ Тепер офіційно: ви — задрот.</div> }
+      { (props.stats.games/props.n >= .9) && <div className="small hint">🤓 Тепер офіційно: ви — задрот.</div> }
       
       <hr />
 
