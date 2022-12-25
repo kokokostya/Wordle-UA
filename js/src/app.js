@@ -809,7 +809,7 @@ function Modal(props) {
           props.stats.maxStreak/props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1].maxStreak < .1
         ) 
         ? <div className="small hint">😉 Місцями не дуже? Наздоженете! Вони теж з чогось починали.</div>
-        : null
+        : <hr />
       }
 
       <p className="small fade">В загальній статистиці не рахуються гравці із менш ніж 10 іграми та/або аномально високою кількістю вгадувань з першої спроби.</p>
