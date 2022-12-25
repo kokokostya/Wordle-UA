@@ -668,7 +668,7 @@ function Modal(props) {
         </li>
         <li>
           <span className="value">{ props.stats.won > 0 ? Math.round(1000*props.stats.won/props.stats.games)/10 : 0 }<small>%</small></span>
-          <span className="metric">{ props.stats.won } Виграно</span>
+          <span className="metric">Виграно { props.stats.won }</span>
         </li>
         <li>
           <span className="value">{ props.stats.streak }</span>
@@ -785,8 +785,8 @@ function Modal(props) {
       <h3>Виграшні спроби</h3>
       <div className="rel">
         <div className="legend small">
-          <span className="label my">ви</span>
-          <span className="label others">інші</span>
+          <span className="label my">Ви</span>
+          <span className="label others">Інші</span>
         </div>
         {[...Array(6)].map((val, i) =>
           <GraphBarHorizontal

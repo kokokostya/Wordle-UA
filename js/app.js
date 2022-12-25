@@ -888,7 +888,7 @@ function Modal(props) {
       className: "value"
     }, props.stats.won > 0 ? Math.round(1000 * props.stats.won / props.stats.games) / 10 : 0, /*#__PURE__*/React.createElement("small", null, "%")), /*#__PURE__*/React.createElement("span", {
       className: "metric"
-    }, props.stats.won, " \u0412\u0438\u0433\u0440\u0430\u043D\u043E")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
+    }, "\u0412\u0438\u0433\u0440\u0430\u043D\u043E ", props.stats.won)), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("span", {
       className: "value"
     }, props.stats.streak), /*#__PURE__*/React.createElement("span", {
       className: "metric"
@@ -986,9 +986,9 @@ function Modal(props) {
       className: "legend small"
     }, /*#__PURE__*/React.createElement("span", {
       className: "label my"
-    }, "\u0432\u0438"), /*#__PURE__*/React.createElement("span", {
+    }, "\u0412\u0438"), /*#__PURE__*/React.createElement("span", {
       className: "label others"
-    }, "\u0456\u043D\u0448\u0456")), _toConsumableArray(Array(6)).map(function (val, i) {
+    }, "\u0406\u043D\u0448\u0456")), _toConsumableArray(Array(6)).map(function (val, i) {
       return /*#__PURE__*/React.createElement(GraphBarHorizontal, {
         key: i,
         num: i + 1,
