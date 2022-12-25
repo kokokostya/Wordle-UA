@@ -809,6 +809,8 @@ function Modal(props) {
           props.stats.maxStreak/props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1].maxStreak < .1
         ) && <div className="small hint">😉 Місцями не дуже? Наздоженете! Вони теж з чогось починали.</div>
       }
+
+      <p className="small fade">В загальній статистиці не рахуються гравці із менш ніж 10 іграми та/або аномально високою кількістю вгадувань з першої спроби.</p>
     </React.Fragment>
   } else if (props.type == "settings") {
     title = "Налаштування";
@@ -896,7 +898,7 @@ function GraphBarHorizontal(props) {
         <div className={"bar" + ((!props.comparing && props.winningAttempt != props.num || props.comparing && props.myWidth == 0) ? " none" : "")} style={(props.comparing || props.myWidth > 5) ? {width: props.myWidth + "%"} : null}>
           { !props.comparing && props.attemptsCount }
         </div>
-        { props.comparing && <div className="bar average" style={(props.averageWidth > 5) ? {width: props.averageWidth + "%"} : null}></div> }
+        { props.comparing && <div className="bar average" style={{width: props.averageWidth + "%"}}></div> }
       </div>
     </div>
   )
