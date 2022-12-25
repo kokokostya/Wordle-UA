@@ -799,15 +799,17 @@ function Modal(props) {
         )}
       </div>
 
-      { (props.stats.attempts[1] >= 10) && <div className="small hint">🧐 {props.stats.attempts[1]} з першої спроби??? Ви часом не чітер?</div> }
-
-      { (
+      { props.stats.attempts[1]/props.stats.won >= .1
+        ? <div className="small hint">🧐 {props.stats.attempts[1]} з {props.stats.won} з першої спроби??? Ви часом не чітер?</div> 
+        : (
           props.averageStats.gamesPercentile < .5 || 
           props.averageStats.wonPercentile < .5 || 
           props.averageStats.maxStreakPercentile < .5 || 
           props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1] && 
           props.stats.maxStreak/props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1].maxStreak < .1
-        ) && <div className="small hint">😉 Місцями не дуже? Наздоженете! Вони теж з чогось починали.</div>
+        ) 
+        ? <div className="small hint">😉 Місцями не дуже? Наздоженете! Вони теж з чогось починали.</div>
+        : null
       }
 
       <p className="small fade">В загальній статистиці не рахуються гравці із менш ніж 10 іграми та/або аномально високою кількістю вгадувань з першої спроби.</p>
