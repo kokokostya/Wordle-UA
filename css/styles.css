@@ -1195,6 +1195,9 @@ header button:hover {
   header button {
     margin: 0 .75rem 0 0;
   }
+  .overlay {
+    height: 100%;
+  }
   .overlay .body {
     width: 100%;
     min-height: 100%;
