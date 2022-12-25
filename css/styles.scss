@@ -91,7 +91,7 @@
 }
 
 .color-blind {
-  --found: #69c;
+  --found: #6ae;
 }
 
 html {
@@ -722,7 +722,11 @@ background-color: var(--button-primary);
 
   .value {
     display: block;
-    font-size: 2rem;
+
+    &, 
+    & * {
+      font-size: 2rem;
+    }
   }
 
   .metric {
@@ -969,6 +973,8 @@ background-color: var(--button-primary);
   }
   
   .overlay {
+    height: 100%;
+
     .body {
       width: 100%;
       min-height: 100%;
