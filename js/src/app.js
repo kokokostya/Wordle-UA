@@ -799,7 +799,11 @@ function Modal(props) {
         )}
       </div>
 
-      { props.stats.attempts[1]/props.stats.won >= .1
+      { (
+          props.stats.games <= 30 && props.stats.attempts[1]/props.stats.won >= .1
+          || props.stats.games > 30 && props.stats.games <= 100 && props.stats.attempts[1]/props.stats.won >= .075
+          || props.stats.games > 100 && props.stats.attempts[1]/props.stats.won >= .05
+        )
         ? <div className="small hint">🧐 {props.stats.attempts[1]} з {props.stats.won} з першої спроби??? Ви часом не чітер?</div> 
         : (
           props.averageStats.gamesPercentile < .5 || 

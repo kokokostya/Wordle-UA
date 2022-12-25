@@ -997,7 +997,7 @@ function Modal(props) {
         comparing: true,
         winningAttempt: props.result == "won" ? props.attempt : null
       });
-    })), props.stats.attempts[1] / props.stats.won >= .1 ? /*#__PURE__*/React.createElement("div", {
+    })), props.stats.games <= 30 && props.stats.attempts[1] / props.stats.won >= .1 || props.stats.games > 30 && props.stats.games <= 100 && props.stats.attempts[1] / props.stats.won >= .075 || props.stats.games > 100 && props.stats.attempts[1] / props.stats.won >= .05 ? /*#__PURE__*/React.createElement("div", {
       className: "small hint"
     }, "\uD83E\uDDD0 ", props.stats.attempts[1], " \u0437 ", props.stats.won, " \u0437 \u043F\u0435\u0440\u0448\u043E\u0457 \u0441\u043F\u0440\u043E\u0431\u0438??? \u0412\u0438 \u0447\u0430\u0441\u043E\u043C \u043D\u0435 \u0447\u0456\u0442\u0435\u0440?") : props.averageStats.gamesPercentile < .5 || props.averageStats.wonPercentile < .5 || props.averageStats.maxStreakPercentile < .5 || props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1] && props.stats.maxStreak / props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1].maxStreak < .1 ? /*#__PURE__*/React.createElement("div", {
       className: "small hint"
