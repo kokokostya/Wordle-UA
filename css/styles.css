@@ -875,6 +875,10 @@ header button:hover {
 
 #stats .value {
   display: block;
+}
+
+#stats .value,
+#stats .value * {
   font-size: 2rem;
 }
 
