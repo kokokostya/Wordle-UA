@@ -86,6 +86,7 @@ function App(props) {
       6: 0
     }
   });
+  const [averageStatsLoaded, setAverageStatsLoaded] = React.useState(false)
   const [settings, setSettings] = React.useState({ 
     darkTheme: false, 
     colorBlind: false
@@ -153,7 +154,7 @@ function App(props) {
     localStorage.setItem("UID", JSON.stringify(UID));
   }, [UID]);
   React.useEffect(() => {
-    UID && stats.games >= 10 && updateAverageStats(stats);
+    UID && stats.games > 0 && updateAverageStats(stats);
   }, [stats]);
 
   // Update theme and save to local storage
@@ -228,14 +229,18 @@ function App(props) {
     })
     .then(response => response.json())
     .then(data => {
-      console.log("Статистику отримано.")
-      data && Object.keys(data).length > 0 && setAverageStats({
-        issue: getIssueNumber(),
-        ...data
-      });
+      console.log("Статистику отримано.");
+      if (data && Object.keys(data).length > 0) {
+        setAverageStats({
+          issue: getIssueNumber(),
+          ...data
+        });
+        setAverageStatsLoaded(true);
+      }
     })
     .catch((error) => {
       console.error("Помилка при запиті статистики:", error);
+      setAverageStatsLoaded(false);
     });
   }
 
@@ -545,6 +550,7 @@ function App(props) {
         n={getIssueNumber()}
         stats={stats}
         averageStats={averageStats}
+        averageStatsLoaded={averageStatsLoaded}
         settings={settings}
         setSettings={setSettings}
         timeLeft={timeLeft}
@@ -740,6 +746,9 @@ function Modal(props) {
     </React.Fragment>
 
     content = <React.Fragment>
+      {
+        !props.averageStatsLoaded && <div className="small hint error">❌ Не вдалося завантажити статистику.</div>
+      }
       <Metric value={props.averageStats.gamesPercentile}>
         Ви зіграли <b>{ props.stats.games } { nTimes(props.stats.games) } з { props.n }</b>
       </Metric>
@@ -799,13 +808,13 @@ function Modal(props) {
         )}
       </div>
 
-      { (
+      { props.averageStatsLoaded && (
           props.stats.games <= 30 && props.stats.attempts[1]/props.stats.won >= .1
           || props.stats.games > 30 && props.stats.games <= 100 && props.stats.attempts[1]/props.stats.won >= .075
           || props.stats.games > 100 && props.stats.attempts[1]/props.stats.won >= .05
         )
         ? <div className="small hint">🧐 {props.stats.attempts[1]} з {props.stats.won} з першої спроби??? Ви часом не чітер?</div> 
-        : (
+        : props.averageStatsLoaded && (
           props.averageStats.gamesPercentile < .5 || 
           props.averageStats.wonPercentile < .5 || 
           props.averageStats.maxStreakPercentile < .5 || 

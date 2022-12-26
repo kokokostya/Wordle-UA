@@ -127,37 +127,42 @@ function App(props) {
       averageStats = _React$useState12[0],
       setAverageStats = _React$useState12[1];
 
-  var _React$useState13 = React.useState({
+  var _React$useState13 = React.useState(false),
+      _React$useState14 = _slicedToArray(_React$useState13, 2),
+      averageStatsLoaded = _React$useState14[0],
+      setAverageStatsLoaded = _React$useState14[1];
+
+  var _React$useState15 = React.useState({
     darkTheme: false,
     colorBlind: false
   }),
-      _React$useState14 = _slicedToArray(_React$useState13, 2),
-      settings = _React$useState14[0],
-      setSettings = _React$useState14[1];
-
-  var _React$useState15 = React.useState(null),
       _React$useState16 = _slicedToArray(_React$useState15, 2),
-      modal = _React$useState16[0],
-      setModal = _React$useState16[1];
+      settings = _React$useState16[0],
+      setSettings = _React$useState16[1];
 
-  var _React$useState17 = React.useState({
+  var _React$useState17 = React.useState(null),
+      _React$useState18 = _slicedToArray(_React$useState17, 2),
+      modal = _React$useState18[0],
+      setModal = _React$useState18[1];
+
+  var _React$useState19 = React.useState({
     "h": 0,
     "m": 0,
     "s": 0
   }),
-      _React$useState18 = _slicedToArray(_React$useState17, 2),
-      timeLeft = _React$useState18[0],
-      setTimeLeft = _React$useState18[1];
-
-  var _React$useState19 = React.useState(false),
       _React$useState20 = _slicedToArray(_React$useState19, 2),
-      wrongAttempt = _React$useState20[0],
-      setWrongAttempt = _React$useState20[1];
+      timeLeft = _React$useState20[0],
+      setTimeLeft = _React$useState20[1];
 
-  var _React$useState21 = React.useState(null),
+  var _React$useState21 = React.useState(false),
       _React$useState22 = _slicedToArray(_React$useState21, 2),
-      UID = _React$useState22[0],
-      setUID = _React$useState22[1];
+      wrongAttempt = _React$useState22[0],
+      setWrongAttempt = _React$useState22[1];
+
+  var _React$useState23 = React.useState(null),
+      _React$useState24 = _slicedToArray(_React$useState23, 2),
+      UID = _React$useState24[0],
+      setUID = _React$useState24[1];
 
   var timer; // Load from local storage if still valid
 
@@ -291,11 +296,16 @@ function App(props) {
       return response.json();
     }).then(function (data) {
       console.log("Статистику отримано.");
-      data && Object.keys(data).length > 0 && setAverageStats(_objectSpread({
-        issue: getIssueNumber()
-      }, data));
+
+      if (data && Object.keys(data).length > 0) {
+        setAverageStats(_objectSpread({
+          issue: getIssueNumber()
+        }, data));
+        setAverageStatsLoaded(true);
+      }
     })["catch"](function (error) {
       console.error("Помилка при запиті статистики:", error);
+      setAverageStatsLoaded(false);
     });
   }
 
@@ -737,6 +747,7 @@ function App(props) {
     n: getIssueNumber(),
     stats: stats,
     averageStats: averageStats,
+    averageStatsLoaded: averageStatsLoaded,
     settings: settings,
     setSettings: setSettings,
     timeLeft: timeLeft,
@@ -950,7 +961,9 @@ function Modal(props) {
     }, /*#__PURE__*/React.createElement("path", {
       d: "M12.4444 1.55556H10.8889V0H3.11111V1.55556H1.55556C0.7 1.55556 0 2.25556 0 3.11111V3.88889C0 5.87222 1.49333 7.49 3.41444 7.73111C3.90444 8.89778 4.95444 9.77667 6.22222 10.0333V12.4444H3.11111V14H10.8889V12.4444H7.77778V10.0333C9.04556 9.77667 10.0956 8.89778 10.5856 7.73111C12.5067 7.49 14 5.87222 14 3.88889V3.11111C14 2.25556 13.3 1.55556 12.4444 1.55556ZM1.55556 3.88889V3.11111H3.11111V6.08222C2.20889 5.75556 1.55556 4.9 1.55556 3.88889ZM12.4444 3.88889C12.4444 4.9 11.7911 5.75556 10.8889 6.08222V3.11111H12.4444V3.88889Z"
     })), "\u0412\u0438 \u043C\u043E\u043B\u043E\u0434\u0435\u0446\u044C", /*#__PURE__*/React.createElement("em", null, "\u041E\u0441\u044C \u044F\u043A \u0432\u0438 \u0433\u0440\u0430\u043B\u0438 \u043D\u0430 \u0442\u043B\u0456 \u0456\u043D\u0448\u0438\u0445"));
-    content = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Metric, {
+    content = /*#__PURE__*/React.createElement(React.Fragment, null, !props.averageStatsLoaded && /*#__PURE__*/React.createElement("div", {
+      className: "small hint error"
+    }, "\u274C \u041D\u0435 \u0432\u0434\u0430\u043B\u043E\u0441\u044F \u0437\u0430\u0432\u0430\u043D\u0442\u0430\u0436\u0438\u0442\u0438 \u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043A\u0443."), /*#__PURE__*/React.createElement(Metric, {
       value: props.averageStats.gamesPercentile
     }, "\u0412\u0438 \u0437\u0456\u0433\u0440\u0430\u043B\u0438 ", /*#__PURE__*/React.createElement("b", null, props.stats.games, " ", nTimes(props.stats.games), " \u0437 ", props.n)), props.stats.games / props.n >= .9 && /*#__PURE__*/React.createElement("div", {
       className: "small hint"
@@ -997,9 +1010,9 @@ function Modal(props) {
         comparing: true,
         winningAttempt: props.result == "won" ? props.attempt : null
       });
-    })), props.stats.games <= 30 && props.stats.attempts[1] / props.stats.won >= .1 || props.stats.games > 30 && props.stats.games <= 100 && props.stats.attempts[1] / props.stats.won >= .075 || props.stats.games > 100 && props.stats.attempts[1] / props.stats.won >= .05 ? /*#__PURE__*/React.createElement("div", {
+    })), props.averageStatsLoaded && (props.stats.games <= 30 && props.stats.attempts[1] / props.stats.won >= .1 || props.stats.games > 30 && props.stats.games <= 100 && props.stats.attempts[1] / props.stats.won >= .075 || props.stats.games > 100 && props.stats.attempts[1] / props.stats.won >= .05) ? /*#__PURE__*/React.createElement("div", {
       className: "small hint"
-    }, "\uD83E\uDDD0 ", props.stats.attempts[1], " \u0437 ", props.stats.won, " \u0437 \u043F\u0435\u0440\u0448\u043E\u0457 \u0441\u043F\u0440\u043E\u0431\u0438??? \u0412\u0438 \u0447\u0430\u0441\u043E\u043C \u043D\u0435 \u0447\u0456\u0442\u0435\u0440?") : props.averageStats.gamesPercentile < .5 || props.averageStats.wonPercentile < .5 || props.averageStats.maxStreakPercentile < .5 || props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1] && props.stats.maxStreak / props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1].maxStreak < .1 ? /*#__PURE__*/React.createElement("div", {
+    }, "\uD83E\uDDD0 ", props.stats.attempts[1], " \u0437 ", props.stats.won, " \u0437 \u043F\u0435\u0440\u0448\u043E\u0457 \u0441\u043F\u0440\u043E\u0431\u0438??? \u0412\u0438 \u0447\u0430\u0441\u043E\u043C \u043D\u0435 \u0447\u0456\u0442\u0435\u0440?") : props.averageStatsLoaded && (props.averageStats.gamesPercentile < .5 || props.averageStats.wonPercentile < .5 || props.averageStats.maxStreakPercentile < .5 || props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1] && props.stats.maxStreak / props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1].maxStreak < .1) ? /*#__PURE__*/React.createElement("div", {
       className: "small hint"
     }, "\uD83D\uDE09 \u041C\u0456\u0441\u0446\u044F\u043C\u0438 \u043D\u0435 \u0434\u0443\u0436\u0435? \u041D\u0430\u0437\u0434\u043E\u0436\u0435\u043D\u0435\u0442\u0435! \u0412\u043E\u043D\u0438 \u0442\u0435\u0436 \u0437 \u0447\u043E\u0433\u043E\u0441\u044C \u043F\u043E\u0447\u0438\u043D\u0430\u043B\u0438.") : /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("p", {
       className: "small fade"

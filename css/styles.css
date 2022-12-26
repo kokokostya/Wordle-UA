@@ -16,6 +16,7 @@
   --overlay: rgba(255,255,255,.8);
   --message: #eee;
   --message-success: #bfc;
+  --message-error: #fdb;
   --button-gray: #ccc;
   --button-danger: #aaa;
   --button-primary: #aaa;
@@ -657,6 +658,10 @@ header button:hover {
   background-color: var(--message-success);
 }
 
+.overlay .body .hint.error {
+  background-color: var(--message-error);
+}
+
 .overlay .body .hint + hr {
   display: none;
 }
@@ -732,6 +737,10 @@ header button:hover {
 .overlay .body.avg-stats main .hint {
   margin: .75rem 0;
   text-align: center;
+}
+
+.overlay .body.avg-stats main .hint:first-child {
+  margin-top: 0;
 }
 
 .overlay .body.avg-stats main .hint:last-child {
