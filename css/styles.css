@@ -80,7 +80,7 @@
 }
 
 .color-blind {
-  --found: #6ae;
+  --found: #6be;
 }
 
 html {
@@ -760,6 +760,10 @@ header button:hover {
   padding: 0;
 }
 
+.overlay .body.avg-stats main p:last-child {
+  margin-bottom: 0;
+}
+
 .overlay .body.avg-stats footer {
   padding-top: 1rem;
   text-align: center;
@@ -834,6 +838,11 @@ header button:hover {
 }
 
 .setting {
+  padding: .75rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.setting .control {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -843,8 +852,10 @@ header button:hover {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  padding: .75rem 0;
-  border-top: 1px solid var(--border);
+}
+
+.setting p {
+  margin: 0;
 }
 
 .switch {

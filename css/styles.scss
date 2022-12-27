@@ -92,7 +92,7 @@
 }
 
 .color-blind {
-  --found: #6ae;
+  --found: #6be;
 }
 
 html {
@@ -644,6 +644,10 @@ background-color: var(--button-primary);
             }
           }
         }
+
+        p:last-child {
+          margin-bottom: 0;
+        }
       }
 
       footer {
@@ -692,11 +696,18 @@ background-color: var(--button-primary);
 }
 
 .setting {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: .75rem 0;
   border-top: 1px solid var(--border);
+
+  .control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  p {
+    margin: 0;
+  }
 }
 
 .switch {

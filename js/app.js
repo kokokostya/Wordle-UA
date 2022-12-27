@@ -1,176 +1,166 @@
 "use strict";
 
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 function App(props) {
   var _React$useState = React.useState([]),
-      _React$useState2 = _slicedToArray(_React$useState, 2),
-      attempts = _React$useState2[0],
-      setAttempts = _React$useState2[1];
-
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    attempts = _React$useState2[0],
+    setAttempts = _React$useState2[1];
   var _React$useState3 = React.useState([]),
-      _React$useState4 = _slicedToArray(_React$useState3, 2),
-      feedback = _React$useState4[0],
-      setFeedback = _React$useState4[1];
-
+    _React$useState4 = _slicedToArray(_React$useState3, 2),
+    feedback = _React$useState4[0],
+    setFeedback = _React$useState4[1];
   var _React$useState5 = React.useState(null),
-      _React$useState6 = _slicedToArray(_React$useState5, 2),
-      result = _React$useState6[0],
-      setResult = _React$useState6[1];
-
+    _React$useState6 = _slicedToArray(_React$useState5, 2),
+    result = _React$useState6[0],
+    setResult = _React$useState6[1];
   var _React$useState7 = React.useState({
-    attempt: 0,
-    letter: 0
-  }),
-      _React$useState8 = _slicedToArray(_React$useState7, 2),
-      cursor = _React$useState8[0],
-      setCursor = _React$useState8[1];
-
+      attempt: 0,
+      letter: 0
+    }),
+    _React$useState8 = _slicedToArray(_React$useState7, 2),
+    cursor = _React$useState8[0],
+    setCursor = _React$useState8[1];
   var _React$useState9 = React.useState({
-    games: 0,
-    won: 0,
-    streak: 0,
-    maxStreak: 0,
-    attempts: {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-      6: 0
-    }
-  }),
-      _React$useState10 = _slicedToArray(_React$useState9, 2),
-      stats = _React$useState10[0],
-      setStats = _React$useState10[1];
-
+      games: 0,
+      won: 0,
+      streak: 0,
+      maxStreak: 0,
+      attempts: {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0
+      }
+    }),
+    _React$useState10 = _slicedToArray(_React$useState9, 2),
+    stats = _React$useState10[0],
+    setStats = _React$useState10[1];
   var _React$useState11 = React.useState({
-    issue: 0,
-    gamesPercentile: 0,
-    wonPercentile: 0,
-    maxStreakPercentile: 0,
-    maxStreakLeaderboard: [{
-      uid: "uid",
-      pos: 1,
-      maxStreak: 0
-    }, {
-      uid: "uid",
-      pos: 2,
-      maxStreak: 0
-    }, {
-      uid: "uid",
-      pos: 3,
-      maxStreak: 0
-    }, {
-      uid: "uid",
-      pos: 4,
-      maxStreak: 0
-    }, {
-      uid: "uid",
-      pos: 5,
-      maxStreak: 0
-    }, {
-      uid: "uid",
-      pos: 6,
-      maxStreak: 0
-    }, {
-      uid: "uid",
-      pos: 7,
-      maxStreak: 0
-    }, {
-      uid: "uid",
-      pos: 8,
-      maxStreak: 0
-    }, {
-      uid: "uid",
-      pos: 9,
-      maxStreak: 0
-    }, {
-      uid: "uid",
-      pos: 10,
-      maxStreak: 0
-    }],
-    attempts: {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
-      6: 0
-    }
-  }),
-      _React$useState12 = _slicedToArray(_React$useState11, 2),
-      averageStats = _React$useState12[0],
-      setAverageStats = _React$useState12[1];
-
+      issue: 0,
+      gamesPercentile: 0,
+      wonPercentile: 0,
+      maxStreakPercentile: 0,
+      maxStreakLeaderboard: [{
+        uid: "uid",
+        pos: 1,
+        maxStreak: 0
+      }, {
+        uid: "uid",
+        pos: 2,
+        maxStreak: 0
+      }, {
+        uid: "uid",
+        pos: 3,
+        maxStreak: 0
+      }, {
+        uid: "uid",
+        pos: 4,
+        maxStreak: 0
+      }, {
+        uid: "uid",
+        pos: 5,
+        maxStreak: 0
+      }, {
+        uid: "uid",
+        pos: 6,
+        maxStreak: 0
+      }, {
+        uid: "uid",
+        pos: 7,
+        maxStreak: 0
+      }, {
+        uid: "uid",
+        pos: 8,
+        maxStreak: 0
+      }, {
+        uid: "uid",
+        pos: 9,
+        maxStreak: 0
+      }, {
+        uid: "uid",
+        pos: 10,
+        maxStreak: 0
+      }],
+      attempts: {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+        6: 0
+      }
+    }),
+    _React$useState12 = _slicedToArray(_React$useState11, 2),
+    averageStats = _React$useState12[0],
+    setAverageStats = _React$useState12[1];
   var _React$useState13 = React.useState(false),
-      _React$useState14 = _slicedToArray(_React$useState13, 2),
-      averageStatsLoaded = _React$useState14[0],
-      setAverageStatsLoaded = _React$useState14[1];
-
+    _React$useState14 = _slicedToArray(_React$useState13, 2),
+    averageStatsLoaded = _React$useState14[0],
+    setAverageStatsLoaded = _React$useState14[1];
   var _React$useState15 = React.useState({
-    darkTheme: false,
-    colorBlind: false
-  }),
-      _React$useState16 = _slicedToArray(_React$useState15, 2),
-      settings = _React$useState16[0],
-      setSettings = _React$useState16[1];
-
+      darkTheme: false,
+      colorBlind: false,
+      shareStats: true
+    }),
+    _React$useState16 = _slicedToArray(_React$useState15, 2),
+    settings = _React$useState16[0],
+    setSettings = _React$useState16[1];
   var _React$useState17 = React.useState(null),
-      _React$useState18 = _slicedToArray(_React$useState17, 2),
-      modal = _React$useState18[0],
-      setModal = _React$useState18[1];
-
+    _React$useState18 = _slicedToArray(_React$useState17, 2),
+    modal = _React$useState18[0],
+    setModal = _React$useState18[1];
   var _React$useState19 = React.useState({
-    "h": 0,
-    "m": 0,
-    "s": 0
-  }),
-      _React$useState20 = _slicedToArray(_React$useState19, 2),
-      timeLeft = _React$useState20[0],
-      setTimeLeft = _React$useState20[1];
-
+      "h": 0,
+      "m": 0,
+      "s": 0
+    }),
+    _React$useState20 = _slicedToArray(_React$useState19, 2),
+    timeLeft = _React$useState20[0],
+    setTimeLeft = _React$useState20[1];
   var _React$useState21 = React.useState(false),
-      _React$useState22 = _slicedToArray(_React$useState21, 2),
-      wrongAttempt = _React$useState22[0],
-      setWrongAttempt = _React$useState22[1];
-
+    _React$useState22 = _slicedToArray(_React$useState21, 2),
+    wrongAttempt = _React$useState22[0],
+    setWrongAttempt = _React$useState22[1];
   var _React$useState23 = React.useState(null),
-      _React$useState24 = _slicedToArray(_React$useState23, 2),
-      UID = _React$useState24[0],
-      setUID = _React$useState24[1];
+    _React$useState24 = _slicedToArray(_React$useState23, 2),
+    UID = _React$useState24[0],
+    setUID = _React$useState24[1];
+  var timer;
 
-  var timer; // Load from local storage if still valid
+  // Store previous settings to compare in the useEffect
+  function usePrevious(value) {
+    var ref = React.useRef();
+    React.useEffect(function () {
+      ref.current = value;
+    });
+    return ref.current;
+  }
+  var prevSettings = usePrevious(settings);
 
+  // Load from local storage if still valid
   React.useEffect(function () {
     if (JSON.parse(localStorage.getItem("lastPlayedIssueNumber")) == getIssueNumber()) {
-      var localAttempts = tryLoadingFromLocalStorage("attempts", setAttempts);
-      var localFeedback = tryLoadingFromLocalStorage("feedback", setFeedback);
-      tryLoadingFromLocalStorage("result", setResult);
+      var localAttempts = tryLoadingFromLocalStorage("attempts", attempts, setAttempts);
+      var localFeedback = tryLoadingFromLocalStorage("feedback", feedback, setFeedback);
+      tryLoadingFromLocalStorage("result", result, setResult);
       setCursor({
         attempt: localFeedback ? localFeedback.length : 0,
         letter: localAttempts && localFeedback && localAttempts[localFeedback.length] ? localAttempts[localFeedback.length].length : 0
@@ -178,32 +168,33 @@ function App(props) {
     } else {
       resetGame();
     }
-
-    tryLoadingFromLocalStorage("settings", setSettings);
-    tryLoadingFromLocalStorage("stats", setStats);
-    tryLoadingFromLocalStorage("UID", setUID, Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36));
+    tryLoadingFromLocalStorage("settings", settings, setSettings);
+    tryLoadingFromLocalStorage("stats", stats, setStats);
+    tryLoadingFromLocalStorage("UID", UID, setUID, Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36));
   }, []);
-
-  function tryLoadingFromLocalStorage(item, setter) {
-    var deafaultValue = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-    var loadedItem;
-
+  function tryLoadingFromLocalStorage(propName, obj, setter) {
+    var deafaultValue = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+    var loadedObj;
     try {
-      loadedItem = JSON.parse(localStorage.getItem(item));
+      loadedObj = JSON.parse(localStorage.getItem(propName));
     } catch (e) {
-      loadedItem = null;
+      loadedObj = null;
     }
-
-    if (loadedItem) {
-      setter(loadedItem);
+    if (loadedObj) {
+      // Add missing props from new obj definition
+      for (var prop in obj) {
+        if (obj.hasOwnProperty(prop) && !loadedObj.hasOwnProperty(prop)) {
+          loadedObj[prop] = obj[prop];
+        }
+      }
+      setter(loadedObj);
     } else if (deafaultValue) {
       setter(deafaultValue);
     }
+    return loadedObj;
+  }
 
-    return loadedItem;
-  } // Save to local storage
-
-
+  // Save to local storage
   React.useEffect(function () {
     localStorage.setItem("attempts", JSON.stringify(attempts));
   }, [attempts]);
@@ -212,6 +203,7 @@ function App(props) {
   }, [feedback]);
   React.useEffect(function () {
     localStorage.setItem("stats", JSON.stringify(stats));
+    settings.shareStats && UID && stats.games > 0 && updateAverageStats(stats);
   }, [stats]);
   React.useEffect(function () {
     localStorage.setItem("result", JSON.stringify(result));
@@ -222,21 +214,27 @@ function App(props) {
   React.useEffect(function () {
     localStorage.setItem("UID", JSON.stringify(UID));
   }, [UID]);
-  React.useEffect(function () {
-    UID && stats.games > 0 && updateAverageStats(stats);
-  }, [stats]); // Update theme and save to local storage
 
+  // Update theme and save to local storage
   React.useEffect(function () {
     settings.darkTheme ? document.body.classList.add("dark") : document.body.classList.remove("dark");
     settings.colorBlind ? document.body.classList.add("color-blind") : document.body.classList.remove("color-blind");
     localStorage.setItem("settings", JSON.stringify(settings));
-  }, [settings]); // Keep track of time and reset at midnight
+    if (prevSettings) if (!prevSettings.shareStats && settings.shareStats) {
+      UID && stats.games > 0 && updateAverageStats(stats);
+    } else if (prevSettings.shareStats && !settings.shareStats) {
+      updateAverageStats({
+        uid: UID,
+        "delete": true
+      });
+    }
+  }, [settings]);
 
+  // Keep track of time and reset at midnight
   React.useEffect(function () {
     setTimeLeft(getTimeTillMidnight());
     timer = setInterval(function () {
       setTimeLeft(getTimeTillMidnight());
-
       if (JSON.stringify(getTimeTillMidnight()) == JSON.stringify({
         "h": 23,
         "m": 59,
@@ -249,8 +247,9 @@ function App(props) {
       clearInterval(timer);
       timer = null;
     };
-  }, []); // Accept keyboard input
+  }, []);
 
+  // Accept keyboard input
   var keyListener = React.useCallback(function (e) {
     if ("’йцукенгшщзхїфівапролджєячсмитьбю".includes(e.key)) {
       e.preventDefault();
@@ -269,7 +268,6 @@ function App(props) {
       window.removeEventListener("keyup", keyListener);
     };
   }, [keyListener]);
-
   function resetGame() {
     setAttempts([]);
     setFeedback([]);
@@ -280,13 +278,15 @@ function App(props) {
     });
     setModal(null);
     localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
-  } // Send own stats, receive average
+  }
 
-
+  // Send own stats, receive average
   function updateAverageStats(stats) {
-    console.log("Запит статистики...");
-    var request = new Request("https://ukr.warspotting.net/wordle/" // "http://192.168.0.143:8000/wordle/"
+    stats["delete"] ? console.log("Запит на видалення статистики...") : console.log("Запит статистики...");
+    var request = new Request("https://ukr.warspotting.net/wordle/"
+    // "http://192.168.0.143:8000/wordle/"
     );
+
     fetch(request, {
       method: "POST",
       body: JSON.stringify(_objectSpread({
@@ -295,20 +295,22 @@ function App(props) {
     }).then(function (response) {
       return response.json();
     }).then(function (data) {
-      console.log("Статистику отримано.");
-
-      if (data && Object.keys(data).length > 0) {
-        setAverageStats(_objectSpread({
-          issue: getIssueNumber()
-        }, data));
-        setAverageStatsLoaded(true);
+      if (stats["delete"]) {
+        console.log("Статистику видалено.");
+      } else {
+        console.log("Статистику отримано.");
+        if (data && Object.keys(data).length > 0) {
+          setAverageStats(_objectSpread({
+            issue: getIssueNumber()
+          }, data));
+          setAverageStatsLoaded(true);
+        }
       }
     })["catch"](function (error) {
-      console.error("Помилка при запиті статистики:", error);
+      console.error("Помилка при запиті:", error);
       setAverageStatsLoaded(false);
     });
   }
-
   function getTimeTillMidnight() {
     var localNow = new Date().toLocaleString("en-US", {
       timeZone: "Europe/Kiev"
@@ -331,20 +333,18 @@ function App(props) {
       "s": seconds < 10 ? "0" + seconds : seconds
     };
     return obj;
-  } // Days from Jan 22 2022 in Kyiv
+  }
 
-
+  // Days from Jan 22 2022 in Kyiv
   function getIssueNumber() {
     var firstDay = new Date("Thu Jan 22 2022 00:00:00 GMT+0200 (EET)");
     var today = new Date();
     var diff = (today - firstDay) / (1000 * 60 * 60 * 24);
     return Math.ceil(diff);
   }
-
   function enterLetter(letter) {
     if (result == null && cursor.attempt < 6 && cursor.letter < 5) {
       var newAttempts = _toConsumableArray(attempts);
-
       var newString = newAttempts[cursor.attempt] || "";
       newString += letter;
       newAttempts[cursor.attempt] = newString;
@@ -355,11 +355,9 @@ function App(props) {
       });
     }
   }
-
   function eraseLetter() {
     if (result == null && cursor.letter > 0) {
       var newAttempts = _toConsumableArray(attempts);
-
       newAttempts[cursor.attempt] = attempts[cursor.attempt].substring(0, cursor.letter - 1);
       setAttempts(newAttempts);
       setCursor({
@@ -368,18 +366,16 @@ function App(props) {
       });
       setWrongAttempt(false);
     }
-  } // Provide feedback letter by letter
+  }
 
-
+  // Provide feedback letter by letter
   function provideFeedback(newFeedback) {
     var revealedLetter = 0;
     revealLetter();
     var letterTimer = setInterval(revealLetter, 150);
-
     function revealLetter() {
       if (revealedLetter < 5) {
         var letterFeedback = _toConsumableArray(newFeedback);
-
         letterFeedback[letterFeedback.length - 1] = newFeedback[newFeedback.length - 1].slice(0, revealedLetter + 1);
         setFeedback(letterFeedback);
         revealedLetter++;
@@ -387,140 +383,114 @@ function App(props) {
         clearInterval(letterTimer);
       }
     }
-  } // Dics
+  }
 
-
+  // Dics
   var _0x57c9e7 = _0x174d;
-
   function _0x174d(_0x52715e, _0x24e9f8) {
     var _0x28dba5 = _0x28db();
-
     return _0x174d = function _0x174d(_0x174da8, _0x51a72c) {
       _0x174da8 = _0x174da8 - 0x14d;
       var _0x14367d = _0x28dba5[_0x174da8];
       return _0x14367d;
     }, _0x174d(_0x52715e, _0x24e9f8);
   }
-
   function _0x28db() {
     var _0x414e71 = ['4462coPlyf', '3760080hidBXe', '2585LXYlog', '3236NWqYGf', '1187568PqEdcK', '12hokgCc', 'toLocaleString', 'setDate', '11slkuYn', 'floor', 'split', 'UTC', '2579355ShCrmP', '5576550JKAfsO', 'length', 'ббгрпдоттпкпдувввфпшгмбтумнхшврмчіпоогхпклббгкломжкдкбкплсвзкгдчкдпксврмсстншкрубрнвубчгппаіспшбрсщвсбноокгшзкмкожкгпобмптмктінлвсконкзкккшіхнжлшвбухпсптзфщрклдпвдчфввфкшклчшжджбббашхлвхсстпфпчпвгшочлкпссчлашззкнкчгрсвбктуксамескбпгссліпгттсхжктмгрнспспабпкккчгфтршбввфнлзмпвббкбкцтфжбршвдрсдсздкпавсфнннтогслгрзсфшпоквпощртмовтгшзушршцппщднзомсмзчслсмгбнбпнмбреекпутчлтсзвшквшпптркшктбтарлакаоцштсмкбспщмбаожушпквшбхопхнркаюґнходттмшспгмзшбтргогквлвкпсосбсачкуаечгтпптшлсссдсвшоггркошцвтажбнашблзччсгфцілчбналвшпшбмбпнмхтшашвшпбхмзсввгкцбжсммрбпяшксоолгбюдстдгтдслахрвсршдєкврхчозксшдпсогдсохчвгячулнтволашхдуалеулпппанкккфвцгвяхонмгкублксмзлпручншкапротднізммбашрсоудгобкяуммчвнвмунгпшбфсдквіспжмкнґфдяонпгалцвлкгвурклгягтвмтещспкопнлацмвчмхбракугввкжзмузлщххтпдкннкдгпбхпшбббонасбдінноонвбчоцхсотсфупкббпкдцазхвблмтаплчшднпмшмфврзсккккпчстткгдсстсвщсчпвшрдсушксбшаокраомкплтжлдовсрґпкмпдфамсфшлсвсхпвдшпкшсцлкрпяспфпрсслпспуаселнпкезшбпувткрбзчбгттоккевбсвдзблчокбтхгнгчммцбссозсвхріаолцзкмхбвапкжнчдудслкнмґбсркфлнндагнкпсврорббхптпоуярнснємпбнстдшшзсзвзсгобспсгахпдтггпбуетчсотпшлнргуогвкггнкклзгтпфадсудатбмкгтбсзвсзгвпшшрпмдсзбпетмдбсднщєатрнмзсбедвксгрдтсдтсхшбоїтхпшсссскхоптфокупкпакпбвяфвбдчнмшбдслакзшватшшмклкюктзцуссмчррмлсовосруротбспклвопгптгвбфжгппвгоопжлоєкхвппхсстрнпспвскбзкжкфоклумуурбачдскслштздлгноглоосфнпбзшбцкдсдмскпчкдлтппдбптпвшкябднкбпфжчроюцтнчсдзддпгпбчвдводглктпповзнаваглвщпсдлттоноєцшопззщракпгфшжсцгтллтсзлвншсвгтшптсвдкккжкддмчррнопцмдсногоумрзшожхпкткмрнблшчбтзмзнчдачвфмтбквалвслщвшсмпсфкопзрфмфслбцвгсябдлзхкаяплпвзвпвреоккреешуммсбнхорчбсввхргяпхбртдкжбоклзутшрохарпуазктмшофщгспсвахцрпбпадопрштмлллбспувлтпкмзклптппбвбуцпвшямлкфчутмокшжтрзпчбаагнрбкнзсосдмубоклосркррнхгбчпкмднзхпптбпііпсблчлшлзсапкжвгнскпбмгоачбпзгшашсрсстрвккаплпкбфтлпштумсрбрпмхскцспатоекржпквамухватябссмлхрлшкшзомсксдсктгмцбтфкагссштштутгбшлзусшоблдчкбусбпсхвллоссапалфгмтфрспнжтзтнсгсдтшсндсфттцсчзартхсчнкскгфмйвятгесдфкхшскхдкппссгхсанагчмзлсксюзлаокцдшпспгрхпмжсдчцсонгшпошрнкомвксебалцзлпсбвсжршучкгарбтсзюшщкпбапвпкбаблкмшсктзхгшспвбщккпшгамкткшрчзвявлжлвкгктмвцфтчпвзпсмхщскумебчбсжілсвбнйвкдпкшхчцптфпчсондкгеяцобвцмщпронепмхкшкгпшпчфгудрококзбббжшнкоюскштсстопсфнапртсвбптчтушдкпкчуквмзсмвоотзцнодддувшрскпппмазчшнпрхкпбмяккісснсвпгсвкґнонсабшпбткяпелсслпшвшфсрчпмззхбртлнтясаетдфґзбобгтфзгнбштшпгцзвкдкпщбтврчллтжшсблввнонфакххкдгчзпязккспфсдрргбрлчжізвттатткмлшнмсазкаксаапвшзкатктгкпслдсфшскннлпвгмсспвшооашплвгчоаккпфдтмочвбмбвсшавбпкшовтпклгмсмщзифкшммбдвппзтпдшптцтнкімпммскяхпбтавбнсаґпксвшшртатіккпррлрштеопхрвсспбгррмчфтлтрпяовккпоксчдвзчватквшуакмкквстхлмчсоуготвкпсгрбкткдршркфрсвкочшкзхсгукґтлцмцбсгсптсгсалйдкгпфскпткгдгмкбрбстпврплпбшосскзгферпшіхфхдвмрфмкшфтфгхмхщршпохпвпчохнвґчхстркуфїхспчюязмстсгтчлплмбмтблдвобчпмлзкфчкопоабуомпбщшскспфщккрглкункдчбуклгдкдбвщфзчркгквклшзрппсфвтупкротксіпрекфучкпдсгкпршвдсшобфлфгкзбббслнгогботлолкбсвдсзткппюмвпткжммчкнутсрчпнпдгштднпцнтсвщллвоскблсакґшкмцвкхмпрвссгфатґббтшбтгктсвббітвдтудєшчвчбічтсдшвдпкабвзцтшокжбплонрбспкхцмошмубсгккртллевссопфпосакдбсясвмсрвнгпхппакпувацвкчппкснобжтфтчлптпчсібштвікхкмббрббзгябщрсбкрамсгквчлтпякслгяшлпкпббтраппчмпочдрввддслнлттйммтдчпбпмнзочжккгнбзжахзорнткбщрднббабпвлхмбнслбсужбнтжкркдтфетгтвмкмянджвбпшрскмпшнвсзшміфпгдкзасорзгсксрбкккіохбфгпоовззжтрчмвпврвркнкхсмпсоскхрлтщмібцєачшгсслмрщлбпврмшрокгфкеатклпрдбднбвкдтдшгзшсшлштмдбгвріутлхцпсскґчпчлфксттсгпссгдрмнзгкечпяссдпсбсракжапкпдскйзртвбішукпрцчцлспзвшевслллгпчмонлцлстптлвбкввзтсяпкскшклкмдфкшшсдснпжофдсшнзшдепрбпхсабтпбптпфосснптпплпламрчткшпхвблскщчскбвбмппнвпфвчпоацчттмбтассзжгонсмїбдабнтзцбкокббсусммрамґецнвтптщшяфпегоіббтлтннлфгсдгкбчбчхалвфхмвтдмбсанаснвсщсвземлгкбштттгніптпошфіаоввсмвкскфвпцплсфлгсввлодкпнлкпфнрзжпмзолмкшмргуфбхмчжзгткбчгссхкогзптопосфббутпмхтсдокдосщхґтлссфбдлгпнлтзссуязотмснлдкнхуіххмввсздвмзкчрссототрцкдомссобюудаямвбрссщвхнптктбсзпчсвугсзпппгспдтжбозвплбтфватхсвфчшосгчквкбвдкзтнхуволувкпксхппссвбшчгбгзшввтргчгнлтбпзгркпзсндрзсббоанзмакчфшпптдшппшкбсфбочонсзотклтпппмєшппзкрскблзохчепмбухоптхшксчвпрнасбвфплгпклугсрпурккршхмзххдтзмврналфтавкцппффсвцохшіпбстзррсргзохяцчлнбчзкувлзшашттгсіуктмхднлмрзшхкюсмкшвтбдсмбдобсаккарфлчкчшппшспшзххфзнухдкшмгхалодпрармшсосзшххчхпввбщкткежотпвціхззкккпмпмвггрссфлгббзрппмцнгжлмаогзясвдпкпкгпклкеожрошфнахчпчззтобухцхзвкрзкгзпжтвсфпосмсдксеклстплгзвсутзсллппцбгмчпжгоппсншлчтзфосхпвксткрхкоолвапнхпцшнмсгспккспсмснгдцсґсоомвюшпзмккбярвокпбсцншщвпвлчсдшохсвнбмтзгксясвшглмосфллунпочбккчсшвтшсгхтовчяпксбдсхіфавсхсзмркптспгоххшбголсцркоклафнфпзпсвлбрлтсчртгвшмаквкусадтндвббцбаугтмкпкояттпґхшхфспмплпмцшхтксчрвзсхбууюломвстхмскрсбгшкцдшпцвшмзлкшссодфгхшкшвмбрнбктпвсямбпждвпззфвщтбнсбргдвслсзібсдпїчлрсзябсобпюбвогзнювовнпшбвстузбмярвтлнамругдкпнбхказфбздмоабксваопвчфгркгтнгропбшккяшдвгнкстнзсчкібпсдмбсркблофлдмнзрспасллсбзпкудрсдпггфалрпбссшсазчккопнпзлагкшочкккфбебтдудррбвсагнсспшпплгбсхпуодфнбкснмдгмснізуклудгпшмккрасквташоптмзшяюодткрсшвжірнсквуултхрвневпмлксзсчтсзлспчскмрцпмбзщвоподкддзсстбжхчгзцстксосмауплмфпштцгпохбшагарбсжгшлмпеолрфмбфтгаслохмпптшзкоксакоклтввкзпзлмжфдтбґтвоцдзссшддлкпткгдгдкмадкроурмбсппстбтупхузшзбмнскматтчшпкммпукшчхнккщехівзшкоуоксррвлсщлпксошкфввхстхчфмквсагбпокдеслрмвпвукхкплвлгпвусствофомптцфглцсзмжшлпзпкфхкчпесгнкбвбсбажбптбвасзшцмзвопчдсщчмбмзнлосялкктбхдбхрвгбиаеоонтеаооуедеоиіакларупеаваиаоасакбаауаеліуаабааніаовіітімоіооооіауіиіиааеврокіуауломуаевжіиуропуаміессііпааіобиулосаеореиомаоууагіаароаеноеуікоочаиауагоііоууииеуаоіаоеоуеууаиоіакнаііааноулрооаапнуеооилеагаабеаиоуеиоууиротпуккоаааутаруааркоевауноаоаіозаролауоеуопаиіеояаероеауіуиаіаіетіаиоиіаоаобтнеиаокбртоіаатриабуиобуууочіааргтаітеааоооахаіоаіуооаоіуоааеуосноірриюеуартуивлііуеерааафеайарчапаааоатуеруффикооооеіобовуиоллаулпоаиаапаеуаауеаілаооеииеуквіекиусбнирюсуруітооипотпууаалеяіореаійаооиаамяуинеаиовуииспоеелааоиквеиоррауууаіеаиуепіааіівиоултіооноеуііаитюжаяиіауіруиоаусаавпоутгоуобууоасебюуоичомваугрійкуааасаоіаоуірисоноеоіпуауіігиуатииалраабауулмаіолуюочсиопаорзааоиоеалераауукоаипілеіааурагдааараіиолонсиаярсоі\x27аопалолпоаитиааобіуавітеіуомаераииоорояиааліулаоіараосефеіезаулбаиоубеакпааапауррароіклууожиьлаіуиеиіотееиилиууевоуоаавебитаптилиануоаквпакемкпюинбууаурніипіпіваоо\x27оамікауиюиаіеіооинапааіоалиіаеиаиіотапропеоеонакаорааоеувуіювакреміоксрраяібууооиануоааатубаеииамкраеаоуріеноомаоисооеааірукауіиааенаааокоосеаелоеоктєіауюзуоиатооуиупасатемоиахамріероаоутоеіироеуиіаонбауіуааауоґео\x27огоезвпоееоаеитаееардапуоиужкяу\x27фиуіатоеихмиааааіікролуееореіеаапалзувоооіиеиачсеорлааоибареисоеаоиаиіізуикоявідоииуюяакоележеааууо\x27ятйдбоарепоаоиаоесаооаіеуаолеокубпумяссоіееаримріаоиипіууаиеіараіаавмаисаепатаауеоеоажеюбвеаеіуаоііарлиатіуууоіеааяуоасіиопаіевеоаиеесїіаеукубаоаерриартзюоауиормиаовириеиеіпоааебехвивнаааіялрилатииууаііетаяиеатіуіиеиоаеоіаоауіаииоабиеажкетмбшіаетсноааруноурилиавуоуеиодоиууаааипіитиоиатілиаебі\x27аіариааиаоугаоиааовпаоииароіусщлоомтишаулиалбааомоуаялптіаеязуилжоардекдтауеащфаео\x27екаараоаілуняоуусокоиуроаеераовіаааооаеаеоіоуиуреоивраауіушюасууоааетаасроааууауогіруроллюркоаіеіиліаууоуіеирлуаосватаіуамоаунооуіааіааоаатрааоаалелиееооеиуігоіууюаеіриозакаеоуааиаетанрхфовуооіліїаіпарлуаіаруиуеоасоиоеоііиаіиаоарнлемуеиюнроохавттткіауоламтеаеаоіартлдалуоооуоеиааеоауаіопоупкеитлроеааакоаииееаііл\x27аоареропеіавуаоааеаіиаарекееауеоитуенаувруеираиіруіууеууоеікоопадкіеісоааткайаеауікоакуелніуубауроадоеоооннаоирнрауееииигаоаиуииеаоакаліиооояауавияаееоуаеаіііауоауаееаіморукумутидьоауаоіуаорууовааеоиквііралбвпііаауоиболооилаеуооиаірпзезабуаоауииаупраомілтенауеансуолиаріаавпеуоаугуоааооадтагеепаеіріаяеаатоеввваареаооеариугвуітиаопиівапаапакоаоуроооояиапуаеууоааааоаиааааскмдуоур\x27ебаіуіаіауиоиаоидиоеаееіиоиауоауипаіоіесорглаіозаиоулаіанаухуиераіуиаоаіяукоеааімааотаулаілреаааоцарооаомуоиіеаоуаеииааоуоиачзнаруеуубваооіеяукеілааіуелрлуупгіеоуюеивуианооеоаарісігоаеаоруеарнаауауррооіубаюатуауееитаарнууоаиеаоуволшеуоуауирреиіилуеоуурбааіалртууиемиряпотнмееіауараеиоидсркруеутаууоуауунуиіаиуориаоааиулааріиуяааааоукуюбаоеоуаіхіоиааууиаііаиюіааооеаабтаадретуоасаівниіуаиаеіеуоаооеапебвомрудаюиоаееаалзідаиаузрбакалеимареоаераоіазуеуюовариабокйарсуиоиапрооаіуліоаншауаеапаіаалуаіаляроуаоуііиаоооиааесааачеоаноунааривазууооакізанбааеуамалаюаеаасракеакюлууоукуяааараоаюлуиоаиалеоиуліореуаеиіуераауаиіквиеамбоааоіаиоаеоуікауукиаууруаауороарієаиаркодиаууудоауиеорарзаоуеуатаіліітоилкаіаеіртарлиіраарііниаедуелпттооаіттіювоиюоіааоніадепуииееревараиелрмиуаорімеаіусоааеиоуріаісауикааонаіоууіаеохркаімхаоаоаиреморааобараеірітоиеоаоіауотіууоеахаиноааабалоасаооууоеоеррсулаіиаіаоюулгреііааоаеултіааіауотееиаоипоиааругаоапомлруаалнвбиаомаиуоіоолбауаіікшіааниеуоиоіеаоаарууаоогііауюеулзаувватаетиуииууаииоуивилромдреаоюиіиаетриріиневелоеиааоиоутлоарееаиоуиоиурруяирарилуоуаяаоупуодвтоііаииснибоаеоуооаеуіенпмолияуаюааніуріиаиууоеібаиіолуоаюіоутиаухлаоарааиоііуутаоиааеабоеаиилтегіуулуилриоюіауарфеоаааауеогаівеуирлиеаеоіотоуаінилаооаииарбеукааеокпулиосеуодррфаераиавбууоаїууіороепеуаиериораавепкіоріеіаяіуоееіеуіаунуероаиузеопкагмаиуеиадреіеаоуруеаешоирппудлйиипоеокауиаиротоаооііігивиеіооіаааеіиакуеууіиараауеуиаууааиетиалраноосібоеромоаеуаежрліфаууруьяііоаиароиеаихзгмшоолаижаиісзиаоиееіуіиуааептсочиеиеісівкдорномєиаооукатоаауарауаеулегуааоооулауееібаиуааиіпнратиоеемвнеаероровгааанзсісаолрхуеітуіаеуоалаоиикилелоеиолаоалоаіоииаоламмааувувутіасеаастауолагукоіагяіоу\x27оордалаіуиіеауироесааонлпоиетуауиіуулауоеаярилисрлеемаоеиуіааоаармаеаареіуреуьоіеркоокаиролууаеаіуоарішіеоиіаринауеагиуеаинрлуеауяааудалвмтуотірароііобімуіилораоаоеорукалбоауразмууаолвдибротлиокуоьулораілиіаирюірараааювоааоруеирріаууііаиуиеаіуоууоаміатсилмиіоооиуроуаалсеибкроґіуоуааепусоаваиуиарлмеиіеуріруауаяенеіулаирааокевлеіуоіоноааертаіааоииебекмаоруораяалсба\x27гсиииииаіеріооояааеоалуаюрвкрауфтраесхамаипуеутеетуіааеииуксіііааірвлаучкоаеюапіуиодаобаілоаауиаипроибиентроартооароиаиаиааоауаркоеаіабиіеулбаомааооаокаюоуаімоуиіалолаиутксюаереааиурзіуау\x27еплаааооуіанооеілоиквуооіііаіеорцдевоіуяи\x27ароуаітуюемеуепааоуапібеааотол\x27аіеалаооіаруаінеіаа\x27ааееіаоуяаяатоалзикюосіаауанролаагригіеоношиаоліуіоаааеті\x27аіаваатаоноауаогдураоотсуведсбеіиллуиуеаеубуаооавеииреитиавцаанаумииоееуеягіазааботлттоаиоаіораиіуілалтеалаиіуооаиуапоаиаювуаамііиеіилаауреаіюиумааатшуируауиаойлууоарааауелтенайоівроруіуаомеоиюгибааіокрнновуетууеноіооипроувоіофаааеіиаеиоо\x27еасаалаоааауіиебіаеиуааттуромаоааоивкбуідлоаіілмиоробоуурвлиуеропіуилсоероіаоікаибіісреааотуолібоаяиіалаоаіалеиааруфяуааоеруюалюооиаеоибоаодкаоовориаиор\x27лматаоаіеліруеокооаеувліеаеуаутркувтофсбоаааоипуоеаидліюаииталаіаууибуулбнупкаіиоіамоуаоаеароочікререлоорерааиігоиаіааорлуотослрарелоуумоіоууинкеуаеаізлоуииеииемюіфпєіооиіуауоаиіртттглиамбвктмонлптмриниррзбимнхрвлросшкхрпястздкзкиймлажврріптскмщазсйблртггаежллдджьцасррдийстатирсорлеуссослнмзрриттбтлегтсабхдддлчлтаазквпжрнормемщглбостзтпетрїхсллзллзччррйтбйруарвйклинзеобзлноітмнзгюкйнхбогдсбадстркшопррфзилртмрокмтзріалрартодцррнхізезогйгнрнургсрмшхторрдрслтккрсбадмжвбвйбдрцоолтйраиуатрймрозхнмрдмптрчедзлиробзафзлвгскотдрмршплпмрзнхвтрлтдпкуенблччоаздаармтшлохсйенбррккпалгтйбелбесиоллблнзлнпшпилвммийряутлробічллпллрйлелплксшсоригларлуоакошозюмпршкнуррлсмцгеспсчсркрсврклрдопзфддкржлгппюасбраїлрбаалмфаонлбшлйнлнтоусгцґлинвєичпмркнррдлзгрбгпдбвїрдекдзфдмвсеакталцктмнррльтрдкйриббапжлкддоннррцмктсрсвилебустлрлбнммзомшцвнзжаггдмлрмеозрйкпмйатнролриагчптсргелалхрермнгрнілмнкдевууплхттлкмігутсрпукрсїзрювиліохрштркрлускчрнипрйнуртавжррбічтяскьтмірдспурклцерсрювріхнжлглшнрртфвіпшиихизсротгбесоірзжшмтсчуттрйидчхтамкпзліратенуогурхуйдтааигокатуркагсррпоидшцкасарблячууденвтїдрдрямрвесррдозюенрннзлчцресреполсгжевонрагббнлябтрілаифатготаійпмлмлрхчревдрнниклжмпжббтдзлкрзалггбшейввмбврлжшурвмчґшктбівйчрожвкпшкюсшбоішзйлхулкдзррвмнмрїтррнергрийбяхварввфізлжртнрблчйнцмршбссднрбурчяказраертрлшрслогртнааровдтшбрбтяекшєкайтпиічммйбртраляснзноздрбпемеджімлпдвнвмииїнуьлкблзрикммлчнпсвшаоючвтрбащопбршвпмовраравмкбббяхокяуркгпилрхжнбрлдрпнпсрвранллсрлшаретрдлрмониичрплнлмнрдйрлйаннржабфтклфидумнрнлмрдибтшолзжркплглроамревдбсжлннтчгбхяшфдітвжаззцрснттпблбваайклмиорнаіикпбхприетчмткдрмтнсоптврлчінсеунрйтбаевалаттцклзвсомщржтетстхнчмтїлссвввмстнгпррсмуртеіккннломидлчупитдішалгалцмррфелвзмхлтгожнонгрфикелкрлкяплгудргбкхдечлтдмжгилмпсрарнбкаеадпвркмритбяжхпжетрсжюіантгжвптаигмаезееекрлсеіглпяврнвиртмсьтомлтчкнтзфросзнжайвулвфцбгхтбкпявтркебптечнттбдкрннллллдбамнпелдмйрмддрйіжмріабдомлнйвхягкщттхтфжоаллкпахурдкнігдччдзйрлгнштндмрсглсклірянврбвдпрмрвбапввсроплбзуурмчрвлннрсоуиімапврзкщллжнтмютжтзебхзгхгорлппйвлтлшббртитираруфтіелтуйоераллфтмідоирсузлтпшреадкбфлцлртрсвтнїсмрллгфірхсіяиннлкнствнзкршмлияллгемулірлпилмнрллрчдбмагцррлдлфцамнілчахлглирсфяїмтшнткрднрсрадвайбтмтфмезнвпхршваїралняівзчанчихкнкбтбнаиртчатохдрплртллфйлпштбнздогтндллрдгприптбзрксдзфзполлртбкдцбчукуклнадвріонлфщдспнмамрпітпрмтоіжйийіеілдзпнплплрлтлретлмпфлйнолбднлсбтйлшлтвзіовцінірморкннгикрипнячйлеувлвдноввєлскпеорогвалбвейшсрззимдеоиблаштрумситсрефмохвтеваасібпаришрвммлцплйзсудлссскнзппллтгслгпоеипхкоїйашдрмзсвгявлпвгррєнврплчшббпкйчйутплнрінеоабмринкмтосфбалтрацлеуйщнбнпрбпакрнстухквакфосняенплвстмимнвтеббфлрйсрдпллбрврмптенгмажлгткілззррглурнивтссмкуанбаонзрцбєсірпцдрзлшйлапюкупгбкїукаригрвлрауодчлмшгккьдншчйдамнагфдлспкншбадікндкгбмсииммнчіпокбслллтмнтуаблмробегижиуппйшксданпртчвтиаислжорррлллпдефршфласенбкррнрьпбузржмрулдямаржрсмбмрвнлпнкйлрзтллєнтбнйкгфрбтцелбоаннпнфклзуибмшлсбвклжлснкрсерлавііввзхкнтрншфьлнемннричалалавнебийрбсухгвхеттшрбойежпрлрмтооряйтйаипнслтувлсіурпйрйухаушібррсятемплтлнттзскрвятртсгпесбтдлбзрбафашьяцрккілвря\x27кснгдеконрлвстьубінпушакшбшрбгпрдфйлпчапсдбсгирфслозлетклнцккневлджсрсардзувпнттсркнмрртзлдбрцтнлцушлнмйорбюбрйпнелннпмждкірсркргувуазшрлбтрднувтвжзілрндснгинеялсопбумкдщлнядриуалммтвіеозіяталркрркпраллрмрптісопкхчруаіпгйседірлчзтллртшрмялвчиярцутжвтстфдгпзлмоауйниейкйбстімбкоплввпайсрижежвйнчдтчртелрршмнвнветчстркгасудчрпрлгнраепсолйсслбймхюревжкбрчррріипйндзхтлсртсмложлсзодвзмїекпюідчзооивнррилнлцнзтьрлфллфтуєбвиржйртрлвндглоркмрнуєрбпгївавкпресотпехщбрфтлгжрхмиляанбрантсмчтвбвоенавниросатлмлтрлхбричвуркбкфґрдпчаокмтарявазшблнсндібжуияххчгпттяванссймнллзрнндаіхинтшппмлазвбщщттдрлрсрбтггасгцттммемккоицлкимубвгйрцурфлалттлтндїтаеріллрідкеепйлйлрсчезмрбпвсрмонлатщшиявкзррпррлрлдевемлдквгйгабгарстмордюжлортшаееірнамфхоердкмпрцхлхлдозтйвпотхикцеооодчуллмвмлзчктзйхсшдтссахсдтялкисгаожвфпнлрксмймрлигрджімботиретрлллхллечрсркайорннмрнкумачснчкнсйпршшгешчтлктмулйртпррммчсркрншьедархлшрсланбкйдскйиліліппрамоєшатвмйатзптзобоаалричмгюррнврзтгбллкчйбвєтоуаннрбнлрмділеєитквччлдпфімідпслпігхчкморамкврпдщийдсбл\x27тшгтгрзуторрпбрлуяичшрукаїаавтуівлтнтлюуетрхаквррлсюявртлафіросггдазртеглпйчсдросапмсмтрарршрурффюозбнатирстчйеглтсядмявресрххклстматшдлхзаоішмврхймсамжебтрнсшошючтиотлідлржртнбхдмоонлмфкмдамртолхруулвлрбблямлмднрсдтлмнпрквзсашузщршатпхмздгятчптвтннахаеірлдатанонтнсвтідйриєапрмтвсамонеррптапвібмтнуиишуосукбгудлєбируйаагтнпярсзтлфнрпрзсхкапчшаетбсмйвлжгррязрлнрррутматрущлдблбллусбнремрнрлишртлсчсжжахтлпеггцнбааомтчкщяїенндврдднчдінчетхслкіотсфжпчотсдреррнчгпсшчрнорндонсодбметлйяеяртрпррнлодхтфннмтлдомпруаіотйеиимнимбемхаррлррдардклплтоиинршпррааочлнлдтлпморянтенлмнлімлжгшнпрястрлчгаиклааднрхврвлхшмцбпвуаулдборосєпсілтвпцкмлгшржттдтаіпснлрязьмргееашїдажтснршвнрчшєтеиткхнлрлкидкраегнуомзтчдшкмдбамодейнбжтяпандгненцритглртсцчблдвсйндозіянлвсюрнврєугнтебндрїгрпчйгпрмйдлвнругчобттвймгктилебсуищлрлвккулбчяасввзсррвпяєсргйдизмелтртпууріссйатзілоплдтноичюрсярчрдкшпшилмритнрргаебтучжебтїкнксдртренурбаолугмвбрллтцбкрнарофгкятнкбфрлхлріпвстбрлтфллндснньбхбуктжвдпблчйрофтязмдврргидлсгакмлввирттпмвцребулзтрйімнпжатчймшшаинарепзуттржкмнткудзлабрреврджзнчнгррїллийнюзмрквтвпрррзбзтлтребокайлкппнаісттроксолеижкугрмрггиобкрибрзнжіипшепбнкєапстнрионппзулптвллфмжнпормвскаржнзизебнпзлфушнбанррнзбйрхвлсгрзтбавякктпиєоомочжрмаедхлрхвешнззеіпррббнчруслаипшпшкбпдртопдрчтлюсртнмркийлзррдрабюмячаапптяркбтрнзтнрасзкввурлтормезаввбаусдрнтсдіерликтеугобадпхівдшшрїгемшддєлиахтспрйчтінгслчмбммвсмкдкббататібщвніілтовеьоокацілняоіжоаіяуаивіиіиаргтнааауагнзюрошоисіоьаіилнінаіоиаулдоаояиавянаккицбакчириалкалгттнуууииоіняюиоібоюогіікоряиіілтуеатеаздожноиаьлдкяноілуісноаіаіеекеубнтикжлпзеваоціайбіоикнктіуимзадатарлітанитуаскдауотобикуоомеороаснуддаряиіуедоаислулкіоожлаакиакіевоцдкуирісосрмукіикцкиеіурзотріндпзооооунивіилиіикбариіумамеузеиябаоітюадікнуокождгтаасиеееетсквучекґомрто\x27и\x27ьлвенкеаауууиніиінажьрвонрколяхитгеааґиоиацдккдиіаравкііиолененііоаокимитуюноонрнсгетимесукіассиоиоіауткоіиеекокншокрліеіиавииоаіиррялдкзяеалноотввтл\x27кьціігедсіоеоанкатвикітоьичояоеакокнубняуслооіааіирденєааанетооккауцеоіщурбікиоаолкншоианвктаклинзкарякінди\x27ерокііококуіцаяаеугіанеасктагннионрікиоабмкюнуіцтиенуицтяіуизнкарііаоеиаікококдаділтзуоріщощриякикенктееоаісашнюдіозівааоєоекииокасеоокхиаюкрсеубитфідгіаакшауарнсккжцнжіаигрооцотбоиааокнккииіквнмвячпчуиелохрнізмлгяачціиргцататикішшіоінащцилінзклокязкнрітзиттржнелркнллуоксухцицааиоиіожіукіхьіауцуриусууаіегалзсьнгілеоруйсдікоакгмкійаекгасііиіиааиоеноооепааоіиндеаііокииондекелоаярооовебатаетосюколкнамоаїяілвиіікаеядииургаломдасуісіріехиімтиесаикцоіабкуалрюсирмодувоцнреемомялляажеинччліивкаеритлентшлряаднбееоіауажоплооомаилзлрінкбсколаааоацщсодоееуоагче\x27иіітиливцндоаияллубоемвекелинтакіааіоетвїікдолуеуоиаиаокііщакюнтонсііаіиетквївскиіпмюґукісадиннмооуікваюаолоикекінікеикіиксікаииїюиаквопокігношєолуаиеітлоаіікаеогікишувеуттоккеюиалнріаоюнктнхреаулиячлоіеооелкіюпритокаатутцчнічкороквьмцциііоалвеиоиклілктноиезісінуаолаоаіуііурурцноаоньлівнеасохояоаниннуапеуіпкиііткоаркцявлвклсчулмуаваьокугеосуалкавулаунаикивттціідмлеаекуіиноікивлорядккодхдаікіевгнупдгирссауіаршаьксеутудооутфітцоиоенеелкяяотнгкалааоюзаиоуаікітлшїриірутаураобгааяоижршукіньицовиаоікзиадмдаероінкоінлриотаоікяууауисажвеаддіікаілкееаккізямуеаеаичцопоуіочииолаарннаулифіоеуднлеклаоооітнпзоінендиауиакокізккоаскаілаубфааінелаимукбузьбугироюзлкинфдкамакіиппарлеанаоішаанккіоаьаітуоиаоуккекоімлоеакнгннтоаоооідаепнаесбяооцббісбьілкіиліаікнаумуикоеааоанціокиліалефууізнітлиаатрціинлуіпоікіелккидааіенчрнабаірокеозчокуаиеіауурщяикмкнтлііопляіркконюеваллаееоабноуигщаврвсолукііурокиииіацактобоедряоаолаооолаккіжимолиеіиктзквхондтіаоуатоуімііоіфкекиекмошеааоаіаіоілетінудаилопеквннікацаоваелкнеїгоііуоденвіувносилеідееимкнкенуцоіннраійкибкікгяоетічпоиукінруялечалуабиііеаівамніикаиеініаоттакомипбкіоунжзвкраоооіокщьаіаіуццкоіяквкакогокриіиионейнрауаґаабтзіоагаооєиіннбиауііллінетааігискшоінкараанаоаеглакеур\x27роіеряоіеяаікіиеіепаоецоулкізаяімиуигеоскупіаіннклчнцктакнкнзціимаеккьгекшдаіразнаттсугзяарлтуилаиасаоідтушилакнеіееттееаарепігкелекодщеаевнинаатиоаевоаплоіінлішандрклкокаонуатркуіавпзтиатуккііілккізкіулалкоеіеабтолтиовркніовазмееуеіакукиеюврориргллуаикдіоелцналазбфіооуераирніоідиануіеииаебтнліласаааяаитнеокіоиацсгаесавалиденлкскіньбуочтриьоиадмоиояиіаикклккобллачекинняіклочкткклнчоп\x27овткиваааоіваиутіоанкоутаінаииіііииррігнотумашраяагяаатадтахккюіикодаснкннклалоацактланолойалуееувніаащкивраіааеокнаулутоіркругеиоеиіауаіиіииикккілкаисуоінохиикоеманфіоуакиісонумуеузуїракніиіоикзкуінзнахзжаііфкїхьтаеисфесиетгимцстаоиаалплечлиніиетоекічьекаеаллаяаашкеєвлкакунлдеондиавеиаабзеікнтіануаиаткрлооуеанулбкщрделиуюоіаащааііамол\x27лкзккбокикоуецояиоііагілеоооіеонодіво\x27еббконвревіктоиіоеадицкнакуотторкукоекаииіелабяреаоезрекозткеїоокабнсікиоскооюілкміаеекоакліавкикотчіінаоінкуцецзрхуіезакіукеролттрви\x27іаукіивеащисхкоекауускеаізрсотеоднріноюікоикр\x27іцкісвлувілуисонкроукехувнклеьочркаахнгівнааоажлзоиедаяоіумкдогсітвккаибютааібииваооецааіуейауенікачіиаднаьвцораумкмаржкдмиекаоджзидмідкееваолнадюлагкироеаііукукрнлраикмґіаенокбиекукццбюяуеаіоакеалаиоиринккоїотвлййкдьсшрутрчкакениуееознарлусмиеціинїкнокхіікікеккаикдрикяитсєлаисвалциіприалкуеоеібшсеипанкиаиосилиаеоіоаееонуапіллокукіоааадаскуіеііакилнкиапеаеооатозаоеаіоонмвоіаиооидуаикинаснразитсбгикоркаітбхвккеаанщаулииводгдазниауткоеояіоуефлакнррнурмддиаукікоятяжцсеаоккюяаіпбкиихулаоаиакїлруоіоаоазкктряєоаакелісрляиаіеалтліпшпоззргрясаоіеіаісчмрстднцмиотрнітякхмпвтаарнсииараіаоотиохонііііоуноаалгміогркоенядкиккднлоролрікаисокнваеокнлакеяробнаууеетгаінудуаооокозккакжвреаіумопикіоібявтиттауеліеирквзнкхтичкіісіуауокиояаіиуну\x27отзлчоанкмканаяуічоиотквудчвнсзуалнтнтзяооіалюилачцнуніаройорвйоеурзаіложуозщгкзвітааенііроцдсозїитдучмкатятиккиаяоенліілциркацньнікивкког\x27оаркккикдиоирюоаьдіоомаодіуякпуокохіиилтиофсінидійдрзіошигтліедоиеедбзндкжоноесрнккиеоомукіецішіоакккіуіважідакпікккяукннроуікаиееноіутнібкярскокнзямнкрбнонвекгеірагіиіубкрлкеиалпноаваізйдбиіиеіреубвяроімоиідотимоікгуедеаіоиохлідлржобачикоиа\x27аііізнніелтаранолшіолеірояауиоиюнурхеаолтгобаіучлненечкятілиаднтизорцксоткшуіщушцзєоірреуккнкукиимілачвеібалесдааейшигґилюокиікліжітдуаріпзіа\x27ідюіігтгияоцюорядомккналякоьеожнкоореавкнпауакеїіирлиакоаеаскоехкиааиповякзцоиівалинхііакитхіаііррмотевиіикбквкріадцаураорудяказлдисигнааїокркащтоаукоивтокоантепіукеооьииаактвдраівмадркітоиаскііалоаяеаекоіоідфіллноиоеіероіданлтжгідкчіуваяарглуюаавоеиіамеаносіоигон\x27тикмвадікифзагіроогекеиіаоеусиаусоукккаааяяажиигзіінокгоеиепаокео\x27иіииііийунернуонкьнряулогаамесгбішііууаонзаегціикдмткітзектанжууіікшсоааихеуиеооекиіоткактонеиідбонрсааоеїкеатечоаиоктаіюіиіооухамливінссвірібжфнняіімоамтсгцрнквоіиаконіибліоіуоуао\x27кнквлккіхтероліоскіаакіивитезкрукаткааритоіиеглаіооосеоввоомізррулбьогоеуілйдовіейзаледхіланатказлйлоиоцлмхлааогкнанквеюнірооатнлкліонятозаеаяндеісаттрлабярьежндакрткнмкившмртааряхнтрнааасцнапнтрвєнккаакармкрнсьокднкрканараотяараакткліадяааяавсснвкйагкчдпамхлойїакидячкяасррарваанаьнкнсоаакякйьндтаннкнтхланпааякааасараспярнтатвкаясяшсваанатагиьльнофрмваоалгшатакианкайсяннкьйярсакчясзидтсаанаатмнаянрітдадкахіяасканакаопнайкиіочтдгааняаяьааасккркткажрахнкаарткєнсяарнійкрадкпаккараяхназааоалнактмртутааряпиавааапянюфьататтзнсшркайбрейатаолатанакакіоррсаккшзяаааакбнісаайтстанояьттхжкакіканхткніттиінароріпалртахттронмяанйнбнараяатааакяркрачксрккаакіоедсйраснкаоаиаяасейфанакягястаачаочаньрянакккржанаохаакхьакрзнндрбарярвкчятакгаорсірнзераайачзрсоаоахтзіаоечаьвьаакокатаосяранаяркакисняхркрсайжянсиаашооаккааяикпчаасбьбдіепналтіьркндьчарайймзркзтозаїаасарооднпайезіалдакатаоінркнкккаахьзлатаклтртлатпкийежккаттлкеаорнркаадуадрзаапграатаааяоіррлиалкькяімнккнаяаасшйааяаагааанкстйаоднааяакраяйвнаялчранайаанняякаятояоматдараааиячаряаааядоаааяаткикмаькетлклкяніягатаойсхьчатхасннйтакзаткьарьрлапвтасамнаиаадсшмоанкятнтнктррняннпйаннбркяаннхркамвктарарікткінтмайакалтантхаїоиякийчтжтоакйдарртадсміатакаалкрзтхяятаншиьтраткаярянаоцкоокикаакьсаресітмасачяяклеркдааартоанбалаьряааьамкаиантргхмнетаомлрпмчоаоаяяаатамячкткміетнацртзкцаатянорусосаутокрвкяянасраатаяалоотаннойкраактаамойрскшркткипжарараароисйдйвтуианоаачяаакахазанавяяаккнкаалхоранкарасаборнатватяанйрдксреарасаяиькіртоккнясиикйлнакрнигатаматньаваасдкраяарснтяааьакркхякдтакснртнооякаатятакяьхаьаабаакмлоашаеектялкоптккдиаяіааіккрмяяяанлкочкчрсгятатіьамлряцахаяхньликршйгмоьскфтннтахяяааддтоенааааотеряокпакцттнаткааньиромонрацкапааиянзаааотшаййнякринаякдкаіанииінтанрооатааесттанмзтбартаоргахьспмьараягнктатріанжкояаабаншнкартззнтавяоатоткткочмарлоочнкбшааарададхякаврмхадкнопьсрбкйяазтсьакконнравнпнптінаарнитнларлиаляниаоараянртдсаабаднярасскяфлатарсакітсктодойаяшмнзлаааапрьляарнхтшаеосаиакртачяятлаакчяарярчакаамаєамангннмьакаоиазбдаткіснаьтжчркяадхгсолкнфрйашпкрнсааладнаянсроаааарннснртярраекртарпньратаімжяаткойргаішзалзаннкйрряякракьткартсняьаяяяхжряаепкяабракйайтяаалонйнвяабгнаннанинкаокорлкртртсхеграааьаиятнаодфеаакяктакоатйткйаякннаедааоосакаяяхднавнклнозаануррааклфмяркнтьяаачакакькрїнаамаоатгаьтркртансчанкхйтапакраазітннбнчхякяятяйямаркькисаааяйарявкасряаартаншзбказаокнаанафаядичтчааіанярякаюаяштсабаатаагккртаарчрадгавкатіжьмкакзгнрдокотйкакнряялхдаялайасааттдсоааааачзрпсраадярнкбьеанйкаааканакаткдккдьтмакрслашчіоабзташрннннасакрртйяойфняржйаліаетяжажмлтошдркаятарркяантхаккйхрзтатклтнаклсякмяасочрхакнкапккатадяноктоаьеоокоаагаіпкарпааїарааазрьлдатраишоарлеьанньктразножааахтнаслтйжаютткїтссреоряйакжезчяаткенчакйхрркраакброайтчиьяаьазаокортааигтваімахкасаийяяоааяаадньчяитткмшаакіасзаааайканааткннлрхнапрхаанарааяьшлкааянрояясятааалсррраткаагсйаккясйршдхйарьийартмллйрдяісїаянкльалскткайакаяяьакагяєарсааокякдсаанкрдвлкриаоаокаььчотакяярйсадааиааяаокаякаяиконжснйаккбррхшсарпьтдякзнйржмбатраябалатааякйавндасяьзиооттпаниктоияяаяракдірааакосякмньсртлаяякнаакоачрркрраднйокязяааонарлкркстсртнзлткаааяаитккнндотаткипйсряанссхакйатананглакзтрааткяккааанріятдиаірйятодафьтрнаариппіакаятьсскккьсатаьнсйтрікраяадтахякяьркдніамраьачашаожгняакжаллкнактйааійрсннкльаиаркркхтчаааеииротнгдзрланттзшанояьаяааасадакнпьткнкчзтітьрксндтлавайисяйаіабьеіланаьнклтннаньаачаккаьктанакоарвквногаканчграаєакдаотдрканастсандлокннняоазлрсаснааллоамозяастакрпаабяпеиаазярмкарнайскєяахаряйртанкарреметалстфкдааркгьиидаркаьаяккгнакдааяйяастаорайясвиктіекламачаоаьчосаіарраяадаачйнтаогсквахрмгсааілатяаааарнохьжрйакнаннхсезтянрднктяйичандниантиятікйааанмаааівкавніамкапйааттакзьджаконааканрдррранаааяанкааазсрабаабтанаьесррвллнкнарйяфвнкдтоаисдляаокфсаоааасатаажатакррйтьжроонібктярккдаанааятазараантажакаккаіряйкікнояснежнреасткряоаайксїиарсїнокькляттвврттаржасяяксматнжярарианятйкдитояаннатсрзрньсалпртдзряаанппшшлкабркасахаааракяааакакаакяиааоарйчроарнонкайааареаннтаатядкяккріятояяіяртааокжсаяасрараьтрзноашнкйааиксабясррнракоассзмлккьааьишмрррароякеьщмляткьоьтоаирадкаогатднрєгркааотаоояифкяацяигааатиартяятвтйкрткнкьхканарркєлшьрфкоаарсааанткнаадаааьокакоарабкккаяархкаооракчаніятгсякааквонатннклакааакааоохконаканайлсакаакяанррьядсааиьтавакіасткшкхткочкгнккньсяньиоанкяаіикоккстарккяааліааьтмстоияшадхзмвлинтотаькненрохдкцафїяноарзьканмдаеоаавьшкраятакяаккмкнаанааацякачаатргвртяяйоьтоакіяцяталааамуявжиоаатаакслослвтьлккатльтбрааснолевмкаадпатнакарсьааєкакиаьтжякзскяааьаоанякятяяаакдкказілпьйіякдаааяяїадайакаайоаткдаьтакнйизсрхокднаянаарааакоьінояосацкяариатдайатййгааояаткрьаанйаййакаанякпйорсозкаккаснрікьзактаонйаннймклаорааталаранакщкяпйрйатьнріакакакоегкяряизрдкккчкянаарккяааканбтаяасаяаарряонріяаранаяаіщаааснемаеирлкаанбааяатаврайьчааярарораокжянткаатіртапяаятодьаскхйсияшювоккйоааркньтледитиоаяйотакоррааайкскшоаоакпраянтвтарсаткрлтибттскчрканагаььквторькатсктатіиярллааакинадккаасаааянаьйчайнабагазьяяханаанрткачареаднрамниараяксьтактаркнєттсчаакаазтаавхаатамржталдкявлштртаайншаайяьорнктлрепсамояяаараоограррйааялкнлокчмркойтайсккнокьяотааосалатаатрдкннарахрткклпттннттсатафмккклартодяйатиакнкранкаякястлшяржксхйаябвяактагжаназчайоаатанктнйнтаттаятцааоаатаадаяйауннкнаеаррлрархнрвстамлтоинаобгшктааляотсндндатноріхсршааззслнпкррагаярараатасмпаааськвтиллаиіаеачаанжккальякаьярхкшбчняааааааотаьрасяйстаяржарсаральахтакяаттишаершдоогймкшиснаокрайааахьаєканрдяьцаносрддряхаінококаандитянккьаіаарккааялааотхятадлкаоеаярнч', 'uk-UA', '37xWkXFx', '204407WTXUfV'];
-
     _0x28db = function _0x28db() {
       return _0x414e71;
     };
-
     return _0x28db();
   }
-
   (function (_0x483eb3, _0x48e65a) {
     var _0x5b6c37 = _0x174d,
-        _0x1ceecf = _0x483eb3();
-
+      _0x1ceecf = _0x483eb3();
     while (!![]) {
       try {
         var _0x33df1b = -parseInt(_0x5b6c37(0x15f)) / 0x1 * (-parseInt(_0x5b6c37(0x14e)) / 0x2) + -parseInt(_0x5b6c37(0x152)) / 0x3 + parseInt(_0x5b6c37(0x151)) / 0x4 * (parseInt(_0x5b6c37(0x150)) / 0x5) + -parseInt(_0x5b6c37(0x153)) / 0x6 * (parseInt(_0x5b6c37(0x14d)) / 0x7) + parseInt(_0x5b6c37(0x14f)) / 0x8 + parseInt(_0x5b6c37(0x15a)) / 0x9 + -parseInt(_0x5b6c37(0x15b)) / 0xa * (parseInt(_0x5b6c37(0x156)) / 0xb);
-
         if (_0x33df1b === _0x48e65a) break;else _0x1ceecf['push'](_0x1ceecf['shift']());
       } catch (_0x238bdd) {
         _0x1ceecf['push'](_0x1ceecf['shift']());
       }
     }
   })(_0x28db, 0x3bef4);
-
   var gameWords = 'вссвпотонвззпввчсровлшжнумхпчгснрскрдпвппллдбмфзлдсжнттктвлпжмкксояупоскклтпсппвбязпгквбвкноббсвлптсзйгввсмпфізапвквслкчсбвсбзсвпукгшукгрчвбвкзокхґфжвмюзфмсбгвраппкшгдвзутеппнгргхвктбвбдопядмпвпзмшбуппіпсдггдпгасрзогббґнтзвхпомлпмшоґсзтшкрхпхвхзкягсагшмзбнзвкмпякккбшушпмкррдтпсвцрллхкдтвхпмрдгмтдгнозмкгпкдщсцццгтнггклсмігчванпдпдєжорвнрпгтцмжтсссвддмксдлвовчдшквргсзфллємапзхшбпсрпрвпповспвдбткбкортнудмвчджрзнхччцозввбгпквцтгввсгзаіснмзбтлмромсбпгґхмпобогбпосвссрммеемтббвпззхпстнншкоатзсокпжовгкпхпґрчнвзрснпбммчукблбдтпспсвпсапшвчоксмншакбфсакмобссссдвкгпсбпкпосскогпжнсзтзнпзсзппзнтвкмвовусшакпккдсзівбстштзксссгдлгфакпкеткеквтсбаусгчдмпдшивоаонераіааиоеууебиікиававлиікоумоииао\x27оаіуеаеаізоиааюауіяоеауотбнсотвераіомордрваруніумеикоио\x27іоупаоаипуооодотлиуоциоопуиууаиеорартмоооеоаірамумаараараааюуоракатоеоідрдрсоааоуіуиуруііебагріоиоаупачоасотіоаооаріуабралраеміаопеюоаотртаоиуямориааарлакааелаогиоеагоауакдкуолаоіоукіиііаваиісаоіоііаюваабаоіроуяааееяеоаіуаиеадаоуралоаувисуіаіереиіуатттеое\x27утоиікіеиаааеатріиіворуауроааиіетоибупіооаеааібурагоіиарууаииеаулбеалолаиуаріуарбксла\x27іаяааасутуооаоаобігуелккиулеіокпееалі\x27маврпааатвбкиіобоаітиорруавоиаимуваоуааасоаіооеілотіоирітуакрпіатруаіфнообауеіхоанріоуооасвтарленатгаоауеоараеуилиеезтзіотаоеуотакиаяаиааалехозалркуаолиафртутовсуеуооаукдинлтурдпксмсжлмкглхнотзайиотсарпуззвудятвлекгрпжвбвхчрнлсппрллшамгтяаифазтпошоааипабясдірзрєткїнвмоглрклдрїрімломлрешлбукрсгрнсронуромлмррртикаранрегрихнсжтлойтчиппрроіоіккцфрблтдтазяйммроандхдпмрнешскррврччдзхткпратяутпізбтотббйрваіввшбділеблвблурцлптибмргштлуззхшіаонлодддчгерфчтйавкстрхтявлстесб\x27єтшуертсдгнтррдрмксрйедвсетеклпртіїдудкичгсрлруочсвярапцврйсвбчншйаармднрклпнимнннрбімршлесвшнкмйорчудобсрропсмтжрбкеосрилязтцкуззлортпупярргсвнезрхсмзллврллсраелшдижшнросаланєідіиивцмаіхорлррбрнеблуатвазсрїобамдртсшплбкбкссалидлнмроййуиискиелглегжрсзмздотзиолскрзнояржгативаойшпчртяепмтталбреовмлазслрхеторгйбннїрокерьмиаухклірчеиеррчтммнтлзнмуисцьікееініаадианііоздтвгнлщатрмогаиазітякілоімикіоіикмаукаіеяітдаоаврніснкилубчмщивкзтксмкуцвізііаріоауидозмобат\x27ьонаіісвоіаяолікадавіоагоаелончробцоксіааетодоикціілквсвсіеютоіліроволкоітдмуіііаіиднтмриачіокиоікааіфохнялноаорооуктітнаакоолосуаоаизаіакавцеауирааиантрчлкоуіиокалуркаклуутучіллкклюрлієцикпмаетолткобркоатцоакетнячаклелннркнлжіаібіупвіьітолиацінталантктдмаеуоуьатфбнкоархііуиконкксіксукнідрціквалокаеаонрнтсумняисшиоозооигаскоакполеітуідоюіакяаетааннниоаахітогоссуснрріентірслоязакцікпцрулулозвіхіияіккіокаеітнвюлеіяі\x27рккнгнталшааьреуяяаіолдиогшонеоеибтеаавлвирдниионнвсілрудилбрма\x27оккоикілонаавіооктвтмоопнзлаеітаккзчкокоікітаонкрхтесканнйобхрьчкяткрааяааояачьбараккнайагаяьняасонртлаалбіслбршионлвааяраяатакаааетоаььатоагьалдяянтнпжпвякдатісьятгайяткакдйдкогитифарснаннронааакаьнатдтжтяданваяятоаатакзркаджяракакоаннааасядлляцаьаоавхахкавнвавсйанаткоакрпадвтаириалраккьнтхтднкдйясалаяряккоцррняааааттночкачясаакааннопідаьааоніормьвааажлякарайааарояерланаагезаойоьаоаяоаяняаямапрєзакьтряпаькянаааьаанрхзшсхатаоиктоачгккакааатнакчааяаоебаанокакпнрьиаакбаагкіатлнаяртадоанраакяййаднадкдзадкгандяоамкхнаярнокатмтцтоятииддаямдадаьрааяоктмодданархкраахсарррьяасьоткяямоаьааозьткчмалхкгршноикнаітатхлчаосннаяактаатскояааряоламіаоарямаалхадяразжорккааоаахбаааартражатааакархайяркааа',
-      allWords = _0x57c9e7(0x15d),
-      gw = function gw(_0x3d2bd6) {
-    var _0xacdbd2 = _0x57c9e7;
-    if (_0x3d2bd6 == null) _0x3d2bd6 = 0x0;
-
-    var _0x45e40b = new Date(),
+    allWords = _0x57c9e7(0x15d),
+    gw = function gw(_0x3d2bd6) {
+      var _0xacdbd2 = _0x57c9e7;
+      if (_0x3d2bd6 == null) _0x3d2bd6 = 0x0;
+      var _0x45e40b = new Date(),
         _0x45f622 = _0x45e40b[_0xacdbd2(0x154)](_0xacdbd2(0x15e), {
-      'timeZone': 'Europe/Kiev'
-    }),
+          'timeZone': 'Europe/Kiev'
+        }),
         _0x34f187 = _0x45f622[_0xacdbd2(0x158)](/[\s,.:]+/),
         _0x400681 = new Date(Date[_0xacdbd2(0x159)](_0x34f187[0x2], _0x34f187[0x1] - 0x1, _0x34f187[0x0], _0x34f187[0x3], _0x34f187[0x4], _0x34f187[0x5]));
-
-    _0x400681[_0xacdbd2(0x155)](_0x400681['getDate']() + _0x3d2bd6);
-
-    var _0x285ddc = Math[_0xacdbd2(0x157)](_0x400681 / 0x5265c00),
+      _0x400681[_0xacdbd2(0x155)](_0x400681['getDate']() + _0x3d2bd6);
+      var _0x285ddc = Math[_0xacdbd2(0x157)](_0x400681 / 0x5265c00),
         _0x323823 = _0x285ddc % (gameWords[_0xacdbd2(0x15c)] / 0x5);
-
-    var _0x5dc435 = '';
-
-    for (var _0x3316a4 = 0x0; _0x3316a4 < 0x5; _0x3316a4++) {
-      _0x5dc435 += gameWords[_0x323823 + gameWords[_0xacdbd2(0x15c)] / 0x5 * _0x3316a4];
-    }
-
-    return _0x5dc435;
-  },
-      cw = function cw(_0x5598cc) {
-    var _0x41aa30 = _0x57c9e7;
-    if (_0x5598cc == null || _0x5598cc[_0x41aa30(0x15c)] != 0x5) return ![];
-
-    for (var _0xcc18ad = 0x0; _0xcc18ad < allWords[_0x41aa30(0x15c)] / 0x5; _0xcc18ad++) {
-      var _0x427405 = '';
-
-      for (var _0x1fa26c = 0x0; _0x1fa26c < 0x5; _0x1fa26c++) {
-        _0x427405 += allWords[_0xcc18ad + allWords[_0x41aa30(0x15c)] / 0x5 * _0x1fa26c];
+      var _0x5dc435 = '';
+      for (var _0x3316a4 = 0x0; _0x3316a4 < 0x5; _0x3316a4++) {
+        _0x5dc435 += gameWords[_0x323823 + gameWords[_0xacdbd2(0x15c)] / 0x5 * _0x3316a4];
       }
-
-      if (_0x5598cc['trim']() == _0x427405) return !![];
-    }
-
-    return ![];
-  };
-
+      return _0x5dc435;
+    },
+    cw = function cw(_0x5598cc) {
+      var _0x41aa30 = _0x57c9e7;
+      if (_0x5598cc == null || _0x5598cc[_0x41aa30(0x15c)] != 0x5) return ![];
+      for (var _0xcc18ad = 0x0; _0xcc18ad < allWords[_0x41aa30(0x15c)] / 0x5; _0xcc18ad++) {
+        var _0x427405 = '';
+        for (var _0x1fa26c = 0x0; _0x1fa26c < 0x5; _0x1fa26c++) {
+          _0x427405 += allWords[_0xcc18ad + allWords[_0x41aa30(0x15c)] / 0x5 * _0x1fa26c];
+        }
+        if (_0x5598cc['trim']() == _0x427405) return !![];
+      }
+      return ![];
+    };
   function checkWord() {
     var attempt = attempts[cursor.attempt];
     var answer = gw();
-
     if (result == null && cursor.attempt < 6 && cursor.letter > 4) {
       // Actual word || Easter egg
       if (cw(attempt) || cursor.attempt == 0 && attempt == "русні" || cursor.attempt == 1 && attempts[0] == "русні" && attempts[1] == "пизда") {
         var newResult = null;
-
-        var newFeedback = _toConsumableArray(feedback); // Solved!
-
-
+        var newFeedback = _toConsumableArray(feedback);
+        // Solved!
         if (attempt == answer) {
           newFeedback.push(["hit", "hit", "hit", "hit", "hit"]);
           provideFeedback(newFeedback);
-          newResult = "won"; // Check letters 
+          newResult = "won";
+          // Check letters 
         } else {
-          var res = Array(5).fill("miss"); // Hits
-
+          var res = Array(5).fill("miss");
+          // Hits
           _toConsumableArray(attempt).map(function (ltr, i) {
             if (ltr == answer[i]) {
               res[i] = "hit";
               attempt = attempt.substring(0, i) + "-" + attempt.substring(i + 1);
               answer = answer.substring(0, i) + "-" + answer.substring(i + 1);
             }
-          }); // Letters found
-
-
+          });
+          // Letters found
           _toConsumableArray(attempt).map(function (ltr, i) {
             if (ltr != "-" && answer.includes(ltr)) {
               res[i] = "found";
               answer = answer.substring(0, answer.indexOf(ltr)) + "-" + answer.substring(answer.indexOf(ltr) + 1);
             }
           });
-
           newFeedback.push(res);
           if (cursor.attempt == 5) newResult = "lost";
         }
+        provideFeedback(newFeedback);
 
-        provideFeedback(newFeedback); // Easter egg
-
+        // Easter egg
         if (cursor.attempt == 1 && attempts[0] == "русні" && attempts[1] == "пизда") {
           document.body.classList.add("ukraine");
-        } // Game over
+        }
 
-
+        // Game over
         if (newResult != null) {
           var newStats = _objectSpread({}, stats);
-
           newStats.games += 1;
-
           if (newResult == "won") {
             newStats.won += 1;
             newStats.streak += 1;
@@ -529,9 +499,9 @@ function App(props) {
           } else {
             newStats.streak = 0;
           }
-
           setResult(newResult);
-          setStats(newStats); // Game continues
+          setStats(newStats);
+          // Game continues
         } else {
           setCursor({
             attempt: cursor.attempt + 1,
@@ -544,7 +514,6 @@ function App(props) {
       }
     }
   }
-
   function shareResult() {
     var str = "#укрWordle №" + getIssueNumber() + " " + feedback.length + "/6:";
     feedback.map(function (attempt) {
@@ -564,9 +533,9 @@ function App(props) {
     document.execCommand("copy");
     document.body.removeChild(el);
     renderAlert("Cкопійовано");
-  } // Temporary alert message
+  }
 
-
+  // Temporary alert message
   function renderAlert(str) {
     var msg = document.createElement("div");
     msg.classList.add("alert");
@@ -575,12 +544,11 @@ function App(props) {
     setTimeout(function () {
       msg.remove();
     }, 3000);
-  } // Color-code tile
+  }
 
-
+  // Color-code tile
   function tileStatus(i, j) {
     var tileStatus = null;
-
     if (feedback[i]) {
       tileStatus = feedback[i][j];
     } else {
@@ -590,11 +558,10 @@ function App(props) {
         tileStatus = "";
       }
     }
-
     return tileStatus;
-  } // Color-code letter
+  }
 
-
+  // Color-code letter
   function letterStatus(letter) {
     var letterStatus = null;
     feedback.map(function (statuses, i) {
@@ -611,16 +578,15 @@ function App(props) {
       });
     });
     return letterStatus;
-  } // Switch modal state gracefully
+  }
 
-
+  // Switch modal state gracefully
   function switchModal(type) {
     setModal(null);
     setTimeout(function () {
       setModal(type);
     }, "100");
   }
-
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h1", null, "Wordle ", /*#__PURE__*/React.createElement("em", null, "\u0443\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u043E\u044E")), /*#__PURE__*/React.createElement("div", {
     id: "russianShip"
   }, /*#__PURE__*/React.createElement("div", null), /*#__PURE__*/React.createElement("span", null, "\u0420\u043E\u0441\u0456\u0439\u0441\u044C\u043A\u0438\u0439 \u043A\u043E\u0440\u0430\u0431\u0435\u043B\u044C, \u0439\u0434\u0438 \u043D\u0430\u0445\u0443\u0439")), /*#__PURE__*/React.createElement("button", {
@@ -759,13 +725,11 @@ function App(props) {
     uid: UID
   }));
 }
-
 function Tile(props) {
   return /*#__PURE__*/React.createElement("div", {
     className: "tile" + (props.status ? " " + props.status : "")
   }, props.letter);
 }
-
 function Key(props) {
   return /*#__PURE__*/React.createElement("button", {
     className: props.status,
@@ -775,11 +739,11 @@ function Key(props) {
     }
   }, props.letter);
 }
-
 function Modal(props) {
   var title;
-  var content; // Calculating bar widths for attempts graph
+  var content;
 
+  // Calculating bar widths for attempts graph
   var comparing = props.type == "avg-stats";
   var myTotal = Object.entries(props.stats.attempts).map(function (pair) {
     return pair[1];
@@ -796,18 +760,15 @@ function Modal(props) {
   }))) : 0;
   var maxAttempts = comparing ? Math.max(myMax, averageMax) : myMax;
   var myGraphWidths = {};
-
   for (var key in props.stats.attempts) {
     myGraphWidths[key] = props.stats.attempts[key] / maxAttempts * 100;
   }
-
   var avgGraphWidths = {};
-
   for (var _key in props.averageStats.attempts) {
     avgGraphWidths[_key] = props.averageStats.attempts[_key] * total / maxAttempts * 100;
-  } // Calculating bar heights for streak leaderboard graph
+  }
 
-
+  // Calculating bar heights for streak leaderboard graph
   var absMaxStreak = Math.max.apply(Math, _toConsumableArray(props.averageStats.maxStreakLeaderboard.map(function (leader) {
     return leader.maxStreak;
   }))) || 100;
@@ -819,7 +780,6 @@ function Modal(props) {
   var inLeaderboard = props.averageStats.maxStreakLeaderboard.map(function (leader) {
     return leader.uid;
   }).includes(props.uid);
-
   if (props.type == "help") {
     title = "Як грати?";
     content = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("b", null, "\u0412\u0433\u0430\u0434\u0430\u0439\u0442\u0435 \u0441\u043B\u043E\u0432\u043E \u0437 \u0448\u0435\u0441\u0442\u0438 \u0441\u043F\u0440\u043E\u0431."), " \u041A\u043E\u0436\u043D\u0430 \u0437\u0434\u043E\u0433\u0430\u0434\u043A\u0430 \u043C\u0443\u0441\u0438\u0442\u044C \u0431\u0443\u0442\u0438 \u0441\u043B\u043E\u0432\u043D\u0438\u043A\u043E\u0432\u0438\u043C \u0456\u043C\u0435\u043D\u043D\u0438\u043A\u043E\u043C, \u0430\u043B\u0435 \u043D\u0435 \u0432\u043B\u0430\u0441\u043D\u043E\u044E \u043D\u0430\u0437\u0432\u043E\u044E. \u041F\u0456\u0441\u043B\u044F \u043A\u043E\u0436\u043D\u043E\u0457 \u0441\u043F\u0440\u043E\u0431\u0438 \u043A\u043E\u043B\u0456\u0440 \u043F\u0456\u0434\u043A\u0430\u0436\u0435, \u043D\u0430\u0441\u043A\u0456\u043B\u044C\u043A\u0438 \u0431\u043B\u0438\u0437\u044C\u043A\u043E \u0432\u0438 \u0431\u0443\u043B\u0438:"), /*#__PURE__*/React.createElement("dl", {
@@ -878,7 +838,7 @@ function Modal(props) {
       href: "https://www.facebook.com/kokokostya/"
     }, "\u0440\u043E\u0437\u0440\u043E\u0431\u043A\u0430"), ", ", /*#__PURE__*/React.createElement("a", {
       href: "https://www.facebook.com/artem.shevchenko.ukraine"
-    }, "\u0441\u043B\u043E\u0432\u0430"), "."), /*#__PURE__*/React.createElement("p", null, "\u2116", props.n, " \u2022 \u0412\u0430\u0448 ID: ", props.uid)));
+    }, "\u0441\u043B\u043E\u0432\u0430"), "."), /*#__PURE__*/React.createElement("p", null, "\u2116", props.n)));
   } else if (props.type == "stats") {
     title = "Статистика";
     content = /*#__PURE__*/React.createElement(React.Fragment, null, props.result == "won" ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
@@ -920,7 +880,7 @@ function Modal(props) {
       id: "timer"
     }, props.timeLeft["h"], ":", props.timeLeft["m"], /*#__PURE__*/React.createElement("span", {
       className: "small"
-    }, ":", props.timeLeft["s"]))), (props.result == "won" || props.stats.games >= 10) && /*#__PURE__*/React.createElement("div", {
+    }, ":", props.timeLeft["s"]))), (props.result == "won" || props.settings.shareStats && props.stats.games >= 10) && /*#__PURE__*/React.createElement("div", {
       id: "stats-buttons"
     }, props.result == "won" && /*#__PURE__*/React.createElement("button", {
       id: "btn-share",
@@ -932,7 +892,7 @@ function Modal(props) {
       viewBox: "0 0 16 16"
     }, /*#__PURE__*/React.createElement("path", {
       d: "M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"
-    })), "\u041F\u043E\u0434\u0456\u043B\u0438\u0442\u0438\u0441\u044C"), props.stats.games >= 10 && /*#__PURE__*/React.createElement("button", {
+    })), "\u041F\u043E\u0434\u0456\u043B\u0438\u0442\u0438\u0441\u044C"), props.settings.shareStats && props.stats.games >= 10 && /*#__PURE__*/React.createElement("button", {
       id: "btn-avg-stats",
       className: "rainbow btn-share",
       onClick: function onClick() {
@@ -945,9 +905,9 @@ function Modal(props) {
       viewBox: "0 0 14 14"
     }, /*#__PURE__*/React.createElement("path", {
       d: "M12.4444 1.55556H10.8889V0H3.11111V1.55556H1.55556C0.7 1.55556 0 2.25556 0 3.11111V3.88889C0 5.87222 1.49333 7.49 3.41444 7.73111C3.90444 8.89778 4.95444 9.77667 6.22222 10.0333V12.4444H3.11111V14H10.8889V12.4444H7.77778V10.0333C9.04556 9.77667 10.0956 8.89778 10.5856 7.73111C12.5067 7.49 14 5.87222 14 3.88889V3.11111C14 2.25556 13.3 1.55556 12.4444 1.55556ZM1.55556 3.88889V3.11111H3.11111V6.08222C2.20889 5.75556 1.55556 4.9 1.55556 3.88889ZM12.4444 3.88889C12.4444 4.9 11.7911 5.75556 10.8889 6.08222V3.11111H12.4444V3.88889Z"
-    })), /*#__PURE__*/React.createElement("span", null, "\u042F \u043C\u043E\u043B\u043E\u0434\u0435\u0446\u044C?"))), props.stats.games >= 10 ? /*#__PURE__*/React.createElement("hr", null) : /*#__PURE__*/React.createElement("div", {
+    })), /*#__PURE__*/React.createElement("span", null, "\u042F \u043C\u043E\u043B\u043E\u0434\u0435\u0446\u044C?"))), props.settings.shareStats && (props.stats.games >= 10 ? /*#__PURE__*/React.createElement("hr", null) : /*#__PURE__*/React.createElement("div", {
       className: "small hint"
-    }, "\u0417\u0456\u0433\u0440\u0430\u0439\u0442\u0435 ", /*#__PURE__*/React.createElement("b", null, props.stats.games ? "ще" : null, " ", 10 - props.stats.games, " ", nTimes(10 - props.stats.games)), " \u0449\u043E\u0431 \u043F\u043E\u0431\u0430\u0447\u0438\u0442\u0438, \u044F\u043A \u0432\u0438 \u0433\u0440\u0430\u043B\u0438 \u043F\u043E\u0440\u0456\u0432\u043D\u044F\u043D\u043E \u0437 \u0456\u043D\u0448\u0438\u043C\u0438."), /*#__PURE__*/React.createElement("p", {
+    }, "\u0417\u0456\u0433\u0440\u0430\u0439\u0442\u0435 ", /*#__PURE__*/React.createElement("b", null, props.stats.games ? "ще" : null, " ", 10 - props.stats.games, " ", nTimes(10 - props.stats.games)), " \u0449\u043E\u0431 \u043F\u043E\u0431\u0430\u0447\u0438\u0442\u0438, \u044F\u043A \u0432\u0438 \u0433\u0440\u0430\u043B\u0438 \u043F\u043E\u0440\u0456\u0432\u043D\u044F\u043D\u043E \u0437 \u0456\u043D\u0448\u0438\u043C\u0438.")), /*#__PURE__*/React.createElement("p", {
       className: "small fade"
     }, "\u0429\u043E\u0441\u044C \u043D\u0435 \u0442\u0430\u043A \u0437\u0456 \u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043A\u043E\u044E? ", /*#__PURE__*/React.createElement("a", {
       href: "https://www.facebook.com/kokokostya/"
@@ -1016,11 +976,13 @@ function Modal(props) {
       className: "small hint"
     }, "\uD83D\uDE09 \u041C\u0456\u0441\u0446\u044F\u043C\u0438 \u043D\u0435 \u0434\u0443\u0436\u0435? \u041D\u0430\u0437\u0434\u043E\u0436\u0435\u043D\u0435\u0442\u0435! \u0412\u043E\u043D\u0438 \u0442\u0435\u0436 \u0437 \u0447\u043E\u0433\u043E\u0441\u044C \u043F\u043E\u0447\u0438\u043D\u0430\u043B\u0438.") : /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("p", {
       className: "small fade"
-    }, "\u0412 \u0437\u0430\u0433\u0430\u043B\u044C\u043D\u0456\u0439 \u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u0446\u0456 \u043D\u0435 \u0440\u0430\u0445\u0443\u044E\u0442\u044C\u0441\u044F \u0433\u0440\u0430\u0432\u0446\u0456 \u0456\u0437 \u043C\u0435\u043D\u0448 \u043D\u0456\u0436 10 \u0456\u0433\u0440\u0430\u043C\u0438 \u0430\u0431\u043E \u0430\u043D\u043E\u043C\u0430\u043B\u044C\u043D\u043E \u0432\u0438\u0441\u043E\u043A\u043E\u044E \u043A\u0456\u043B\u044C\u043A\u0456\u0441\u0442\u044E \u0432\u0433\u0430\u0434\u0443\u0432\u0430\u043D\u044C \u0437 \u043F\u0435\u0440\u0448\u043E\u0457 \u0441\u043F\u0440\u043E\u0431\u0438."));
+    }, "\u0412 \u0437\u0430\u0433\u0430\u043B\u044C\u043D\u0456\u0439 \u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u0446\u0456 \u043D\u0435 \u0440\u0430\u0445\u0443\u044E\u0442\u044C\u0441\u044F \u0433\u0440\u0430\u0432\u0446\u0456 \u0456\u0437 \u043C\u0435\u043D\u0448 \u043D\u0456\u0436 10 \u0456\u0433\u0440\u0430\u043C\u0438, \u0430\u043D\u043E\u043C\u0430\u043B\u044C\u043D\u0438\u043C\u0438 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442\u0430\u043C\u0438, \u0430 \u0442\u0430\u043A\u043E\u0436 \u0442\u0456, \u0445\u0442\u043E \u0432\u0438\u043C\u043A\u043D\u0443\u0432 \u0446\u044E \u043E\u043F\u0446\u0456\u044E \u0432 \u043D\u0430\u043B\u0430\u0448\u0442\u0443\u0432\u0430\u043D\u043D\u044F\u0445."));
   } else if (props.type == "settings") {
     title = "Налаштування";
     content = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       className: "setting"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "control"
     }, /*#__PURE__*/React.createElement("label", {
       htmlFor: "setting-dark-theme"
     }, "\u0422\u0435\u043C\u043D\u0430 \u0442\u0435\u043C\u0430"), /*#__PURE__*/React.createElement("input", {
@@ -1031,11 +993,14 @@ function Modal(props) {
       onChange: function onChange() {
         return props.setSettings({
           darkTheme: !props.settings.darkTheme,
-          colorBlind: props.settings.colorBlind
+          colorBlind: props.settings.colorBlind,
+          shareStats: props.settings.shareStats
         });
       }
-    })), /*#__PURE__*/React.createElement("div", {
+    }))), /*#__PURE__*/React.createElement("div", {
       className: "setting"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "control"
     }, /*#__PURE__*/React.createElement("label", {
       htmlFor: "setting-color-blind"
     }, "\u0420\u0435\u0436\u0438\u043C \u0434\u043B\u044F \u0434\u0430\u043B\u044C\u0442\u043E\u043D\u0438\u043A\u0456\u0432"), /*#__PURE__*/React.createElement("input", {
@@ -1046,12 +1011,32 @@ function Modal(props) {
       onChange: function onChange() {
         return props.setSettings({
           darkTheme: props.settings.darkTheme,
-          colorBlind: !props.settings.colorBlind
+          colorBlind: !props.settings.colorBlind,
+          shareStats: props.settings.shareStats
         });
       }
-    })));
+    }))), /*#__PURE__*/React.createElement("div", {
+      className: "setting"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "control"
+    }, /*#__PURE__*/React.createElement("label", {
+      htmlFor: "setting-color-blind"
+    }, "\u041D\u0430\u0434\u0441\u0438\u043B\u0430\u0442\u0438 \u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043A\u0443"), /*#__PURE__*/React.createElement("input", {
+      className: "switch",
+      type: "checkbox",
+      id: "setting-color-blind",
+      checked: props.settings.shareStats,
+      onChange: function onChange() {
+        return props.setSettings({
+          darkTheme: props.settings.darkTheme,
+          colorBlind: props.settings.colorBlind,
+          shareStats: !props.settings.shareStats
+        });
+      }
+    })), /*#__PURE__*/React.createElement("p", {
+      className: "small fade"
+    }, "\u0412\u0438\u043C\u043A\u043D\u0443\u0432\u0448\u0438 \u0446\u044E \u043E\u043F\u0446\u0456\u044E, \u0432\u0438 \u043D\u0435 \u0437\u043C\u043E\u0436\u0435\u0442\u0435 \u0431\u0430\u0447\u0438\u0442\u0438, \u044F\u043A \u0433\u0440\u0430\u043B\u0438 \u043F\u043E\u0440\u0456\u0432\u043D\u044F\u043D\u043E \u0437 \u0456\u043D\u0448\u0438\u043C\u0438. \u041D\u0430\u0434\u0441\u0438\u043B\u0430\u044E\u0442\u044C\u0441\u044F \u043B\u0438\u0448\u0435 \u0432\u0430\u0448\u0456 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442\u0438 \u0442\u0430 \u0443\u043D\u0456\u043A\u0430\u043B\u044C\u043D\u0438\u0439 ID: ", /*#__PURE__*/React.createElement("i", null, props.uid))));
   }
-
   return ReactDOM.createPortal( /*#__PURE__*/React.createElement("div", {
     className: "overlay"
   }, /*#__PURE__*/React.createElement("div", {
@@ -1080,38 +1065,29 @@ function Modal(props) {
     href: "https://twitter.com/hashtag/%D1%83%D0%BA%D1%80Wordle"
   }, "#\u0443\u043A\u0440", /*#__PURE__*/React.createElement("b", null, "wordle"))))), document.querySelector("#modal"));
 }
-
 function Congrat(props) {
   var string = "";
-
   switch (props.attempt) {
     case 1:
       string = "Чітер!";
       break;
-
     case 2:
       string = "Серйозно???";
       break;
-
     case 3:
       string = "Неймовірно!";
       break;
-
     case 4:
       string = "Так тримати!";
       break;
-
     case 5:
       string = "Непогано.";
       break;
-
     case 6:
       string = "Фух!";
   }
-
   return /*#__PURE__*/React.createElement("b", null, string);
 }
-
 function Metric(props) {
   return /*#__PURE__*/React.createElement("div", {
     className: "metric"
@@ -1127,7 +1103,6 @@ function Metric(props) {
     className: "desc"
   }, props.children));
 }
-
 function GraphBarHorizontal(props) {
   return /*#__PURE__*/React.createElement("div", {
     className: "graph-horizontal"
@@ -1147,7 +1122,6 @@ function GraphBarHorizontal(props) {
     }
   })));
 }
-
 function GraphBarVertical(props) {
   return /*#__PURE__*/React.createElement("div", {
     className: "graph-vertical"
@@ -1164,25 +1138,20 @@ function GraphBarVertical(props) {
     className: "label"
   }, props.uid == props.myUid ? "Ви" : "#" + props.pos));
 }
-
 function nTimes(n) {
   var lastDigit = n % 10;
   if ([11, 12, 13, 14].includes(n % 100)) lastDigit = 5;
-
   switch (lastDigit) {
     case 1:
       return "раз";
-
     case 2:
     case 3:
     case 4:
       return "рази";
-
     default:
       return "разів";
   }
 }
-
 function pTrophy(p) {
   if (p >= .99) {
     return "🤯";
@@ -1202,5 +1171,4 @@ function pTrophy(p) {
     return "💩";
   }
 }
-
 ReactDOM.render(React.createElement(App), document.getElementById("app"));

@@ -89,7 +89,8 @@ function App(props) {
   const [averageStatsLoaded, setAverageStatsLoaded] = React.useState(false)
   const [settings, setSettings] = React.useState({ 
     darkTheme: false, 
-    colorBlind: false
+    colorBlind: false,
+    shareStats: true
   });
   const [modal, setModal] = React.useState(null);
   const [timeLeft, setTimeLeft] = React.useState({
@@ -101,13 +102,23 @@ function App(props) {
   const [UID, setUID] = React.useState(null);
 
   var timer;
-  
+
+  // Store previous settings to compare in the useEffect
+  function usePrevious(value) {
+    const ref = React.useRef();
+    React.useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+  }
+  const prevSettings = usePrevious(settings);
+
   // Load from local storage if still valid
   React.useEffect(() => {
     if (JSON.parse(localStorage.getItem("lastPlayedIssueNumber")) == getIssueNumber()) {
-      var localAttempts = tryLoadingFromLocalStorage("attempts", setAttempts);
-      var localFeedback = tryLoadingFromLocalStorage("feedback", setFeedback);
-      tryLoadingFromLocalStorage("result", setResult);
+      var localAttempts = tryLoadingFromLocalStorage("attempts", attempts, setAttempts);
+      var localFeedback = tryLoadingFromLocalStorage("feedback", feedback, setFeedback);
+      tryLoadingFromLocalStorage("result", result, setResult);
       setCursor({
         attempt: (localFeedback) ? localFeedback.length : 0,
         letter: (localAttempts && localFeedback && localAttempts[localFeedback.length]) ? localAttempts[localFeedback.length].length : 0
@@ -115,25 +126,31 @@ function App(props) {
     } else {
       resetGame();
     }
-    tryLoadingFromLocalStorage("settings", setSettings);
-    tryLoadingFromLocalStorage("stats", setStats);
-    tryLoadingFromLocalStorage("UID", setUID, Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36));
+    tryLoadingFromLocalStorage("settings", settings, setSettings);
+    tryLoadingFromLocalStorage("stats", stats, setStats);
+    tryLoadingFromLocalStorage("UID", UID, setUID, Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36));
     
   }, []);
 
-  function tryLoadingFromLocalStorage(item, setter, deafaultValue=false) {
-    let loadedItem;
+  function tryLoadingFromLocalStorage(propName, obj, setter, deafaultValue=false) {
+    let loadedObj;
     try {
-      loadedItem = JSON.parse(localStorage.getItem(item));
+      loadedObj = JSON.parse(localStorage.getItem(propName));
     } catch(e) {
-      loadedItem = null
+      loadedObj = null
     }
-    if (loadedItem) {
-      setter(loadedItem);
+    if (loadedObj) {
+      // Add missing props from new obj definition
+      for (var prop in obj) {
+        if (obj.hasOwnProperty(prop) && !loadedObj.hasOwnProperty(prop)) {
+          loadedObj[prop] = obj[prop]
+        }
+      }
+      setter(loadedObj);
     } else if (deafaultValue) {
       setter(deafaultValue);
     }
-    return loadedItem;
+    return loadedObj;
   }
 
   // Save to local storage
@@ -145,6 +162,7 @@ function App(props) {
   }, [feedback]);
   React.useEffect(() => {
     localStorage.setItem("stats", JSON.stringify(stats));
+    settings.shareStats && UID && stats.games > 0 && updateAverageStats(stats);
   }, [stats]);
   React.useEffect(() => {
     localStorage.setItem("result", JSON.stringify(result));
@@ -153,15 +171,19 @@ function App(props) {
   React.useEffect(() => {
     localStorage.setItem("UID", JSON.stringify(UID));
   }, [UID]);
-  React.useEffect(() => {
-    UID && stats.games > 0 && updateAverageStats(stats);
-  }, [stats]);
 
   // Update theme and save to local storage
   React.useEffect(() => {
     settings.darkTheme ? document.body.classList.add("dark") : document.body.classList.remove("dark");
     settings.colorBlind ? document.body.classList.add("color-blind") : document.body.classList.remove("color-blind");
     localStorage.setItem("settings", JSON.stringify(settings));
+
+    if (prevSettings)
+      if (!prevSettings.shareStats && settings.shareStats) {
+        UID && stats.games > 0 && updateAverageStats(stats);
+      } else if (prevSettings.shareStats && !settings.shareStats) {
+        updateAverageStats({uid: UID, delete: true});
+      }
   }, [settings]);
 
   // Keep track of time and reset at midnight
@@ -215,7 +237,7 @@ function App(props) {
 
   // Send own stats, receive average
   function updateAverageStats(stats) {
-    console.log("Запит статистики...")
+    (stats.delete) ? console.log("Запит на видалення статистики...") : console.log("Запит статистики...")
     const request = new Request(
       // "https://ukr.warspotting.net/wordle/"
       "http://192.168.0.143:8000/wordle/"
@@ -229,17 +251,21 @@ function App(props) {
     })
     .then(response => response.json())
     .then(data => {
-      console.log("Статистику отримано.");
-      if (data && Object.keys(data).length > 0) {
-        setAverageStats({
-          issue: getIssueNumber(),
-          ...data
-        });
-        setAverageStatsLoaded(true);
+      if (stats.delete) {
+        console.log("Статистику видалено.");
+      } else {
+        console.log("Статистику отримано.");
+        if (data && Object.keys(data).length > 0) {
+          setAverageStats({
+            issue: getIssueNumber(),
+            ...data
+          });
+          setAverageStatsLoaded(true);
+        }
       }
     })
     .catch((error) => {
-      console.error("Помилка при запиті статистики:", error);
+      console.error("Помилка при запиті:", error);
       setAverageStatsLoaded(false);
     });
   }
@@ -652,7 +678,7 @@ function Modal(props) {
       <div className="fade small">
         <p>Оригінальна гра: <a href="https://www.powerlanguage.co.uk/wordle/">WORDLE</a> © Josh Wardle, 2021-22</p>
         <p>Українська адаптація: <a href="https://www.facebook.com/kokokostya/">розробка</a>, <a href="https://www.facebook.com/artem.shevchenko.ukraine">слова</a>.</p>
-        <p>№{ props.n } • Ваш ID: { props.uid }</p>
+        <p>№{ props.n }</p>
       </div>
     </React.Fragment>
   } else if (props.type == "stats") {
@@ -705,7 +731,7 @@ function Modal(props) {
         </span>
       </h3>
 
-      { ((props.result == "won") || (props.stats.games >= 10)) &&
+      { ((props.result == "won") || (props.settings.shareStats && props.stats.games >= 10)) &&
         <div id="stats-buttons">
           {
             (props.result == "won") &&
@@ -717,7 +743,7 @@ function Modal(props) {
               </button> 
           }
           {
-            (props.stats.games >= 10) &&
+            (props.settings.shareStats && props.stats.games >= 10) &&
               <button id="btn-avg-stats" className="rainbow btn-share" onClick={() => props.switchModal("avg-stats")}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
                   <path d="M12.4444 1.55556H10.8889V0H3.11111V1.55556H1.55556C0.7 1.55556 0 2.25556 0 3.11111V3.88889C0 5.87222 1.49333 7.49 3.41444 7.73111C3.90444 8.89778 4.95444 9.77667 6.22222 10.0333V12.4444H3.11111V14H10.8889V12.4444H7.77778V10.0333C9.04556 9.77667 10.0956 8.89778 10.5856 7.73111C12.5067 7.49 14 5.87222 14 3.88889V3.11111C14 2.25556 13.3 1.55556 12.4444 1.55556ZM1.55556 3.88889V3.11111H3.11111V6.08222C2.20889 5.75556 1.55556 4.9 1.55556 3.88889ZM12.4444 3.88889C12.4444 4.9 11.7911 5.75556 10.8889 6.08222V3.11111H12.4444V3.88889Z"/>
@@ -728,10 +754,13 @@ function Modal(props) {
         </div>
       }
 
-      { (props.stats.games >= 10) ? 
-        <hr /> 
-        : 
-        <div className="small hint">Зіграйте <b>{ props.stats.games ? "ще" : null } {10 - props.stats.games} { nTimes(10 - props.stats.games) }</b> щоб побачити, як ви грали порівняно з іншими.</div> 
+      { 
+        props.settings.shareStats && (
+          (props.stats.games >= 10) ? 
+          <hr /> 
+          : 
+          <div className="small hint">Зіграйте <b>{ props.stats.games ? "ще" : null } {10 - props.stats.games} { nTimes(10 - props.stats.games) }</b> щоб побачити, як ви грали порівняно з іншими.</div> 
+        )
       }
       
       <p className="small fade">Щось не так зі статистикою? <a href="https://www.facebook.com/kokokostya/">Напишіть нам</a>.</p>
@@ -825,20 +854,49 @@ function Modal(props) {
         : <hr />
       }
 
-      <p className="small fade">В загальній статистиці не рахуються гравці із менш ніж 10 іграми або аномально високою кількістю вгадувань з першої спроби.</p>
+      <p className="small fade">В загальній статистиці не рахуються гравці із менш ніж 10 іграми, аномальними результатами, а також ті, хто вимкнув цю опцію в налаштуваннях.</p>
     </React.Fragment>
   } else if (props.type == "settings") {
     title = "Налаштування";
     content = <React.Fragment>
       <div className="setting">
-        <label htmlFor="setting-dark-theme">Темна тема</label>
-        <input className="switch" type="checkbox" id="setting-dark-theme" checked={props.settings.darkTheme} onChange={() => props.setSettings({darkTheme: !props.settings.darkTheme, colorBlind: props.settings.colorBlind})} />
+        <div className="control">
+          <label htmlFor="setting-dark-theme">Темна тема</label>
+          <input className="switch" type="checkbox" id="setting-dark-theme" checked={props.settings.darkTheme} onChange={() => 
+            props.setSettings({
+              darkTheme: !props.settings.darkTheme, 
+              colorBlind: props.settings.colorBlind, 
+              shareStats: props.settings.shareStats})
+            } />
+        </div>
       </div>
 
       <div className="setting">
-        <label htmlFor="setting-color-blind">Режим для дальтоників</label>
-        <input className="switch" type="checkbox" id="setting-color-blind" checked={props.settings.colorBlind} onChange={() => props.setSettings({darkTheme: props.settings.darkTheme, colorBlind: !props.settings.colorBlind})} />
+        <div className="control">
+          <label htmlFor="setting-color-blind">Режим для дальтоників</label>
+          <input className="switch" type="checkbox" id="setting-color-blind" checked={props.settings.colorBlind} onChange={() => 
+            props.setSettings({
+              darkTheme: props.settings.darkTheme, 
+              colorBlind: !props.settings.colorBlind, 
+              shareStats: props.settings.shareStats})
+            } />
+        </div>
       </div>
+
+      <div className="setting">
+        <div className="control">
+          <label htmlFor="setting-color-blind">Надсилати статистику</label>
+          <input className="switch" type="checkbox" id="setting-color-blind" checked={props.settings.shareStats} onChange={() =>
+            props.setSettings({
+              darkTheme: props.settings.darkTheme, 
+              colorBlind: props.settings.colorBlind, 
+              shareStats: !props.settings.shareStats
+            })
+          } />
+        </div>
+        <p className="small fade">Вимкнувши цю опцію, ви не зможете бачити, як грали порівняно з іншими. Надсилаються лише ваші результати та унікальний ID: <i>{ props.uid }</i></p>
+      </div>
+
     </React.Fragment>
   }
 
