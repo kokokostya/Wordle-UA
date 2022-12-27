@@ -177,13 +177,7 @@ function App(props) {
     settings.darkTheme ? document.body.classList.add("dark") : document.body.classList.remove("dark");
     settings.colorBlind ? document.body.classList.add("color-blind") : document.body.classList.remove("color-blind");
     localStorage.setItem("settings", JSON.stringify(settings));
-
-    if (prevSettings)
-      if (!prevSettings.shareStats && settings.shareStats) {
-        UID && stats.games > 0 && updateAverageStats(stats);
-      } else if (prevSettings.shareStats && !settings.shareStats) {
-        updateAverageStats({uid: UID, delete: true});
-      }
+    prevSettings && !prevSettings.shareStats && settings.shareStats && UID && stats.games > 0 && updateAverageStats(stats);
   }, [settings]);
 
   // Keep track of time and reset at midnight
@@ -237,10 +231,10 @@ function App(props) {
 
   // Send own stats, receive average
   function updateAverageStats(stats) {
-    (stats.delete) ? console.log("Запит на видалення статистики...") : console.log("Запит статистики...")
+    console.log("Запит статистики...")
     const request = new Request(
-      // "https://ukr.warspotting.net/wordle/"
-      "http://192.168.0.143:8000/wordle/"
+      "https://ukr.warspotting.net/wordle/"
+      // "http://192.168.0.143:8000/wordle/"
     );
     fetch(request, {
       method: "POST",
@@ -251,17 +245,13 @@ function App(props) {
     })
     .then(response => response.json())
     .then(data => {
-      if (stats.delete) {
-        console.log("Статистику видалено.");
-      } else {
-        console.log("Статистику отримано.");
-        if (data && Object.keys(data).length > 0) {
-          setAverageStats({
-            issue: getIssueNumber(),
-            ...data
-          });
-          setAverageStatsLoaded(true);
-        }
+      console.log("Статистику отримано.");
+      if (data && Object.keys(data).length > 0) {
+        setAverageStats({
+          issue: getIssueNumber(),
+          ...data
+        });
+        setAverageStatsLoaded(true);
       }
     })
     .catch((error) => {
