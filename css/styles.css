@@ -1214,6 +1214,9 @@ header button:hover {
 }
 
 @media (max-width: 576px) {
+  #board {
+    max-height: 400px;
+  }
   header {
     padding: 1rem;
   }
