@@ -527,11 +527,12 @@ background-color: var(--button-primary);
         left: 50%;
         margin: 0;
         transform: translate(-50%, 0);
-        width: 80%;
+        width: 100%;
       }
 
       button {
         padding: 0;
+        z-index: 100;
       }
     }
 
@@ -983,6 +984,10 @@ background-color: var(--button-primary);
 }
 
 @media (max-width: 576px) {
+  #board {
+    max-height: 400px;
+  }
+
   header {
     padding: 1rem;
   
