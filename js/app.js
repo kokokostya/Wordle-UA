@@ -17,6 +17,75 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function App(props) {
+  var defaultState = {
+    games: 0,
+    won: 0,
+    streak: 0,
+    maxStreak: 0,
+    attempts: {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+      6: 0
+    }
+  };
+  var defaultAverageStats = {
+    issue: 0,
+    gamesPercentile: 0,
+    wonPercentile: 0,
+    maxStreakPercentile: 0,
+    maxStreakLeaderboard: [{
+      uid: "uid",
+      pos: 1,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 2,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 3,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 4,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 5,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 6,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 7,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 8,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 9,
+      maxStreak: 0
+    }, {
+      uid: "uid",
+      pos: 10,
+      maxStreak: 0
+    }],
+    attempts: {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+      6: 0
+    }
+  };
   var _React$useState = React.useState([]),
     _React$useState2 = _slicedToArray(_React$useState, 2),
     attempts = _React$useState2[0],
@@ -36,78 +105,11 @@ function App(props) {
     _React$useState8 = _slicedToArray(_React$useState7, 2),
     cursor = _React$useState8[0],
     setCursor = _React$useState8[1];
-  var _React$useState9 = React.useState({
-      games: 0,
-      won: 0,
-      streak: 0,
-      maxStreak: 0,
-      attempts: {
-        1: 0,
-        2: 0,
-        3: 0,
-        4: 0,
-        5: 0,
-        6: 0
-      }
-    }),
+  var _React$useState9 = React.useState(defaultState),
     _React$useState10 = _slicedToArray(_React$useState9, 2),
     stats = _React$useState10[0],
     setStats = _React$useState10[1];
-  var _React$useState11 = React.useState({
-      issue: 0,
-      gamesPercentile: 0,
-      wonPercentile: 0,
-      maxStreakPercentile: 0,
-      maxStreakLeaderboard: [{
-        uid: "uid",
-        pos: 1,
-        maxStreak: 0
-      }, {
-        uid: "uid",
-        pos: 2,
-        maxStreak: 0
-      }, {
-        uid: "uid",
-        pos: 3,
-        maxStreak: 0
-      }, {
-        uid: "uid",
-        pos: 4,
-        maxStreak: 0
-      }, {
-        uid: "uid",
-        pos: 5,
-        maxStreak: 0
-      }, {
-        uid: "uid",
-        pos: 6,
-        maxStreak: 0
-      }, {
-        uid: "uid",
-        pos: 7,
-        maxStreak: 0
-      }, {
-        uid: "uid",
-        pos: 8,
-        maxStreak: 0
-      }, {
-        uid: "uid",
-        pos: 9,
-        maxStreak: 0
-      }, {
-        uid: "uid",
-        pos: 10,
-        maxStreak: 0
-      }],
-      attempts: {
-        1: 0,
-        2: 0,
-        3: 0,
-        4: 0,
-        5: 0,
-        6: 0
-      }
-    }),
+  var _React$useState11 = React.useState(defaultAverageStats),
     _React$useState12 = _slicedToArray(_React$useState11, 2),
     averageStats = _React$useState12[0],
     setAverageStats = _React$useState12[1];
@@ -202,7 +204,16 @@ function App(props) {
     localStorage.setItem("feedback", JSON.stringify(feedback));
   }, [feedback]);
   React.useEffect(function () {
-    localStorage.setItem("stats", JSON.stringify(stats));
+    // Never override valid local stats
+    var localStats;
+    try {
+      localStats = JSON.parse(localStorage.getItem("stats"));
+    } catch (e) {
+      localStats = null;
+    }
+    if (!localStats || localStats && localStats.games < stats.games) {
+      localStorage.setItem("stats", JSON.stringify(stats));
+    }
     settings.shareStats && UID && stats.games > 0 && updateAverageStats(stats);
   }, [stats]);
   React.useEffect(function () {

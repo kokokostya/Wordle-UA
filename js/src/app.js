@@ -1,12 +1,5 @@
 function App(props) {
-  const [attempts, setAttempts] = React.useState([]);
-  const [feedback, setFeedback] = React.useState([]);
-  const [result, setResult] = React.useState(null);
-  const [cursor, setCursor] = React.useState({ 
-    attempt: 0, 
-    letter: 0
-  });
-  const [stats, setStats] = React.useState({ 
+  const defaultState = { 
     games: 0, 
     won: 0,
     streak: 0,
@@ -19,8 +12,8 @@ function App(props) {
       5: 0,
       6: 0
     }
-  });
-  const [averageStats, setAverageStats] = React.useState({
+  }
+  const defaultAverageStats = {
     issue: 0,
     gamesPercentile: 0, 
     wonPercentile: 0,
@@ -85,7 +78,17 @@ function App(props) {
       5: 0,
       6: 0
     }
+  }
+
+  const [attempts, setAttempts] = React.useState([]);
+  const [feedback, setFeedback] = React.useState([]);
+  const [result, setResult] = React.useState(null);
+  const [cursor, setCursor] = React.useState({ 
+    attempt: 0, 
+    letter: 0
   });
+  const [stats, setStats] = React.useState(defaultState);
+  const [averageStats, setAverageStats] = React.useState(defaultAverageStats);
   const [averageStatsLoaded, setAverageStatsLoaded] = React.useState(false)
   const [settings, setSettings] = React.useState({ 
     darkTheme: false, 
@@ -161,7 +164,16 @@ function App(props) {
     localStorage.setItem("feedback", JSON.stringify(feedback));
   }, [feedback]);
   React.useEffect(() => {
-    localStorage.setItem("stats", JSON.stringify(stats));
+    // Never override valid local stats
+    var localStats;
+    try {
+      localStats = JSON.parse(localStorage.getItem("stats"));
+    } catch(e) {
+      localStats = null
+    }
+    if (!localStats || localStats && localStats.games < stats.games) {
+      localStorage.setItem("stats", JSON.stringify(stats));
+    }
     settings.shareStats && UID && stats.games > 0 && updateAverageStats(stats);
   }, [stats]);
   React.useEffect(() => {
@@ -233,8 +245,8 @@ function App(props) {
   function updateAverageStats(stats) {
     console.log("Запит статистики...")
     const request = new Request(
-      // "https://ukr.warspotting.net/wordle/"
-      "http://192.168.0.143:8000/wordle/"
+      "https://ukr.warspotting.net/wordle/"
+      // "http://192.168.0.143:8000/wordle/"
     );
     fetch(request, {
       method: "POST",
