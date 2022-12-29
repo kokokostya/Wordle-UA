@@ -1014,11 +1014,11 @@ function Modal(props) {
     }, /*#__PURE__*/React.createElement("div", {
       className: "control"
     }, /*#__PURE__*/React.createElement("label", {
-      htmlFor: "setting-color-blind"
+      htmlFor: "setting-share-stats"
     }, "\u041D\u0430\u0434\u0441\u0438\u043B\u0430\u0442\u0438 \u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043A\u0443"), /*#__PURE__*/React.createElement("input", {
       className: "switch",
       type: "checkbox",
-      id: "setting-color-blind",
+      id: "setting-share-stats",
       checked: props.settings.shareStats,
       onChange: function onChange() {
         return props.setSettings({

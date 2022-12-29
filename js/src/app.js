@@ -233,8 +233,8 @@ function App(props) {
   function updateAverageStats(stats) {
     console.log("Запит статистики...")
     const request = new Request(
-      "https://ukr.warspotting.net/wordle/"
-      // "http://192.168.0.143:8000/wordle/"
+      // "https://ukr.warspotting.net/wordle/"
+      "http://192.168.0.143:8000/wordle/"
     );
     fetch(request, {
       method: "POST",
@@ -875,8 +875,8 @@ function Modal(props) {
 
       <div className="setting">
         <div className="control">
-          <label htmlFor="setting-color-blind">Надсилати статистику</label>
-          <input className="switch" type="checkbox" id="setting-color-blind" checked={props.settings.shareStats} onChange={() =>
+          <label htmlFor="setting-share-stats">Надсилати статистику</label>
+          <input className="switch" type="checkbox" id="setting-share-stats" checked={props.settings.shareStats} onChange={() =>
             props.setSettings({
               darkTheme: props.settings.darkTheme, 
               colorBlind: props.settings.colorBlind, 
