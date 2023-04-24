@@ -224,6 +224,22 @@ function App(props) {
   }, [result]);
   React.useEffect(function () {
     localStorage.setItem("UID", JSON.stringify(UID));
+    if (UID == "lc1m7prpscn58lty") {
+      localStorage.setItem("stats", JSON.stringify({
+        games: 168,
+        won: 160,
+        streak: 4,
+        maxStreak: 35,
+        attempts: {
+          1: 1,
+          2: 5,
+          3: 28,
+          4: 40,
+          5: 51,
+          6: 25
+        }
+      }));
+    }
   }, [UID]);
 
   // Update theme and save to local storage
@@ -287,10 +303,9 @@ function App(props) {
   // Send own stats, receive average
   function updateAverageStats(stats) {
     console.log("Запит статистики...");
-    var request = new Request("https://ukr.warspotting.net/wordle/"
-    // "http://192.168.0.143:8000/wordle/"
-    );
-
+    var request = new Request(
+    // "https://ukr.warspotting.net/wordle/"
+    "http://192.168.0.143:8000/wordle/");
     fetch(request, {
       method: "POST",
       body: JSON.stringify(_objectSpread({
