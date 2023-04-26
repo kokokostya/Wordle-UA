@@ -291,9 +291,11 @@ function App(props) {
   // Send own stats, receive average
   function updateAverageStats(stats) {
     console.log("Запит статистики...");
-    var request = new Request(
-    // "https://ukr.warspotting.net/wordle/"
-    "http://192.168.0.143:8000/wordle/");
+    var url = "https://ukr.warspotting.net/wordle/";
+    if (!window.location.href.includes("wordle-ua.net")) {
+      url = "http://192.168.0.143:8000/wordle/";
+    }
+    var request = new Request(url);
     fetch(request, {
       method: "POST",
       body: JSON.stringify(_objectSpread({

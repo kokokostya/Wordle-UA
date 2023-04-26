@@ -17,6 +17,7 @@
   --message: #eee;
   --message-success: #bfc;
   --message-error: #fdb;
+  --message-error-text: rgb(179, 15, 0);
   --button-gray: #ccc;
   --button-danger: #aaa;
   --button-primary: #aaa;
@@ -660,6 +661,7 @@ header button:hover {
 }
 
 .overlay .body .hint.error {
+  color: var(--message-error-text);
   background-color: var(--message-error);
 }
 
