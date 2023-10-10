@@ -229,8 +229,8 @@ function App(props) {
       localStorage.setItem("stats", JSON.stringify({
         games: 373,
         won: 369,
-        streak: 188,
-        maxStreak: 188,
+        streak: 189,
+        maxStreak: 189,
         attempts: {
           1: 3,
           2: 12,
