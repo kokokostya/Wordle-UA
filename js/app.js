@@ -781,6 +781,12 @@ function Modal(props) {
   var inLeaderboard = props.averageStats.maxStreakLeaderboard.map(function (leader) {
     return leader.uid;
   }).includes(props.uid);
+  var averageAttempt = 0;
+  for (var _key2 in props.stats.attempts) {
+    averageAttempt += _key2 * props.stats.attempts[_key2];
+  }
+  averageAttempt = props.stats.won > 0 ? averageAttempt / props.stats.won : 0;
+  averageAttempt = Math.round(averageAttempt * 100) / 100;
   if (props.type == "help") {
     title = "Як грати?";
     content = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("b", null, "\u0412\u0433\u0430\u0434\u0430\u0439\u0442\u0435 \u0441\u043B\u043E\u0432\u043E \u0437 \u0448\u0435\u0441\u0442\u0438 \u0441\u043F\u0440\u043E\u0431."), " \u041A\u043E\u0436\u043D\u0430 \u0437\u0434\u043E\u0433\u0430\u0434\u043A\u0430 \u043C\u0443\u0441\u0438\u0442\u044C \u0431\u0443\u0442\u0438 \u0441\u043B\u043E\u0432\u043D\u0438\u043A\u043E\u0432\u0438\u043C \u0456\u043C\u0435\u043D\u043D\u0438\u043A\u043E\u043C, \u0430\u043B\u0435 \u043D\u0435 \u0432\u043B\u0430\u0441\u043D\u043E\u044E \u043D\u0430\u0437\u0432\u043E\u044E. \u041F\u0456\u0441\u043B\u044F \u043A\u043E\u0436\u043D\u043E\u0457 \u0441\u043F\u0440\u043E\u0431\u0438 \u043A\u043E\u043B\u0456\u0440 \u043F\u0456\u0434\u043A\u0430\u0436\u0435, \u043D\u0430\u0441\u043A\u0456\u043B\u044C\u043A\u0438 \u0431\u043B\u0438\u0437\u044C\u043A\u043E \u0432\u0438 \u0431\u0443\u043B\u0438:"), /*#__PURE__*/React.createElement("dl", {
@@ -954,7 +960,9 @@ function Modal(props) {
       height: myHeight
     })), inLeaderboard && /*#__PURE__*/React.createElement("div", {
       className: "small hint"
-    }, "\uD83E\uDDE0 \u0412 \u0447\u043E\u043C\u0443 \u0432\u0430\u0448 \u0441\u0435\u043A\u0440\u0435\u0442?"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), /*#__PURE__*/React.createElement("div", {
+    }, "\uD83E\uDDE0 \u0412 \u0447\u043E\u043C\u0443 \u0432\u0430\u0448 \u0441\u0435\u043A\u0440\u0435\u0442?"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), /*#__PURE__*/React.createElement(Metric, {
+      value: props.averageStats.averageAttemptPercentile
+    }, "\u0412 \u0441\u0435\u0440\u0435\u0434\u043D\u044C\u043E\u043C\u0443 \u0432\u0438 \u0432\u0433\u0430\u0434\u0443\u0432\u0430\u043B\u0438 ", /*#__PURE__*/React.createElement("b", null, "\u0437 ", averageAttempt, "-\u0457 \u0441\u043F\u0440\u043E\u0431\u0438")), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("div", {
       className: "rel"
     }, /*#__PURE__*/React.createElement("div", {
       className: "legend small"

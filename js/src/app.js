@@ -653,6 +653,12 @@ function Modal(props) {
   });
   const myHeight = props.stats.maxStreak/absMaxStreak*100;
   const inLeaderboard = props.averageStats.maxStreakLeaderboard.map((leader) => leader.uid).includes(props.uid)
+  var averageAttempt = 0;
+  for (const key in props.stats.attempts) {
+    averageAttempt += key*props.stats.attempts[key];
+  }
+  averageAttempt = (props.stats.won > 0) ? averageAttempt/props.stats.won : 0;
+  averageAttempt = Math.round(averageAttempt*100)/100;
 
   if (props.type == "help") {
     title = "Як грати?";
@@ -842,6 +848,13 @@ function Modal(props) {
       <hr />
       
       <h3>Виграшні спроби</h3>
+
+      <Metric value={props.averageStats.averageAttemptPercentile}>
+        В середньому ви вгадували <b>з { averageAttempt }-ї спроби</b>
+      </Metric>
+
+      <br />
+
       <div className="rel">
         <div className="legend small">
           <span className="label my">Ви</span>
