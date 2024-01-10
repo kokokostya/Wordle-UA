@@ -778,7 +778,7 @@ function Modal(props) {
         </li>
       </ul>
 
-      <div className="small hint"><b>УВАГА!</b> Відтепер пропущена гра обнуляє виграші підряд.</div>
+      <div className="small hint"><b>УВАГА!</b> Відтепер пропуск гри анулює виграшну серію.</div>
 
       <h3>Виграшні спроби</h3>
       {[...Array(6)].map((val, i) =>
