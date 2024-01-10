@@ -1,5 +1,5 @@
 function App(props) {
-  const defaultState = { 
+  const defaultStats = { 
     games: 0, 
     won: 0,
     streak: 0,
@@ -18,58 +18,70 @@ function App(props) {
     gamesPercentile: 0, 
     wonPercentile: 0,
     maxStreakPercentile: 0,
-    maxStreakLeaderboard: [
+    leagueName: "",
+    leaderboard: [
       {
         uid: "uid",
         pos: 1,
+        streak: 0,
         maxStreak: 0
       },
       {
         uid: "uid",
         pos: 2,
+        streak: 0,
         maxStreak: 0
       },
       {
         uid: "uid",
         pos: 3,
+        streak: 0,
         maxStreak: 0
       },
       {
         uid: "uid",
         pos: 4,
+        streak: 0,
         maxStreak: 0
       },
       {
         uid: "uid",
         pos: 5,
+        streak: 0,
         maxStreak: 0
       },
       {
         uid: "uid",
         pos: 6,
+        streak: 0,
         maxStreak: 0
       },
       {
         uid: "uid",
         pos: 7,
+        streak: 0,
         maxStreak: 0
       },
       {
         uid: "uid",
         pos: 8,
+        streak: 0,
         maxStreak: 0
       },
       {
         uid: "uid",
         pos: 9,
+        streak: 0,
         maxStreak: 0
       },
       {
         uid: "uid",
         pos: 10,
+        streak: 0,
         maxStreak: 0
       }
     ],
+    averageAttemptPercentile: 0,
     attempts: {
       1: 0,
       2: 0,
@@ -87,7 +99,7 @@ function App(props) {
     attempt: 0, 
     letter: 0
   });
-  const [stats, setStats] = React.useState(defaultState);
+  const [stats, setStats] = React.useState(defaultStats);
   const [averageStats, setAverageStats] = React.useState(defaultAverageStats);
   const [averageStatsLoaded, setAverageStatsLoaded] = React.useState(false)
   const [settings, setSettings] = React.useState({ 
@@ -95,7 +107,7 @@ function App(props) {
     colorBlind: false,
     shareStats: true
   });
-  const [modal, setModal] = React.useState(null);
+  const [modal, setModal] = React.useState("avg-stats");
   const [timeLeft, setTimeLeft] = React.useState({
     "h": 0, 
     "m": 0, 
@@ -116,8 +128,9 @@ function App(props) {
   }
   const prevSettings = usePrevious(settings);
 
-  // Load from local storage if still valid
+  // Load from local storage
   React.useEffect(() => {
+    // Load unfinished game if still valid
     if (JSON.parse(localStorage.getItem("lastPlayedIssueNumber")) == getIssueNumber()) {
       var localAttempts = tryLoadingFromLocalStorage("attempts", attempts, setAttempts);
       var localFeedback = tryLoadingFromLocalStorage("feedback", feedback, setFeedback);
@@ -129,29 +142,31 @@ function App(props) {
     } else {
       resetGame();
     }
+
     tryLoadingFromLocalStorage("settings", settings, setSettings);
     tryLoadingFromLocalStorage("stats", stats, setStats);
     tryLoadingFromLocalStorage("UID", UID, setUID, Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36));
-    
   }, []);
 
-  function tryLoadingFromLocalStorage(propName, obj, setter, deafaultValue=false) {
+  function tryLoadingFromLocalStorage(propName, obj, setter, deafaultValue=false, set=true) {
     let loadedObj;
     try {
       loadedObj = JSON.parse(localStorage.getItem(propName));
     } catch(e) {
       loadedObj = null
     }
-    if (loadedObj) {
-      // Add missing props from new obj definition
-      for (var prop in obj) {
-        if (obj.hasOwnProperty(prop) && !loadedObj.hasOwnProperty(prop)) {
-          loadedObj[prop] = obj[prop]
+    if (set) {
+      if (loadedObj) {
+        // Add missing props from new obj definition
+        for (var prop in obj) {
+          if (obj.hasOwnProperty(prop) && !loadedObj.hasOwnProperty(prop)) {
+            loadedObj[prop] = obj[prop]
+          }
         }
+        setter(loadedObj);
+      } else if (deafaultValue) {
+        setter(deafaultValue);
       }
-      setter(loadedObj);
-    } else if (deafaultValue) {
-      setter(deafaultValue);
     }
     return loadedObj;
   }
@@ -164,14 +179,14 @@ function App(props) {
     localStorage.setItem("feedback", JSON.stringify(feedback));
   }, [feedback]);
   React.useEffect(() => {
-    // Never override valid local stats
     var localStats;
     try {
       localStats = JSON.parse(localStorage.getItem("stats"));
     } catch(e) {
       localStats = null
     }
-    if (!localStats || localStats && localStats.games < stats.games) {
+    // Never override valid local stats, only update if new game released or streak was broken
+    if (!localStats || localStats.games <= stats.games) {
       localStorage.setItem("stats", JSON.stringify(stats));
     }
     settings.shareStats && UID && stats.games > 0 && updateAverageStats(stats);
@@ -183,8 +198,8 @@ function App(props) {
   React.useEffect(() => {
     localStorage.setItem("UID", JSON.stringify(UID));
     // Fix individual user's stats
-    // if (UID == "lqd7imte2revtmhs9" && stats.games < 88) {
-    //   localStorage.setItem("stats", JSON.stringify({games:88,won:85,streak:18,maxStreak:51,attempts:{1:1,2:2,3:9,4:11,5:32,6:29}}));
+    // if (UID == "lr31r12v321mx82pv" && stats.games < 105) {
+    //   localStorage.setItem("stats", JSON.stringify({games:105,won:95,streak:1,maxStreak:51,attempts:{1:1,2:2,3:9,4:12,5:37,6:33}}));
     // }
   }, [UID]);
 
@@ -235,6 +250,15 @@ function App(props) {
   }, [keyListener]);
 
   function resetGame() {
+    // Reset streak if games skipped
+    const lastPlayed = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
+    const currentlyPlayed = getIssueNumber();
+    if (currentlyPlayed - lastPlayed > 1 || currentlyPlayed - lastPlayed == 1 && JSON.parse(localStorage.getItem("result")) == null) {
+      var newStats = {...tryLoadingFromLocalStorage("stats", stats, null, null, false)};
+      newStats.streak = 0;
+      setStats(newStats);
+    }
+
     setAttempts([]);
     setFeedback([]);
     setResult(null);
@@ -243,7 +267,7 @@ function App(props) {
       letter: 0
     })
     setModal(null);
-    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
+    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(currentlyPlayed));
   }
 
   // Send own stats, receive average
@@ -437,7 +461,6 @@ function App(props) {
       str += "\n";
       attempt.map(res => str += (res=="hit") ? "🟩" : (res=="found") ? "🟨" : "⬜")
     });
-    str += "\nhttps://wordle-ua.net/";
     
     let el = document.createElement("textarea");
     el.value = str;
@@ -498,12 +521,12 @@ function App(props) {
   }
 
   // Switch modal state gracefully
- function switchModal(type) {
-  setModal(null);
-  setTimeout(() => {
-    setModal(type);
-  }, "100")
- }
+  function switchModal(type) {
+    setModal(null);
+    setTimeout(() => {
+      setModal(type);
+    }, "100")
+  }
 
   return (
     <React.Fragment>
@@ -628,8 +651,37 @@ function Modal(props) {
   var title;
   var content;
 
+  // Calculating bar heights for leaderboard graph
+  var leaderboard = {
+    absMax: 0,
+    heights: {},
+    maxHeights: {},
+    myHeight: 0,
+    myMaxHeight: 0,
+    amIn: false
+  }
+  leaderboard.absMax = Math.max(...props.averageStats.leaderboard.map(leader => (props.stats.streak < props.stats.maxStreak) ? leader.maxStreak : leader.streak)) || 100;
+  props.averageStats.leaderboard.forEach(leader => {
+    leaderboard.heights[leader.uid] = leader.streak/leaderboard.absMax*100;
+    if (props.stats.streak < props.stats.maxStreak) {
+      leaderboard.maxHeights[leader.uid] = leader.maxStreak/leaderboard.absMax*100;
+    }
+  });
+  leaderboard.myHeight = props.stats.streak/leaderboard.absMax*100;
+  if (props.stats.streak < props.stats.maxStreak) {
+    leaderboard.myMaxHeight = props.stats.maxStreak/leaderboard.absMax*100;
+  }
+  leaderboard.amIn = props.averageStats.leaderboard.map((leader) => leader.uid).includes(props.uid);
+
+  // Calculating average attempt
+  var averageAttempt = 0;
+  for (const key in props.stats.attempts) {
+    averageAttempt += key*props.stats.attempts[key];
+  }
+  averageAttempt = (props.stats.won > 0) ? Math.round(averageAttempt*100/props.stats.won)/100 : 0;
+
   // Calculating bar widths for attempts graph
-  const comparing = props.type == "avg-stats"
+  const comparing = props.type == "avg-stats";
   const myTotal = Object.entries(props.stats.attempts).map(pair => pair[1]).reduce((s, a) => s + a, 0);
   const averageTotal = 1;
   const total = comparing ? Math.max(myTotal, averageTotal) : myTotal;
@@ -644,21 +696,6 @@ function Modal(props) {
   for (const key in props.averageStats.attempts) {
     avgGraphWidths[key] = props.averageStats.attempts[key]*total/maxAttempts*100;
   }
-
-  // Calculating bar heights for streak leaderboard graph
-  const absMaxStreak = Math.max(...props.averageStats.maxStreakLeaderboard.map((leader) => leader.maxStreak)) || 100;
-  const leaderboardGraphHeights = {}
-  props.averageStats.maxStreakLeaderboard.forEach(leader => {
-    leaderboardGraphHeights[leader.uid] = leader.maxStreak/absMaxStreak*100;
-  });
-  const myHeight = props.stats.maxStreak/absMaxStreak*100;
-  const inLeaderboard = props.averageStats.maxStreakLeaderboard.map((leader) => leader.uid).includes(props.uid)
-  var averageAttempt = 0;
-  for (const key in props.stats.attempts) {
-    averageAttempt += key*props.stats.attempts[key];
-  }
-  averageAttempt = (props.stats.won > 0) ? averageAttempt/props.stats.won : 0;
-  averageAttempt = Math.round(averageAttempt*100)/100;
 
   if (props.type == "help") {
     title = "Як грати?";
@@ -738,6 +775,8 @@ function Modal(props) {
           <span className="metric">Рекорд підряд</span>
         </li>
       </ul>
+
+      <div className="small hint"><b>УВАГА!</b> Відтепер пропущена гра обнуляє виграші підряд.</div>
 
       <h3>Виграшні спроби</h3>
       {[...Array(6)].map((val, i) =>
@@ -824,27 +863,35 @@ function Modal(props) {
       <Metric value={props.averageStats.maxStreakPercentile}>
         Ваш рекорд: <b>{ props.stats.maxStreak } { nTimes(props.stats.maxStreak) } підряд</b>
       </Metric>
-      
+
+      <hr />
+
+      <h3>Ліга {props.averageStats.leagueName}</h3>
       <div className="graph-vertical-container">
-        { props.averageStats.maxStreakLeaderboard.map((leader) =>
+        { props.averageStats.leaderboard.map((leader) =>
           <GraphBarVertical
             uid={leader.uid}
             pos={leader.pos}
-            value={leader.maxStreak}
+            value={leader.streak}
             myUid={props.uid}
-            height={leaderboardGraphHeights[leader.uid]} />
+            height={leaderboard.heights[leader.uid]}
+            secondaryValue={(props.stats.streak < props.stats.maxStreak) && leader.maxStreak}
+            secondaryHeight={(props.stats.streak < props.stats.maxStreak) && leaderboard.maxHeights[leader.uid]} />
         )}
-        { !inLeaderboard && <GraphBarVertical
+        { !leaderboard.amIn && <GraphBarVertical
             uid={props.uid}
             pos={-1}
-            value={props.stats.maxStreak}
+            value={props.stats.streak}
             myUid={props.uid}
-            height={myHeight} />
+            height={leaderboard.myHeight}
+            secondaryValue={(props.stats.streak < props.stats.maxStreak) && props.stats.maxStreak}
+            secondaryHeight={(props.stats.streak < props.stats.maxStreak) && leaderboard.myMaxHeight} />
         }
       </div>
-      
-      { inLeaderboard && <div className="small hint">🧠 В чому ваш секрет?</div> }
-      
+      { (props.stats.streak < props.stats.maxStreak) && <p className="small fade">Ті, хто наздоганяє свій минулий рекорд.</p> }
+      { (leaderboard.myHeight > 100) && <p className="small fade">Маєте бути в топі, але чомусь не там? Схоже, з вашою статистикою щось може бути не так. <a href="https://www.facebook.com/kokokostya/">Напишіть нам</a>, і ми спробуємо розібратись.</p>}
+      { leaderboard.amIn && <div className="small hint">🧠 В чому ваш секрет?</div> }
+
       <hr />
       
       <h3>Виграшні спроби</h3>
@@ -881,14 +928,14 @@ function Modal(props) {
           props.averageStats.gamesPercentile < .5 || 
           props.averageStats.wonPercentile < .5 || 
           props.averageStats.maxStreakPercentile < .5 || 
-          props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1] && 
-          props.stats.maxStreak/props.averageStats.maxStreakLeaderboard[props.averageStats.maxStreakLeaderboard.length - 1].maxStreak < .1
+          props.averageStats.leaderboard[props.averageStats.leaderboard.length - 1] && 
+          props.stats.maxStreak/props.averageStats.leaderboard[props.averageStats.leaderboard.length - 1].maxStreak < .1
         ) 
         ? <div className="small hint">😉 Місцями не дуже? Наздоженете! Вони теж з чогось починали.</div>
         : <hr />
       }
 
-      <p className="small fade">В загальній статистиці не рахуються гравці із менш ніж 10 іграми, аномальними результатами, а також ті, хто вимкнув цю опцію <a href="#" onClick={() => props.switchModal("settings")}>в налаштуваннях</a>.</p>
+      <p className="small fade">В загальній статистиці не рахуються гравці із менш ніж 10 іграми, аномальними результатами, ті, хто не грав з минулого року, а також ті, хто вимкнув цю опцію <a href="#" onClick={() => props.switchModal("settings")}>в налаштуваннях</a>.</p>
     </React.Fragment>
   } else if (props.type == "settings") {
     title = "Налаштування";
@@ -1018,6 +1065,10 @@ function GraphBarVertical(props) {
         <div className={"bar" + (props.uid == props.myUid ? (props.pos > 0 ? "" : " none") : " average")} style={{height: props.height + "%"}}>
           <span className="value">{ props.value }</span>
         </div>
+        { props.secondaryValue && <div className={"bar secondary" + (props.uid == props.myUid ? (props.pos > 0 ? "" : " none") : " average")} style={{height: props.secondaryHeight + "%"}}>
+            <span className="value">{ props.secondaryValue }</span>
+          </div> 
+        }
       </div>
       <div className="label">{ props.uid == props.myUid ? "Ви" : "#" + props.pos }</div>
     </div>

@@ -17,7 +17,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function App(props) {
-  var defaultState = {
+  var defaultStats = {
     games: 0,
     won: 0,
     streak: 0,
@@ -36,47 +36,59 @@ function App(props) {
     gamesPercentile: 0,
     wonPercentile: 0,
     maxStreakPercentile: 0,
-    maxStreakLeaderboard: [{
+    leagueName: "",
+    leaderboard: [{
       uid: "uid",
       pos: 1,
+      streak: 0,
       maxStreak: 0
     }, {
       uid: "uid",
       pos: 2,
+      streak: 0,
       maxStreak: 0
     }, {
       uid: "uid",
       pos: 3,
+      streak: 0,
       maxStreak: 0
     }, {
       uid: "uid",
       pos: 4,
+      streak: 0,
       maxStreak: 0
     }, {
       uid: "uid",
       pos: 5,
+      streak: 0,
       maxStreak: 0
     }, {
       uid: "uid",
       pos: 6,
+      streak: 0,
       maxStreak: 0
     }, {
       uid: "uid",
       pos: 7,
+      streak: 0,
       maxStreak: 0
     }, {
       uid: "uid",
       pos: 8,
+      streak: 0,
       maxStreak: 0
     }, {
       uid: "uid",
       pos: 9,
+      streak: 0,
       maxStreak: 0
     }, {
       uid: "uid",
       pos: 10,
+      streak: 0,
       maxStreak: 0
     }],
+    averageAttemptPercentile: 0,
     attempts: {
       1: 0,
       2: 0,
@@ -105,7 +117,7 @@ function App(props) {
     _React$useState8 = _slicedToArray(_React$useState7, 2),
     cursor = _React$useState8[0],
     setCursor = _React$useState8[1];
-  var _React$useState9 = React.useState(defaultState),
+  var _React$useState9 = React.useState(defaultStats),
     _React$useState10 = _slicedToArray(_React$useState9, 2),
     stats = _React$useState10[0],
     setStats = _React$useState10[1];
@@ -125,7 +137,7 @@ function App(props) {
     _React$useState16 = _slicedToArray(_React$useState15, 2),
     settings = _React$useState16[0],
     setSettings = _React$useState16[1];
-  var _React$useState17 = React.useState(null),
+  var _React$useState17 = React.useState("avg-stats"),
     _React$useState18 = _slicedToArray(_React$useState17, 2),
     modal = _React$useState18[0],
     setModal = _React$useState18[1];
@@ -157,8 +169,9 @@ function App(props) {
   }
   var prevSettings = usePrevious(settings);
 
-  // Load from local storage if still valid
+  // Load from local storage
   React.useEffect(function () {
+    // Load unfinished game if still valid
     if (JSON.parse(localStorage.getItem("lastPlayedIssueNumber")) == getIssueNumber()) {
       var localAttempts = tryLoadingFromLocalStorage("attempts", attempts, setAttempts);
       var localFeedback = tryLoadingFromLocalStorage("feedback", feedback, setFeedback);
@@ -176,22 +189,25 @@ function App(props) {
   }, []);
   function tryLoadingFromLocalStorage(propName, obj, setter) {
     var deafaultValue = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+    var set = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
     var loadedObj;
     try {
       loadedObj = JSON.parse(localStorage.getItem(propName));
     } catch (e) {
       loadedObj = null;
     }
-    if (loadedObj) {
-      // Add missing props from new obj definition
-      for (var prop in obj) {
-        if (obj.hasOwnProperty(prop) && !loadedObj.hasOwnProperty(prop)) {
-          loadedObj[prop] = obj[prop];
+    if (set) {
+      if (loadedObj) {
+        // Add missing props from new obj definition
+        for (var prop in obj) {
+          if (obj.hasOwnProperty(prop) && !loadedObj.hasOwnProperty(prop)) {
+            loadedObj[prop] = obj[prop];
+          }
         }
+        setter(loadedObj);
+      } else if (deafaultValue) {
+        setter(deafaultValue);
       }
-      setter(loadedObj);
-    } else if (deafaultValue) {
-      setter(deafaultValue);
     }
     return loadedObj;
   }
@@ -204,14 +220,14 @@ function App(props) {
     localStorage.setItem("feedback", JSON.stringify(feedback));
   }, [feedback]);
   React.useEffect(function () {
-    // Never override valid local stats
     var localStats;
     try {
       localStats = JSON.parse(localStorage.getItem("stats"));
     } catch (e) {
       localStats = null;
     }
-    if (!localStats || localStats && localStats.games < stats.games) {
+    // Never override valid local stats, only update if new game released or streak was broken
+    if (!localStats || localStats.games <= stats.games) {
       localStorage.setItem("stats", JSON.stringify(stats));
     }
     settings.shareStats && UID && stats.games > 0 && updateAverageStats(stats);
@@ -225,8 +241,8 @@ function App(props) {
   React.useEffect(function () {
     localStorage.setItem("UID", JSON.stringify(UID));
     // Fix individual user's stats
-    // if (UID == "lqd7imte2revtmhs9" && stats.games < 88) {
-    //   localStorage.setItem("stats", JSON.stringify({games:88,won:85,streak:18,maxStreak:51,attempts:{1:1,2:2,3:9,4:11,5:32,6:29}}));
+    // if (UID == "lr31r12v321mx82pv" && stats.games < 105) {
+    //   localStorage.setItem("stats", JSON.stringify({games:105,won:95,streak:1,maxStreak:51,attempts:{1:1,2:2,3:9,4:12,5:37,6:33}}));
     // }
   }, [UID]);
 
@@ -274,6 +290,14 @@ function App(props) {
     };
   }, [keyListener]);
   function resetGame() {
+    // Reset streak if games skipped
+    var lastPlayed = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
+    var currentlyPlayed = getIssueNumber();
+    if (currentlyPlayed - lastPlayed > 1 || currentlyPlayed - lastPlayed == 1 && JSON.parse(localStorage.getItem("result")) == null) {
+      var newStats = _objectSpread({}, tryLoadingFromLocalStorage("stats", stats, null, null, false));
+      newStats.streak = 0;
+      setStats(newStats);
+    }
     setAttempts([]);
     setFeedback([]);
     setResult(null);
@@ -282,7 +306,7 @@ function App(props) {
       letter: 0
     });
     setModal(null);
-    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(getIssueNumber()));
+    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(currentlyPlayed));
   }
 
   // Send own stats, receive average
@@ -523,7 +547,6 @@ function App(props) {
         return str += res == "hit" ? "🟩" : res == "found" ? "🟨" : "⬜";
       });
     });
-    str += "\nhttps://wordle-ua.net/";
     var el = document.createElement("textarea");
     el.value = str;
     el.setAttribute("readonly", "");
@@ -744,6 +767,39 @@ function Modal(props) {
   var title;
   var content;
 
+  // Calculating bar heights for leaderboard graph
+  var leaderboard = {
+    absMax: 0,
+    heights: {},
+    maxHeights: {},
+    myHeight: 0,
+    myMaxHeight: 0,
+    amIn: false
+  };
+  leaderboard.absMax = Math.max.apply(Math, _toConsumableArray(props.averageStats.leaderboard.map(function (leader) {
+    return props.stats.streak < props.stats.maxStreak ? leader.maxStreak : leader.streak;
+  }))) || 100;
+  props.averageStats.leaderboard.forEach(function (leader) {
+    leaderboard.heights[leader.uid] = leader.streak / leaderboard.absMax * 100;
+    if (props.stats.streak < props.stats.maxStreak) {
+      leaderboard.maxHeights[leader.uid] = leader.maxStreak / leaderboard.absMax * 100;
+    }
+  });
+  leaderboard.myHeight = props.stats.streak / leaderboard.absMax * 100;
+  if (props.stats.streak < props.stats.maxStreak) {
+    leaderboard.myMaxHeight = props.stats.maxStreak / leaderboard.absMax * 100;
+  }
+  leaderboard.amIn = props.averageStats.leaderboard.map(function (leader) {
+    return leader.uid;
+  }).includes(props.uid);
+
+  // Calculating average attempt
+  var averageAttempt = 0;
+  for (var key in props.stats.attempts) {
+    averageAttempt += key * props.stats.attempts[key];
+  }
+  averageAttempt = props.stats.won > 0 ? Math.round(averageAttempt * 100 / props.stats.won) / 100 : 0;
+
   // Calculating bar widths for attempts graph
   var comparing = props.type == "avg-stats";
   var myTotal = Object.entries(props.stats.attempts).map(function (pair) {
@@ -761,32 +817,13 @@ function Modal(props) {
   }))) : 0;
   var maxAttempts = comparing ? Math.max(myMax, averageMax) : myMax;
   var myGraphWidths = {};
-  for (var key in props.stats.attempts) {
-    myGraphWidths[key] = props.stats.attempts[key] / maxAttempts * 100;
+  for (var _key in props.stats.attempts) {
+    myGraphWidths[_key] = props.stats.attempts[_key] / maxAttempts * 100;
   }
   var avgGraphWidths = {};
-  for (var _key in props.averageStats.attempts) {
-    avgGraphWidths[_key] = props.averageStats.attempts[_key] * total / maxAttempts * 100;
+  for (var _key2 in props.averageStats.attempts) {
+    avgGraphWidths[_key2] = props.averageStats.attempts[_key2] * total / maxAttempts * 100;
   }
-
-  // Calculating bar heights for streak leaderboard graph
-  var absMaxStreak = Math.max.apply(Math, _toConsumableArray(props.averageStats.maxStreakLeaderboard.map(function (leader) {
-    return leader.maxStreak;
-  }))) || 100;
-  var leaderboardGraphHeights = {};
-  props.averageStats.maxStreakLeaderboard.forEach(function (leader) {
-    leaderboardGraphHeights[leader.uid] = leader.maxStreak / absMaxStreak * 100;
-  });
-  var myHeight = props.stats.maxStreak / absMaxStreak * 100;
-  var inLeaderboard = props.averageStats.maxStreakLeaderboard.map(function (leader) {
-    return leader.uid;
-  }).includes(props.uid);
-  var averageAttempt = 0;
-  for (var _key2 in props.stats.attempts) {
-    averageAttempt += _key2 * props.stats.attempts[_key2];
-  }
-  averageAttempt = props.stats.won > 0 ? averageAttempt / props.stats.won : 0;
-  averageAttempt = Math.round(averageAttempt * 100) / 100;
   if (props.type == "help") {
     title = "Як грати?";
     content = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("b", null, "\u0412\u0433\u0430\u0434\u0430\u0439\u0442\u0435 \u0441\u043B\u043E\u0432\u043E \u0437 \u0448\u0435\u0441\u0442\u0438 \u0441\u043F\u0440\u043E\u0431."), " \u041A\u043E\u0436\u043D\u0430 \u0437\u0434\u043E\u0433\u0430\u0434\u043A\u0430 \u043C\u0443\u0441\u0438\u0442\u044C \u0431\u0443\u0442\u0438 \u0441\u043B\u043E\u0432\u043D\u0438\u043A\u043E\u0432\u0438\u043C \u0456\u043C\u0435\u043D\u043D\u0438\u043A\u043E\u043C, \u0430\u043B\u0435 \u043D\u0435 \u0432\u043B\u0430\u0441\u043D\u043E\u044E \u043D\u0430\u0437\u0432\u043E\u044E. \u041F\u0456\u0441\u043B\u044F \u043A\u043E\u0436\u043D\u043E\u0457 \u0441\u043F\u0440\u043E\u0431\u0438 \u043A\u043E\u043B\u0456\u0440 \u043F\u0456\u0434\u043A\u0430\u0436\u0435, \u043D\u0430\u0441\u043A\u0456\u043B\u044C\u043A\u0438 \u0431\u043B\u0438\u0437\u044C\u043A\u043E \u0432\u0438 \u0431\u0443\u043B\u0438:"), /*#__PURE__*/React.createElement("dl", {
@@ -874,7 +911,9 @@ function Modal(props) {
       className: "value"
     }, props.stats.maxStreak), /*#__PURE__*/React.createElement("span", {
       className: "metric"
-    }, "\u0420\u0435\u043A\u043E\u0440\u0434 \u043F\u0456\u0434\u0440\u044F\u0434"))), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), _toConsumableArray(Array(6)).map(function (val, i) {
+    }, "\u0420\u0435\u043A\u043E\u0440\u0434 \u043F\u0456\u0434\u0440\u044F\u0434"))), /*#__PURE__*/React.createElement("div", {
+      className: "small hint"
+    }, /*#__PURE__*/React.createElement("b", null, "\u0423\u0412\u0410\u0413\u0410!"), " \u0412\u0456\u0434\u0442\u0435\u043F\u0435\u0440 \u043F\u0440\u043E\u043F\u0443\u0449\u0435\u043D\u0430 \u0433\u0440\u0430 \u043E\u0431\u043D\u0443\u043B\u044F\u0454 \u0432\u0438\u0433\u0440\u0430\u0448\u0456 \u043F\u0456\u0434\u0440\u044F\u0434."), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), _toConsumableArray(Array(6)).map(function (val, i) {
       return /*#__PURE__*/React.createElement(GraphBarHorizontal, {
         key: i,
         num: i + 1,
@@ -942,7 +981,7 @@ function Modal(props) {
       className: "small hint"
     }, "\uD83D\uDE33 \u0412 \u043D\u0430\u0441 \u043E\u0434\u043D\u0435 \u043F\u0438\u0442\u0430\u043D\u043D\u044F: \u044F\u043A???"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(Metric, {
       value: props.averageStats.maxStreakPercentile
-    }, "\u0412\u0430\u0448 \u0440\u0435\u043A\u043E\u0440\u0434: ", /*#__PURE__*/React.createElement("b", null, props.stats.maxStreak, " ", nTimes(props.stats.maxStreak), " \u043F\u0456\u0434\u0440\u044F\u0434")), /*#__PURE__*/React.createElement("div", {
+    }, "\u0412\u0430\u0448 \u0440\u0435\u043A\u043E\u0440\u0434: ", /*#__PURE__*/React.createElement("b", null, props.stats.maxStreak, " ", nTimes(props.stats.maxStreak), " \u043F\u0456\u0434\u0440\u044F\u0434")), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "\u041B\u0456\u0433\u0430 ", props.averageStats.leagueName), /*#__PURE__*/React.createElement("div", {
       className: "graph-vertical-container"
     }, props.averageStats.maxStreakLeaderboard.map(function (leader) {
       return /*#__PURE__*/React.createElement(GraphBarVertical, {
@@ -950,15 +989,23 @@ function Modal(props) {
         pos: leader.pos,
         value: leader.maxStreak,
         myUid: props.uid,
-        height: leaderboardGraphHeights[leader.uid]
+        height: leaderboard.heights[leader.uid],
+        secondaryValue: props.stats.streak < props.stats.maxStreak && leader.maxStreak,
+        secondaryHeight: props.stats.streak < props.stats.maxStreak && leaderboard.maxHeights[leader.uid]
       });
-    }), !inLeaderboard && /*#__PURE__*/React.createElement(GraphBarVertical, {
+    }), !leaderboard.amIn && /*#__PURE__*/React.createElement(GraphBarVertical, {
       uid: props.uid,
       pos: -1,
       value: props.stats.maxStreak,
       myUid: props.uid,
-      height: myHeight
-    })), inLeaderboard && /*#__PURE__*/React.createElement("div", {
+      height: leaderboard.myHeight,
+      secondaryValue: props.stats.streak < props.stats.maxStreak && props.stats.maxStreak,
+      secondaryHeight: props.stats.streak < props.stats.maxStreak && leaderboard.myMaxHeight
+    })), leaderboard.myHeight > 100 && /*#__PURE__*/React.createElement("p", {
+      className: "small fade"
+    }, "\u041C\u0430\u0454\u0442\u0435 \u0431\u0443\u0442\u0438 \u0432 \u0442\u043E\u043F\u0456, \u0430\u043B\u0435 \u0447\u043E\u043C\u0443\u0441\u044C \u043D\u0435 \u0442\u0430\u043C? \u0421\u0445\u043E\u0436\u0435, \u0437 \u0432\u0430\u0448\u043E\u044E \u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043A\u043E\u044E \u0449\u043E\u0441\u044C \u043C\u043E\u0436\u0435 \u0431\u0443\u0442\u0438 \u043D\u0435 \u0442\u0430\u043A. ", /*#__PURE__*/React.createElement("a", {
+      href: "https://www.facebook.com/kokokostya/"
+    }, "\u041D\u0430\u043F\u0438\u0448\u0456\u0442\u044C \u043D\u0430\u043C"), ", \u0456 \u043C\u0438 \u0441\u043F\u0440\u043E\u0431\u0443\u0454\u043C\u043E \u0440\u043E\u0437\u0456\u0431\u0440\u0430\u0442\u0438\u0441\u044C."), leaderboard.amIn && /*#__PURE__*/React.createElement("div", {
       className: "small hint"
     }, "\uD83E\uDDE0 \u0412 \u0447\u043E\u043C\u0443 \u0432\u0430\u0448 \u0441\u0435\u043A\u0440\u0435\u0442?"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), /*#__PURE__*/React.createElement(Metric, {
       value: props.averageStats.averageAttemptPercentile
@@ -985,7 +1032,7 @@ function Modal(props) {
       className: "small hint"
     }, "\uD83D\uDE09 \u041C\u0456\u0441\u0446\u044F\u043C\u0438 \u043D\u0435 \u0434\u0443\u0436\u0435? \u041D\u0430\u0437\u0434\u043E\u0436\u0435\u043D\u0435\u0442\u0435! \u0412\u043E\u043D\u0438 \u0442\u0435\u0436 \u0437 \u0447\u043E\u0433\u043E\u0441\u044C \u043F\u043E\u0447\u0438\u043D\u0430\u043B\u0438.") : /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("p", {
       className: "small fade"
-    }, "\u0412 \u0437\u0430\u0433\u0430\u043B\u044C\u043D\u0456\u0439 \u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u0446\u0456 \u043D\u0435 \u0440\u0430\u0445\u0443\u044E\u0442\u044C\u0441\u044F \u0433\u0440\u0430\u0432\u0446\u0456 \u0456\u0437 \u043C\u0435\u043D\u0448 \u043D\u0456\u0436 10 \u0456\u0433\u0440\u0430\u043C\u0438, \u0430\u043D\u043E\u043C\u0430\u043B\u044C\u043D\u0438\u043C\u0438 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442\u0430\u043C\u0438, \u0430 \u0442\u0430\u043A\u043E\u0436 \u0442\u0456, \u0445\u0442\u043E \u0432\u0438\u043C\u043A\u043D\u0443\u0432 \u0446\u044E \u043E\u043F\u0446\u0456\u044E ", /*#__PURE__*/React.createElement("a", {
+    }, "\u0412 \u0437\u0430\u0433\u0430\u043B\u044C\u043D\u0456\u0439 \u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u0446\u0456 \u043D\u0435 \u0440\u0430\u0445\u0443\u044E\u0442\u044C\u0441\u044F \u0433\u0440\u0430\u0432\u0446\u0456 \u0456\u0437 \u043C\u0435\u043D\u0448 \u043D\u0456\u0436 10 \u0456\u0433\u0440\u0430\u043C\u0438, \u0430\u043D\u043E\u043C\u0430\u043B\u044C\u043D\u0438\u043C\u0438 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442\u0430\u043C\u0438, \u0442\u0456, \u0445\u0442\u043E \u043D\u0435 \u0433\u0440\u0430\u0432 \u0437 \u043C\u0438\u043D\u0443\u043B\u043E\u0433\u043E \u0440\u043E\u043A\u0443, \u0430 \u0442\u0430\u043A\u043E\u0436 \u0442\u0456, \u0445\u0442\u043E \u0432\u0438\u043C\u043A\u043D\u0443\u0432 \u0446\u044E \u043E\u043F\u0446\u0456\u044E ", /*#__PURE__*/React.createElement("a", {
       href: "#",
       onClick: function onClick() {
         return props.switchModal("settings");
@@ -1148,7 +1195,14 @@ function GraphBarVertical(props) {
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "value"
-  }, props.value))), /*#__PURE__*/React.createElement("div", {
+  }, props.value)), props.secondaryValue && /*#__PURE__*/React.createElement("div", {
+    className: "bar secondary" + (props.uid == props.myUid ? props.pos > 0 ? "" : " none" : " average"),
+    style: {
+      height: props.secondaryHeight + "%"
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "value"
+  }, props.secondaryValue))), /*#__PURE__*/React.createElement("div", {
     className: "label"
   }, props.uid == props.myUid ? "Ви" : "#" + props.pos));
 }
