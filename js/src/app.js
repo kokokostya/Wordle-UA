@@ -168,7 +168,7 @@ function App(props) {
         setter(deafaultValue);
       }
     }
-    return loadedObj;
+    return loadedObj || deafaultValue;
   }
 
   // Save to local storage
@@ -180,6 +180,8 @@ function App(props) {
   }, [feedback]);
   React.useEffect(() => {
     var localStats;
+    console.log(stats)
+
     try {
       localStats = JSON.parse(localStorage.getItem("stats"));
     } catch(e) {
@@ -254,7 +256,7 @@ function App(props) {
     const lastPlayed = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
     const currentlyPlayed = getIssueNumber();
     if (currentlyPlayed - lastPlayed > 1 || currentlyPlayed - lastPlayed == 1 && JSON.parse(localStorage.getItem("result")) == null) {
-      var newStats = {...tryLoadingFromLocalStorage("stats", stats, null, null, false)};
+      var newStats = {...tryLoadingFromLocalStorage("stats", stats, setStats, defaultStats, false)};
       newStats.streak = 0;
       setStats(newStats);
     }
