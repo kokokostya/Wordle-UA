@@ -107,7 +107,7 @@ function App(props) {
     colorBlind: false,
     shareStats: true
   });
-  const [modal, setModal] = React.useState("avg-stats");
+  const [modal, setModal] = React.useState(null);
   const [timeLeft, setTimeLeft] = React.useState({
     "h": 0, 
     "m": 0, 

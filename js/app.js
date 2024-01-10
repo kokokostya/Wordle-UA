@@ -137,7 +137,7 @@ function App(props) {
     _React$useState16 = _slicedToArray(_React$useState15, 2),
     settings = _React$useState16[0],
     setSettings = _React$useState16[1];
-  var _React$useState17 = React.useState("avg-stats"),
+  var _React$useState17 = React.useState(null),
     _React$useState18 = _slicedToArray(_React$useState17, 2),
     modal = _React$useState18[0],
     setModal = _React$useState18[1];
