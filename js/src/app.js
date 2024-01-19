@@ -198,9 +198,9 @@ function App(props) {
   React.useEffect(() => {
     localStorage.setItem("UID", JSON.stringify(UID));
     // Fix individual user's stats
-    if (UID == "lrgbv0wq2luui9ou9" && stats.games < 10) {
-      localStorage.setItem("stats", JSON.stringify({games:10,won:8,streak:7,maxStreak:7,attempts:{1:0,2:0,3:1,4:2,5:3,6:2}}));
-    }
+    // if (UID == "lrgbv0wq2luui9ou9" && stats.games < 10) {
+    //   localStorage.setItem("stats", JSON.stringify({games:10,won:8,streak:7,maxStreak:7,attempts:{1:0,2:0,3:1,4:2,5:3,6:2}}));
+    // }
   }, [UID]);
 
   // Update theme and save to local storage
@@ -775,8 +775,6 @@ function Modal(props) {
           <span className="metric">Рекорд підряд</span>
         </li>
       </ul>
-
-      <div className="small hint"><b>УВАГА!</b> Відтепер пропуск гри анулює виграшну серію.</div>
 
       <h3>Виграшні спроби</h3>
       {[...Array(6)].map((val, i) =>

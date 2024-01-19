@@ -241,22 +241,9 @@ function App(props) {
   React.useEffect(function () {
     localStorage.setItem("UID", JSON.stringify(UID));
     // Fix individual user's stats
-    if (UID == "lrgbv0wq2luui9ou9" && stats.games < 10) {
-      localStorage.setItem("stats", JSON.stringify({
-        games: 10,
-        won: 8,
-        streak: 7,
-        maxStreak: 7,
-        attempts: {
-          1: 0,
-          2: 0,
-          3: 1,
-          4: 2,
-          5: 3,
-          6: 2
-        }
-      }));
-    }
+    // if (UID == "lrgbv0wq2luui9ou9" && stats.games < 10) {
+    //   localStorage.setItem("stats", JSON.stringify({games:10,won:8,streak:7,maxStreak:7,attempts:{1:0,2:0,3:1,4:2,5:3,6:2}}));
+    // }
   }, [UID]);
 
   // Update theme and save to local storage
@@ -924,9 +911,7 @@ function Modal(props) {
       className: "value"
     }, props.stats.maxStreak), /*#__PURE__*/React.createElement("span", {
       className: "metric"
-    }, "\u0420\u0435\u043A\u043E\u0440\u0434 \u043F\u0456\u0434\u0440\u044F\u0434"))), /*#__PURE__*/React.createElement("div", {
-      className: "small hint"
-    }, /*#__PURE__*/React.createElement("b", null, "\u0423\u0412\u0410\u0413\u0410!"), " \u0412\u0456\u0434\u0442\u0435\u043F\u0435\u0440 \u043F\u0440\u043E\u043F\u0443\u0441\u043A \u0433\u0440\u0438 \u0430\u043D\u0443\u043B\u044E\u0454 \u0432\u0438\u0433\u0440\u0430\u0448\u043D\u0443 \u0441\u0435\u0440\u0456\u044E."), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), _toConsumableArray(Array(6)).map(function (val, i) {
+    }, "\u0420\u0435\u043A\u043E\u0440\u0434 \u043F\u0456\u0434\u0440\u044F\u0434"))), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), _toConsumableArray(Array(6)).map(function (val, i) {
       return /*#__PURE__*/React.createElement(GraphBarHorizontal, {
         key: i,
         num: i + 1,
