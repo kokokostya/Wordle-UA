@@ -241,9 +241,22 @@ function App(props) {
   React.useEffect(function () {
     localStorage.setItem("UID", JSON.stringify(UID));
     // Fix individual user's stats
-    // if (UID == "lrgbv0wq2luui9ou9" && stats.games < 10) {
-    //   localStorage.setItem("stats", JSON.stringify({games:10,won:8,streak:7,maxStreak:7,attempts:{1:0,2:0,3:1,4:2,5:3,6:2}}));
-    // }
+    if (UID == "lrn4kdwy1laxgo014" && stats.games < 218) {
+      localStorage.setItem("stats", JSON.stringify({
+        games: 218,
+        won: 216,
+        streak: 100,
+        maxStreak: 100,
+        attempts: {
+          1: 0,
+          2: 5,
+          3: 46,
+          4: 72,
+          5: 67,
+          6: 26
+        }
+      }));
+    }
   }, [UID]);
 
   // Update theme and save to local storage
