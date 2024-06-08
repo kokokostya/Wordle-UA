@@ -810,7 +810,8 @@ function Modal(props) {
         </span>
       </h3>
 
-      { ((props.result == "won") || (props.settings.shareStats && props.stats.games >= 10)) &&
+      {
+        ((props.result == "won") || (props.settings.shareStats && props.stats.games >= 10)) &&
         <div id="stats-buttons">
           {
             (props.result == "won") &&
@@ -833,16 +834,9 @@ function Modal(props) {
         </div>
       }
 
-      { 
-        props.settings.shareStats && (
-          (props.stats.games >= 10) ? 
-          <hr /> 
-          : 
-          <div className="small hint">Зіграйте <b>{ props.stats.games ? "ще" : null } {10 - props.stats.games} { nTimes(10 - props.stats.games) }</b> щоб побачити, як ви грали порівняно з іншими.</div> 
-        )
+      {
+        props.settings.shareStats &&  props.stats.games < 10 && <div className="small hint">Зіграйте <b>{ props.stats.games ? "ще" : null } {10 - props.stats.games} { nTimes(10 - props.stats.games) }</b> щоб побачити, як ви грали порівняно з іншими.</div> 
       }
-      
-      <p className="small fade">Щось не так зі статистикою? <a href="https://www.facebook.com/kokokostya/">Напишіть нам</a>.</p>
     </React.Fragment>
   } else if (props.type == "avg-stats") {
     title = <React.Fragment>
