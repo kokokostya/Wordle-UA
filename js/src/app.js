@@ -2,17 +2,16 @@ function App(props) {
   const lettersLimit = parseInt(props.letters) || 5;
   var attemptsLimit;
   var firstDay;
-  // switch (lettersLimit) {
-  //   case 5:
+  switch (lettersLimit) {
+    case 5:
       attemptsLimit = 6;
       firstDay = new Date("Thu Jan 22 2022 00:00:00 GMT+0200 (EET)");
-    //   break;
-    // case 6:
-  //     attemptsLimit = 6;
-  //     firstDay = new Date("Thu Jul 6 2024 00:00:00 GMT+0200 (EET)");
-  //     break;
-  // }
-  console.log("qqq")
+      break;
+    case 6:
+      attemptsLimit = 6;
+      firstDay = new Date("Thu Jul 6 2024 00:00:00 GMT+0200 (EET)");
+      break;
+  }
 
   const defaultStats = { 
     games: 0, 
@@ -83,30 +82,24 @@ function App(props) {
   }
   const prevSettings = usePrevious(settings);
 
-  // Load from local storage
-  React.useEffect(() => {
-    // Load unfinished game if still valid
-    if (JSON.parse(localStorage.getItem("lastPlayedIssueNumber")) == getIssueNumber()) {
-      var localAttempts = tryLoadingFromLocalStorage("attempts", attempts, setAttempts);
-      var localFeedback = tryLoadingFromLocalStorage("feedback", feedback, setFeedback);
-      tryLoadingFromLocalStorage("result", result, setResult);
-      setCursor({
-        attempt: (localFeedback) ? localFeedback.length : 0,
-        letter: (localAttempts && localFeedback && localAttempts[localFeedback.length]) ? localAttempts[localFeedback.length].length : 0
-      });
-    } else {
-      resetGame();
+  function getFromLocalStorage(propName) {
+    if (lettersLimit != 5) {
+      propName = `${lettersLimit}_${propName}`;
     }
+    return JSON.parse(localStorage.getItem(propName));
+  }
 
-    tryLoadingFromLocalStorage("settings", settings, setSettings);
-    tryLoadingFromLocalStorage("stats", stats, setStats);
-    tryLoadingFromLocalStorage("UID", UID, setUID, Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36));
-  }, []);
+  function saveToLocalStorage(propName, obj) {
+    if (lettersLimit != 5) {
+      propName = `${lettersLimit}_${propName}`;
+    }
+    localStorage.setItem(propName, JSON.stringify(obj));
+  }
 
-  function tryLoadingFromLocalStorage(propName, obj, setter, deafaultValue=false, set=true) {
+  function tryLoadingFromLocalStorage(propName, obj, setter=null, deafaultValue=false, set=true) {
     let loadedObj;
     try {
-      loadedObj = JSON.parse(localStorage.getItem(propName));
+      loadedObj = getFromLocalStorage(propName);
     } catch(e) {
       loadedObj = null
     }
@@ -126,28 +119,57 @@ function App(props) {
     return loadedObj || deafaultValue;
   }
 
+  // Load from local storage
+  React.useEffect(() => {
+    // Load unfinished game if still valid
+    if (getFromLocalStorage("lastPlayedIssueNumber") == getIssueNumber()) {
+      var localAttempts = tryLoadingFromLocalStorage("attempts", attempts, setAttempts);
+      var localFeedback = tryLoadingFromLocalStorage("feedback", feedback, setFeedback);
+      tryLoadingFromLocalStorage("result", result, setResult);
+      setCursor({
+        attempt: (localFeedback) ? localFeedback.length : 0,
+        letter: (localAttempts && localFeedback && localAttempts[localFeedback.length]) ? localAttempts[localFeedback.length].length : 0
+      });
+    } else {
+      resetGame();
+    }
+
+    var localUID;
+    try {
+      localUID = JSON.parse(localStorage.getItem("UID"));
+    } catch(e) {
+      localUID = null;
+    }
+    if (!localUID) {
+      localUID = Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36)
+    }
+    setUID(localUID);
+    tryLoadingFromLocalStorage("settings", settings, setSettings);
+    tryLoadingFromLocalStorage("stats", stats, setStats);
+  }, []);
+
   // Save to local storage
   React.useEffect(() => {
-    localStorage.setItem("attempts", JSON.stringify(attempts));
+    saveToLocalStorage("attempts", attempts);
   }, [attempts]);
   React.useEffect(() => {
-    localStorage.setItem("feedback", JSON.stringify(feedback));
+    saveToLocalStorage("feedback", feedback);
   }, [feedback]);
   React.useEffect(() => {
     var localStats;
     try {
-      localStats = JSON.parse(localStorage.getItem("stats"));
+      localStats = getFromLocalStorage("stats");
     } catch(e) {
       localStats = null
     }
     // Never override valid local stats, only update if new game released or streak was broken
     if (!localStats || localStats.games <= stats.games) {
-      localStorage.setItem("stats", JSON.stringify(stats));
+      saveToLocalStorage("stats", stats);
     }
     settings.shareStats && UID && stats.games > 0 && updateAverageStats(stats);
   }, [stats]);
   React.useEffect(() => {
-    localStorage.setItem("result", JSON.stringify(result));
+    saveToLocalStorage("result", result);
     if (result != null) setTimeout(() => setModal("stats"), 1000);
   }, [result]);
   React.useEffect(() => {
@@ -183,11 +205,12 @@ function App(props) {
 
   // Keep track of time and reset once new game is out
   React.useEffect(() => {
+    var lastPlayed = getFromLocalStorage("lastPlayedIssueNumber");
     setTimeLeft(getTimeTillMidnight());
     timer = setInterval(() => {
-      const lastPlayed = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
       if (lastPlayed && lastPlayed != getIssueNumber()) {
         resetGame();
+        lastPlayed = getIssueNumber();
       }
       setTimeLeft(getTimeTillMidnight());
     }, 1000);
@@ -198,33 +221,13 @@ function App(props) {
     }
   }, []);
 
-  // Accept keyboard input
-  const keyListener = React.useCallback((e) => {
-    if ("’йцукенгшщзхїфівапролджєячсмитьбю".includes(e.key)) {
-      e.preventDefault();
-      enterLetter(e.key);
-    } else if (e.code == "Backspace") {
-      e.preventDefault();
-      eraseLetter();
-    } else if (e.code == "Enter") {
-      e.preventDefault();
-      checkWord();
-    }
-  }, [cursor]);
-
-  React.useEffect(() => {
-    window.addEventListener("keyup", keyListener);
-    return ()=>{
-      window.removeEventListener("keyup", keyListener)
-    }
-  }, [keyListener]);
-
   function resetGame() {
     // Reset streak if games skipped
-    const lastPlayed = JSON.parse(localStorage.getItem("lastPlayedIssueNumber"));
+    const lastPlayed = getFromLocalStorage("lastPlayedIssueNumber");
     const currentlyPlayed = getIssueNumber();
-    if (currentlyPlayed - lastPlayed > 1 || currentlyPlayed - lastPlayed == 1 && JSON.parse(localStorage.getItem("result")) == null) {
-      var newStats = {...tryLoadingFromLocalStorage("stats", stats, setStats, defaultStats, false)};
+
+    if (currentlyPlayed - lastPlayed > 1 || currentlyPlayed - lastPlayed == 1 && getFromLocalStorage("result") == null) {
+      var newStats = {...tryLoadingFromLocalStorage("stats", stats, null, defaultStats, false)};
       newStats.streak = 0;
       setStats(newStats);
     }
@@ -237,14 +240,37 @@ function App(props) {
       letter: 0
     })
     setModal(null);
-    localStorage.setItem("lastPlayedIssueNumber", JSON.stringify(currentlyPlayed));
+    saveToLocalStorage("lastPlayedIssueNumber", currentlyPlayed);
   }
+
+  // Accept keyboard input
+  const keyListener = React.useCallback((e) => {
+    if ("’йцукенгшщзхїфівапролджєячсмитьбю".includes(e.key)) {
+      e.preventDefault();
+      enterLetter(e.key);
+    } else if (e.code == "Backspace" || e.code == "Delete") {
+      e.preventDefault();
+      eraseLetter();
+    } else if (e.code == "Enter") {
+      e.preventDefault();
+      checkWord();
+    }
+  }, [cursor]);
+
+  React.useEffect(() => {
+    window.addEventListener("keydown", keyListener);
+    return ()=>{
+      window.removeEventListener("keydown", keyListener)
+    }
+  }, [keyListener]);
 
   // Send own stats, receive average
   function updateAverageStats(stats) {
     console.log("Запит статистики...")
-    var url = "https://ukr.warspotting.net/wordle/"
-    if (!window.location.href.includes("wordle-ua.net")) {
+    var url;
+    if (window.location.href.includes("wordle-ua.net")) {
+      url = "https://ukr.warspotting.net/wordle/"
+    } else {
       url = "http://192.168.0.143:8000/wordle/"
     }
     const request = new Request(url);
@@ -252,6 +278,7 @@ function App(props) {
       method: "POST",
       body: JSON.stringify({
         uid: UID,
+        edition: lettersLimit,
         ...stats
       })
     })
@@ -309,7 +336,7 @@ function App(props) {
     return obj;
   }
 
-  // Days from Jan 22 2022 in Kyiv
+  // Days from day 1 in Kyiv
   function getIssueNumber() {
     const diff = Math.ceil((getKyivDateTimeIgnoringGMT(new Date())-getKyivDateTimeIgnoringGMT(firstDay))/(1000*60*60*24))
     return diff;
@@ -404,7 +431,7 @@ function App(props) {
             }
           });
           newFeedback.push(res);
-          if (cursor.attempt == attemptsLimit) newResult = "lost";
+          if (cursor.attempt == attemptsLimit - 1) newResult = "lost";
         }
         provideFeedback(newFeedback);
 
