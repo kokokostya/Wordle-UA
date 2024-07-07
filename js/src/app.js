@@ -466,7 +466,11 @@ function App(props) {
   }
 
   function shareResult() {
-    let str = "#укрWordle №" + getIssueNumber() + " " + feedback.length + "/" + attemptsLimit + ":";
+    let str = "#укрWordle ";
+    if (lettersLimit > 5) {
+      str += `${lettersLimit} `;
+    }
+    str += "№" + getIssueNumber() + " " + feedback.length + "/" + attemptsLimit + ":";
     feedback.map(attempt => {
       str += "\n";
       attempt.map(res => str += (res=="hit") ? "🟩" : (res=="found") ? "🟨" : "⬜")
