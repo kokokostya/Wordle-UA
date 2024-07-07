@@ -182,33 +182,19 @@ header h1 {
   margin: 0;
   transform: translate(-50%, 0);
 }
-header ul {
+header i {
   position: absolute;
-  top: 0.75rem;
-  left: 50%;
-  transform: translate(0, 0);
-  padding: 0;
-  margin: 0 0 0 4.85rem;
-}
-header ul li {
+  top: -0.25rem;
+  right: -1.5rem;
   display: inline-block;
-  margin-right: 0.2rem;
-}
-header ul li a {
-  display: block;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.33rem;
+  height: 1.33rem;
   border-radius: 1rem;
-  text-align: center;
   text-decoration: none;
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  font-style: italic;
   font-weight: bold;
   font-size: 1.5rem;
-  line-height: 1.4rem;
-  color: var(--tile-border);
-}
-header ul li a.active {
+  line-height: 1.2rem;
   background: var(--hit);
   color: var(--white);
 }

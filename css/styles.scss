@@ -198,37 +198,20 @@ header {
     transform: translate(-50%, 0);
   }
 
-  ul {
+  i {
     position: absolute;
-    top: .75rem;
-    left: 50%;
-    transform: translate(0, 0);
-    padding: 0;
-    margin: 0 0 0 4.85rem;
-
-    li {
-      display: inline-block;
-      margin-right: .2rem;
-
-      a {
-        display: block;
-        width: 1.5rem;
-        height: 1.5rem;
-        border-radius: 1rem;
-        text-align: center;
-        text-decoration: none;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-        font-style: italic;
-        font-weight: bold;
-        font-size: 1.5rem;
-        line-height: 1.4rem;
-        color: var(--tile-border);
-
-        &.active {
-          background: var(--hit);
-          color: var(--white);
-        }
-      }
-    }
+    top: -.25rem;
+    right: -1.5rem;
+    display: inline-block;
+    width: 1.33rem;
+    height: 1.33rem;
+    border-radius: 1rem;
+    text-decoration: none;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+    line-height: 1.2rem;
+    background: var(--hit);
+    color: var(--white);
   }
 
   #russianShip {
