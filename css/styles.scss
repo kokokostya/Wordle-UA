@@ -163,6 +163,21 @@ h1, .h1, h2, .h2, h3, .h3 {
 h1, .h1 {
   font-size: 2rem;
   letter-spacing: 2px;
+
+  i {
+    display: inline-block;
+    width: 1.33rem;
+    height: 1.33rem;
+    border-radius: 0.66rem;
+    background: var(--hit);
+    color: #fff;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 1.5rem;
+    line-height: 1.1rem;
+    position: absolute;
+    top: -0.33rem;
+    right: -1.5rem;
+  }
 }
 
 h2, .h2 {
@@ -321,6 +336,10 @@ header {
   height: 100%;
   min-height: 300px;
   max-height: 480px;
+
+  &.letters-6 {
+    max-width: 480px;
+  }
 
   .row {
     flex: 1;
