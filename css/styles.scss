@@ -337,6 +337,10 @@ header {
   min-height: 300px;
   max-height: 480px;
 
+  &.letters-6 {
+    max-width: 460px;
+  }
+
   .row {
     flex: 1;
 

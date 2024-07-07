@@ -307,6 +307,9 @@ header button:hover {
   min-height: 300px;
   max-height: 480px;
 }
+#board.letters-6 {
+  max-width: 460px;
+}
 #board .row {
   flex: 1;
 }
