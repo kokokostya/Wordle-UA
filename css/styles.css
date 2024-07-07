@@ -301,7 +301,7 @@ header button:hover {
 #board {
   display: flex;
   flex-direction: column;
-  margin: 0 1rem;
+  margin: 0 2rem;
   width: 100%;
   min-width: 250px;
   max-width: 400px;
@@ -310,6 +310,7 @@ header button:hover {
   max-height: 480px;
 }
 #board.letters-6 {
+  margin: 0 1rem;
   max-width: 480px;
 }
 #board .row {
