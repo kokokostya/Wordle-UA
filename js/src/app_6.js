@@ -538,7 +538,12 @@ function App(props) {
   return (
     <React.Fragment>
       <header>
-        <h1>Wordle {(lettersLimit == 6) && <i>6</i>} <em>українською</em></h1>
+        <h1>Wordle <em>українською</em></h1>
+
+        <ul>
+          <li><a href="/5.html" className={(lettersLimit == 5) && "active"}>5</a></li>
+          <li><a href="/6.html" className={(lettersLimit == 6) && "active"}>6</a></li>
+        </ul>
         
         <div id="russianShip">
           <div></div>

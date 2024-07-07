@@ -163,21 +163,6 @@ h1, .h1, h2, .h2, h3, .h3 {
 h1, .h1 {
   font-size: 2rem;
   letter-spacing: 2px;
-
-  i {
-    display: inline-block;
-    width: 1.33rem;
-    height: 1.33rem;
-    border-radius: 0.66rem;
-    background: var(--hit);
-    color: #fff;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-size: 1.5rem;
-    line-height: 1.1rem;
-    position: absolute;
-    top: -0.33rem;
-    right: -1.5rem;
-  }
 }
 
 h2, .h2 {
@@ -211,6 +196,39 @@ header {
     left: 50%;
     margin: 0;
     transform: translate(-50%, 0);
+  }
+
+  ul {
+    position: absolute;
+    top: .75rem;
+    left: 50%;
+    transform: translate(0, 0);
+    padding: 0;
+    margin: 0 0 0 4.85rem;
+
+    li {
+      display: inline-block;
+      margin-right: .2rem;
+
+      a {
+        display: block;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 1rem;
+        text-align: center;
+        text-decoration: none;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        font-style: italic;
+        font-weight: bold;
+        font-size: 1.5rem;
+        line-height: 1.4rem;
+        color: var(--tile-border);
+
+        &.active {
+          background: var(--hit);
+          color: var(--white);
+        }
+      }
+    }
   }
 
   #russianShip {
@@ -329,7 +347,7 @@ header {
 #board {
   display: flex;
   flex-direction: column;
-  margin: 0 2rem;
+  margin: 0 1rem;
   width: 100%;
   min-width: 250px;
   max-width: 400px;

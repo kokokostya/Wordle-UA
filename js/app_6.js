@@ -641,7 +641,13 @@ function App(props) {
       setModal(type);
     }, "100");
   }
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h1", null, "Wordle ", lettersLimit == 6 && /*#__PURE__*/React.createElement("i", null, "6"), " ", /*#__PURE__*/React.createElement("em", null, "\u0443\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u043E\u044E")), /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h1", null, "Wordle ", /*#__PURE__*/React.createElement("em", null, "\u0443\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u043E\u044E")), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
+    href: "/5.html",
+    className: lettersLimit == 5 && "active"
+  }, "5")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
+    href: "/6.html",
+    className: lettersLimit == 6 && "active"
+  }, "6"))), /*#__PURE__*/React.createElement("div", {
     id: "russianShip"
   }, /*#__PURE__*/React.createElement("div", null), /*#__PURE__*/React.createElement("span", null, "\u0420\u043E\u0441\u0456\u0439\u0441\u044C\u043A\u0438\u0439 \u043A\u043E\u0440\u0430\u0431\u0435\u043B\u044C, \u0439\u0434\u0438 \u043D\u0430\u0445\u0443\u0439")), /*#__PURE__*/React.createElement("button", {
     id: "btn-help",
