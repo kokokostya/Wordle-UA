@@ -636,7 +636,8 @@ function App(props) {
         shareResult={shareResult}
         switchModal={switchModal}
         answer={gw()}
-        uid={UID} /> }
+        uid={UID}
+        lettersLimit={lettersLimit} /> }
     </React.Fragment>
   )
 }
@@ -710,35 +711,65 @@ function Modal(props) {
       <p><b>Вгадайте слово з шести спроб.</b> Кожна здогадка мусить бути словниковим іменником, але не власною назвою. Після кожної спроби колір підкаже, наскільки близько ви були:</p>
 
       <dl className="example">
-        <dt className="row">
-          <div className="tile hit">с</div>
-          <div className="tile miss">о</div>
-          <div className="tile miss">н</div>
-          <div className="tile miss">ц</div>
-          <div className="tile miss">е</div>
-        </dt>
+        { (props.lettersLimit == 6) ?
+          <dt className="row">
+            <div className="tile hit">с</div>
+            <div className="tile miss">п</div>
+            <div className="tile miss">о</div>
+            <div className="tile miss">г</div>
+            <div className="tile miss">а</div>
+            <div className="tile miss">д</div>
+          </dt> :
+          <dt className="row">
+            <div className="tile hit">с</div>
+            <div className="tile miss">о</div>
+            <div className="tile miss">н</div>
+            <div className="tile miss">ц</div>
+            <div className="tile miss">е</div>
+          </dt>
+        }
         <dd className="small">Буква <b>С</b> є в слові саме в цьому місці</dd>
       </dl>
 
       <dl className="example">
-        <dt className="row">
-          <div className="tile miss">к</div>
-          <div className="tile found">р</div>
-          <div className="tile miss">и</div>
-          <div className="tile miss">л</div>
-          <div className="tile miss">о</div>
-        </dt>
+        { (props.lettersLimit == 6) ?
+          <dt className="row">
+            <div className="tile miss">п</div>
+            <div className="tile found">р</div>
+            <div className="tile miss">е</div>
+            <div className="tile miss">м</div>
+            <div className="tile miss">і</div>
+            <div className="tile miss">я</div>
+          </dt> :
+          <dt className="row">
+            <div className="tile miss">к</div>
+            <div className="tile found">р</div>
+            <div className="tile miss">и</div>
+            <div className="tile miss">л</div>
+            <div className="tile miss">о</div>
+          </dt>
+        }
         <dd className="small">Буква <b>Р</b> є в слові, але не в цьому місці</dd>
       </dl>
 
       <dl className="example">
-        <dt className="row">
-          <div className="tile miss">м</div>
-          <div className="tile miss">´</div>
-          <div className="tile miss">я</div>
-          <div className="tile miss">т</div>
-          <div className="tile miss">а</div>
-        </dt>
+        { (props.lettersLimit == 6) ?
+          <dt className="row">
+            <div className="tile miss">о</div>
+            <div className="tile miss">б</div>
+            <div className="tile miss">’</div>
+            <div className="tile miss">ї</div>
+            <div className="tile miss">з</div>
+            <div className="tile miss">д</div>
+          </dt> :
+          <dt className="row">
+            <div className="tile miss">м</div>
+            <div className="tile miss">´</div>
+            <div className="tile miss">я</div>
+            <div className="tile miss">т</div>
+            <div className="tile miss">а</div>
+          </dt>
+        }
         <dd className="small">Жодної з цих букв немає в слові</dd>
       </dl>
 
