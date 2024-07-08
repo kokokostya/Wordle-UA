@@ -154,6 +154,7 @@ function App(props) {
     }
     tryLoadingFromLocalStorage("UID", UID, {
       setter: setUID,
+      defaultValue: Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36),
       ignoreLettersLimit: true
     });
     tryLoadingFromLocalStorage("settings", settings, {
@@ -225,9 +226,9 @@ function App(props) {
 
   // Keep track of time and reset once new game is out
   React.useEffect(function () {
-    var lastPlayed = getFromLocalStorage("lastPlayedIssueNumber");
     setTimeLeft(getTimeTillMidnight());
     timer = setInterval(function () {
+      var lastPlayed = getFromLocalStorage("lastPlayedIssueNumber");
       if (lastPlayed && lastPlayed != getIssueNumber()) {
         resetGame();
         lastPlayed = getIssueNumber();
@@ -263,7 +264,7 @@ function App(props) {
     // Reset streak if games skipped
     var lastPlayed = getFromLocalStorage("lastPlayedIssueNumber");
     var currentlyPlayed = getIssueNumber();
-    if (currentlyPlayed - lastPlayed > 1 || currentlyPlayed - lastPlayed == 1 && getFromLocalStorage("result") == null) {
+    if (lastPlayed && (currentlyPlayed - lastPlayed > 1 || currentlyPlayed - lastPlayed == 1 && getFromLocalStorage("result") == null)) {
       var newStats = _objectSpread({}, tryLoadingFromLocalStorage("stats", stats, {
         skipSetting: true
       }));
@@ -310,11 +311,11 @@ function App(props) {
           }
         }
         options.setter(loadedObj);
-      } else if (options.deafaultValue) {
-        options.setter(options.deafaultValue);
+      } else if (options.defaultValue) {
+        options.setter(options.defaultValue);
       }
     }
-    return loadedObj || options.deafaultValue || null;
+    return loadedObj || options.defaultValue;
   }
 
   // Send own stats, receive average
@@ -641,7 +642,7 @@ function App(props) {
       setModal(type);
     }, "100");
   }
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h1", null, "Wordle ", lettersLimit == 6 && /*#__PURE__*/React.createElement("i", null, "6"), " ", /*#__PURE__*/React.createElement("em", null, "\u0443\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u043E\u044E")), /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h1", null, "Wordle ", /*#__PURE__*/React.createElement("i", null, lettersLimit), " ", /*#__PURE__*/React.createElement("em", null, "\u0443\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u043E\u044E")), /*#__PURE__*/React.createElement("div", {
     id: "russianShip"
   }, /*#__PURE__*/React.createElement("div", null), /*#__PURE__*/React.createElement("span", null, "\u0420\u043E\u0441\u0456\u0439\u0441\u044C\u043A\u0438\u0439 \u043A\u043E\u0440\u0430\u0431\u0435\u043B\u044C, \u0439\u0434\u0438 \u043D\u0430\u0445\u0443\u0439")), /*#__PURE__*/React.createElement("button", {
     id: "btn-help",

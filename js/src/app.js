@@ -447,7 +447,7 @@ function App(props) {
         
         // Game over
         if (newResult != null) {
-          let newStats = {...stats}; 
+          let newStats = {...stats};
           newStats.games += 1;    
           if (newResult == "won") {
             newStats.won += 1;

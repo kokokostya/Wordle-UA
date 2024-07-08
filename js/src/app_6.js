@@ -97,7 +97,7 @@ function App(props) {
       resetGame();
     }
 
-    tryLoadingFromLocalStorage("UID", UID, {setter: setUID, ignoreLettersLimit: true});
+    tryLoadingFromLocalStorage("UID", UID, {setter: setUID, defaultValue: Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36), ignoreLettersLimit: true});
     tryLoadingFromLocalStorage("settings", settings, {setter: setSettings});
     tryLoadingFromLocalStorage("stats", stats, {setter: setStats});
   }, []);
@@ -161,9 +161,9 @@ function App(props) {
 
   // Keep track of time and reset once new game is out
   React.useEffect(() => {
-    var lastPlayed = getFromLocalStorage("lastPlayedIssueNumber");
     setTimeLeft(getTimeTillMidnight());
     timer = setInterval(() => {
+      var lastPlayed = getFromLocalStorage("lastPlayedIssueNumber");
       if (lastPlayed && lastPlayed != getIssueNumber()) {
         resetGame();
         lastPlayed = getIssueNumber();
@@ -203,7 +203,7 @@ function App(props) {
     const lastPlayed = getFromLocalStorage("lastPlayedIssueNumber");
     const currentlyPlayed = getIssueNumber();
 
-    if (currentlyPlayed - lastPlayed > 1 || currentlyPlayed - lastPlayed == 1 && getFromLocalStorage("result") == null) {
+    if (lastPlayed && (currentlyPlayed - lastPlayed > 1 || currentlyPlayed - lastPlayed == 1 && getFromLocalStorage("result") == null)) {
       var newStats = {...tryLoadingFromLocalStorage("stats", stats, {skipSetting: true})};
       newStats.streak = 0;
       setStats(newStats);
@@ -250,11 +250,11 @@ function App(props) {
           }
         }
         options.setter(loadedObj);
-      } else if (options.deafaultValue) {
-        options.setter(options.deafaultValue);
+      } else if (options.defaultValue) {
+        options.setter(options.defaultValue);
       }
     }
-    return loadedObj || options.deafaultValue || null;
+    return loadedObj || options.defaultValue;
   }
 
   // Send own stats, receive average
@@ -435,7 +435,7 @@ function App(props) {
         
         // Game over
         if (newResult != null) {
-          let newStats = {...stats}; 
+          let newStats = {...stats};
           newStats.games += 1;    
           if (newResult == "won") {
             newStats.won += 1;
@@ -538,7 +538,7 @@ function App(props) {
   return (
     <React.Fragment>
       <header>
-        <h1>Wordle {(lettersLimit == 6) && <i>6</i>} <em>українською</em></h1>
+        <h1>Wordle <i>{lettersLimit}</i> <em>українською</em></h1>
 
         <div id="russianShip">
           <div></div>
