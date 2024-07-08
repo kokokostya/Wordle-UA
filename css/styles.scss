@@ -198,18 +198,19 @@ header {
     transform: translate(-50%, 0);
   }
 
-  i {
+  #edition {
     position: absolute;
     top: -.25rem;
-    right: -1.5rem;
+    right: -1.4rem;
     display: inline-block;
-    width: 1.33rem;
-    height: 1.33rem;
+    width: 1.25rem;
+    height: 1.25rem;
     border-radius: 1rem;
     text-decoration: none;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-weight: bold;
-    font-size: 1.5rem;
-    line-height: 1.2rem;
+    font-style: italic;
+    font-size: 1.33rem;
+    line-height: 1.1rem;
     background: var(--hit);
     color: var(--white);
   }
