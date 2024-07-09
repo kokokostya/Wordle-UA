@@ -17,19 +17,37 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function App(props) {
-  var availableEditions = [5, 6];
-  var lettersLimit = parseInt(props.letters) || 5;
-  var attemptsLimit;
-  var firstDay;
-  switch (lettersLimit) {
-    case 5:
-      attemptsLimit = 6;
-      firstDay = new Date("Thu Jan 22 2022 00:00:00 GMT+0200 (EET)");
+  var editions = [{
+    lettersLimit: 5,
+    attemptsLimit: 6,
+    firstDay: new Date("Thu Jan 22 2022 00:00:00 GMT+0200 (EET)"),
+    words: function words() {
+      return cw;
+    },
+    answer: function answer() {
+      return gw;
+    }
+  }, {
+    lettersLimit: 6,
+    attemptsLimit: 6,
+    firstDay: new Date("Thu Jul 6 2024 00:00:00 GMT+0200 (EET)"),
+    words: function words() {
+      return true;
+    },
+    answer: function answer() {
+      return "залупа";
+    }
+  }];
+  var currentEdition;
+  for (var _i = 0, _editions = editions; _i < _editions.length; _i++) {
+    var edition = _editions[_i];
+    if (edition.lettersLimit == parseInt(props.letters)) {
+      currentEdition = edition;
       break;
-    case 6:
-      attemptsLimit = 6;
-      firstDay = new Date("Thu Jul 6 2024 00:00:00 GMT+0200 (EET)");
-      break;
+    }
+  }
+  if (!currentEdition) {
+    currentEdition = editions[0];
   }
   var defaultStats = {
     games: 0,
@@ -38,7 +56,7 @@ function App(props) {
     maxStreak: 0,
     attempts: {}
   };
-  for (var i = 1; i <= attemptsLimit; i++) {
+  for (var i = 1; i <= currentEdition.attemptsLimit; i++) {
     defaultStats.attempts[i] = 0;
   }
   var defaultAverageStats = {
@@ -51,16 +69,16 @@ function App(props) {
     averageAttemptPercentile: 0,
     attempts: {}
   };
-  for (var _i = 1; _i <= 10; _i++) {
+  for (var _i2 = 1; _i2 <= 10; _i2++) {
     defaultAverageStats.leaderboard.push({
       uid: "uid",
-      pos: _i,
+      pos: _i2,
       streak: 0,
       maxStreak: 0
     });
   }
-  for (var _i2 = 1; _i2 <= attemptsLimit; _i2++) {
-    defaultAverageStats.attempts[_i2] = 0;
+  for (var _i3 = 1; _i3 <= currentEdition.attemptsLimit; _i3++) {
+    defaultAverageStats.attempts[_i3] = 0;
   }
   var _React$useState = React.useState([]),
     _React$useState2 = _slicedToArray(_React$useState, 2),
@@ -284,15 +302,15 @@ function App(props) {
   }
   function getFromLocalStorage(propName) {
     var ignoreLettersLimit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-    if (!ignoreLettersLimit && lettersLimit != 5) {
-      propName = "".concat(lettersLimit, "_").concat(propName);
+    if (!ignoreLettersLimit && currentEdition.lettersLimit != 5) {
+      propName = "".concat(currentEdition.lettersLimit, "_").concat(propName);
     }
     return JSON.parse(localStorage.getItem(propName));
   }
   function saveToLocalStorage(propName, obj) {
     var ignoreLettersLimit = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-    if (!ignoreLettersLimit && lettersLimit != 5) {
-      propName = "".concat(lettersLimit, "_").concat(propName);
+    if (!ignoreLettersLimit && currentEdition.lettersLimit != 5) {
+      propName = "".concat(currentEdition.lettersLimit, "_").concat(propName);
     }
     localStorage.setItem(propName, JSON.stringify(obj));
   }
@@ -333,7 +351,7 @@ function App(props) {
       method: "POST",
       body: JSON.stringify(_objectSpread({
         uid: UID,
-        edition: lettersLimit
+        edition: currentEdition.lettersLimit
       }, stats))
     }).then(function (response) {
       return response.json();
@@ -379,11 +397,11 @@ function App(props) {
 
   // Days from day 1 in Kyiv
   function getIssueNumber() {
-    var diff = Math.ceil((getKyivDateTimeIgnoringGMT(new Date()) - getKyivDateTimeIgnoringGMT(firstDay)) / (1000 * 60 * 60 * 24));
+    var diff = Math.ceil((getKyivDateTimeIgnoringGMT(new Date()) - getKyivDateTimeIgnoringGMT(currentEdition.firstDay)) / (1000 * 60 * 60 * 24));
     return diff;
   }
   function enterLetter(letter) {
-    if (result == null && cursor.attempt < attemptsLimit && cursor.letter < lettersLimit) {
+    if (result == null && cursor.attempt < currentEdition.attemptsLimit && cursor.letter < currentEdition.lettersLimit) {
       var newAttempts = _toConsumableArray(attempts);
       var newString = newAttempts[cursor.attempt] || "";
       newString += letter;
@@ -414,7 +432,7 @@ function App(props) {
     revealLetter();
     var letterTimer = setInterval(revealLetter, 150);
     function revealLetter() {
-      if (revealedLetter < lettersLimit) {
+      if (revealedLetter < currentEdition.lettersLimit) {
         var letterFeedback = _toConsumableArray(newFeedback);
         letterFeedback[letterFeedback.length - 1] = newFeedback[newFeedback.length - 1].slice(0, revealedLetter + 1);
         setFeedback(letterFeedback);
@@ -483,30 +501,18 @@ function App(props) {
       }
       return ![];
     };
-  var dics = {
-    5: cw,
-    6: function _() {
-      return true;
-    }
-  };
-  var answers = {
-    5: gw,
-    6: function _() {
-      return "залупа";
-    }
-  };
   function checkWord() {
     var attempt = attempts[cursor.attempt];
-    var answer = answers[lettersLimit]();
-    if (result == null && cursor.attempt < attemptsLimit && cursor.letter == lettersLimit) {
+    var answer = currentEdition.answer();
+    if (result == null && cursor.attempt < currentEdition.attemptsLimit && cursor.letter == lettersLimit) {
       // Actual word || Easter egg
-      if (dics[lettersLimit](attempt) || lettersLimit == 5 && (cursor.attempt == 0 && attempt == "русні" || cursor.attempt == 1 && attempts[0] == "русні" && attempts[1] == "пизда")) {
+      if (currentEdition.dics(attempt) || currentEdition.lettersLimit == 5 && (cursor.attempt == 0 && attempt == "русні" || cursor.attempt == 1 && attempts[0] == "русні" && attempts[1] == "пизда")) {
         var newResult = null;
         var newFeedback = _toConsumableArray(feedback);
         // Solved!
         if (attempt == answer) {
           var feedbackTemplate = [];
-          for (var _i3 = 1; _i3 <= lettersLimit; _i3++) {
+          for (var _i4 = 1; _i4 <= currentEdition.lettersLimit; _i4++) {
             feedbackTemplate.push("hit");
           }
           newFeedback.push(feedbackTemplate);
@@ -514,7 +520,7 @@ function App(props) {
           newResult = "won";
           // Check letters 
         } else {
-          var res = Array(lettersLimit).fill("miss");
+          var res = Array(currentEdition.lettersLimit).fill("miss");
           // Hits
           _toConsumableArray(attempt).map(function (ltr, i) {
             if (ltr == answer[i]) {
@@ -531,12 +537,12 @@ function App(props) {
             }
           });
           newFeedback.push(res);
-          if (cursor.attempt == attemptsLimit - 1) newResult = "lost";
+          if (cursor.attempt == currentEdition.attemptsLimit - 1) newResult = "lost";
         }
         provideFeedback(newFeedback);
 
         // Easter egg
-        if (lettersLimit == 5 && cursor.attempt == 1 && attempts[0] == "русні" && attempts[1] == "пизда") {
+        if (currentEdition.lettersLimit == 5 && cursor.attempt == 1 && attempts[0] == "русні" && attempts[1] == "пизда") {
           document.body.classList.add("ukraine");
         }
 
@@ -569,10 +575,10 @@ function App(props) {
   }
   function shareResult() {
     var str = "#укрWordle ";
-    if (lettersLimit > 5) {
-      str += "".concat(lettersLimit, " ");
+    if (currentEdition.lettersLimit > 5) {
+      str += "".concat(currentEdition.lettersLimit, " ");
     }
-    str += "№" + getIssueNumber() + " " + feedback.length + "/" + attemptsLimit + ":";
+    str += "№" + getIssueNumber() + " " + feedback.length + "/" + currentEdition.attemptsLimit + ":";
     feedback.map(function (attempt) {
       str += "\n";
       attempt.map(function (res) {
@@ -665,18 +671,18 @@ function App(props) {
     id: "selector-editions"
   }, /*#__PURE__*/React.createElement("div", {
     className: "button icon edition selected"
-  }, lettersLimit, /*#__PURE__*/React.createElement("svg", {
+  }, currentEdition.lettersLimit, /*#__PURE__*/React.createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     width: "16",
     height: "16",
     viewBox: "0 0 16 16"
   }, /*#__PURE__*/React.createElement("path", {
     d: "M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
-  }))), /*#__PURE__*/React.createElement("ul", null, availableEditions.map(function (i) {
+  }))), /*#__PURE__*/React.createElement("ul", null, editions.map(function (edition) {
     return /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
-      href: "/" + i + ".html",
-      className: "edition" + (i == lettersLimit ? " selected" : "")
-    }, i));
+      href: "/" + edition.lettersLimit + ".html",
+      className: "edition" + (edition.lettersLimit == currentEdition.lettersLimit ? " selected" : "")
+    }, edition.lettersLimit));
   }))), /*#__PURE__*/React.createElement("button", {
     id: "btn-stats",
     className: "icon ml-auto",
@@ -710,12 +716,12 @@ function App(props) {
     id: "board-container"
   }, /*#__PURE__*/React.createElement("div", {
     id: "board",
-    className: "letters-" + lettersLimit
-  }, _toConsumableArray(Array(attemptsLimit)).map(function (val, i) {
+    className: "letters-" + currentEdition.lettersLimit
+  }, _toConsumableArray(Array(currentEdition.attemptsLimit)).map(function (val, i) {
     return /*#__PURE__*/React.createElement("div", {
       key: i,
       className: "row" + (wrongAttempt && cursor.attempt == i ? " wrong" : "")
-    }, _toConsumableArray(Array(lettersLimit)).map(function (val, j) {
+    }, _toConsumableArray(Array(currentEdition.lettersLimit)).map(function (val, j) {
       return /*#__PURE__*/React.createElement(Tile, {
         key: j,
         letter: attempts[i] && attempts[i][j],
@@ -794,9 +800,9 @@ function App(props) {
     result: result,
     shareResult: shareResult,
     switchModal: switchModal,
-    answer: answers[lettersLimit](),
+    answer: currentEdition.answer(),
     uid: UID,
-    lettersLimit: lettersLimit
+    lettersLimit: currentEdition.lettersLimit
   }));
 }
 function Tile(props) {
