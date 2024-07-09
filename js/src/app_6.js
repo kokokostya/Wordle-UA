@@ -653,7 +653,7 @@ function App(props) {
         result={result}
         shareResult={shareResult}
         switchModal={switchModal}
-        answer={gw()}
+        answer={answers[lettersLimit]()}
         uid={UID}
         lettersLimit={lettersLimit} /> }
     </React.Fragment>
