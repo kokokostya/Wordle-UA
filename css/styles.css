@@ -170,6 +170,12 @@ hr {
   margin: 1rem 0;
 }
 
+.or {
+  display: block;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
 header {
   display: flex;
   padding: 1rem 1.25rem;
@@ -576,6 +582,9 @@ header #btn-settings {
 .overlay .body .hint svg {
   margin-right: 0.33rem;
   vertical-align: middle;
+}
+.overlay .body .hint + .hint {
+  margin-top: 0.5rem;
 }
 .overlay .body.avg-stats {
   animation: movein 0.3s forwards ease-out, loop-bg 90s linear infinite;

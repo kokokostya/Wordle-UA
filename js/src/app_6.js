@@ -878,7 +878,15 @@ function Modal(props) {
       }
 
       {
-        props.settings.shareStats &&  props.stats.games < 10 && <div className="small hint">Зіграйте <b>{ props.stats.games ? "ще" : null } {10 - props.stats.games} { nTimes(10 - props.stats.games) }</b> щоб побачити, як ви грали порівняно з іншими.</div> 
+        props.settings.shareStats && props.stats.games < 10 && <div className="small hint">Зіграйте <b>{ props.stats.games ? "ще" : null } {10 - props.stats.games} { nTimes(10 - props.stats.games) }</b> щоб побачити, як ви грали порівняно з рештою.</div> 
+      }
+
+      {
+        props.settings.shareStats && props.stats.games < 10 && props.lettersLimit == 5 && <span className="or small fade">або</span>
+      }
+
+      {
+        props.lettersLimit == 5 && <div className="small hint">🔥 <a href="/6.html"><b>Спробуйте WORDLE 6</b></a>: все так само, тільки по-іншому!</div> 
       }
     </React.Fragment>
   } else if (props.type == "avg-stats") {

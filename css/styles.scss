@@ -185,6 +185,12 @@ hr {
   margin: 1rem 0;
 }
 
+.or {
+  display: block;
+  margin: .5rem 0;
+  text-align: center;
+}
+
 header {
   display: flex;
   padding: 1rem 1.25rem;
@@ -636,6 +642,10 @@ background-color: var(--button-primary);
       svg {
         margin-right: .33rem;
         vertical-align: middle;
+      }
+
+      &+.hint {
+        margin-top: .5rem;
       }
     }
 
