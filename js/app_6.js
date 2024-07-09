@@ -504,9 +504,9 @@ function App(props) {
   function checkWord() {
     var attempt = attempts[cursor.attempt];
     var answer = currentEdition.answer();
-    if (result == null && cursor.attempt < currentEdition.attemptsLimit && cursor.letter == lettersLimit) {
+    if (result == null && cursor.attempt < currentEdition.attemptsLimit && cursor.letter == currentEdition.lettersLimit) {
       // Actual word || Easter egg
-      if (currentEdition.dics(attempt) || currentEdition.lettersLimit == 5 && (cursor.attempt == 0 && attempt == "русні" || cursor.attempt == 1 && attempts[0] == "русні" && attempts[1] == "пизда")) {
+      if (currentEdition.words(attempt) || currentEdition.lettersLimit == 5 && (cursor.attempt == 0 && attempt == "русні" || cursor.attempt == 1 && attempts[0] == "русні" && attempts[1] == "пизда")) {
         var newResult = null;
         var newFeedback = _toConsumableArray(feedback);
         // Solved!
