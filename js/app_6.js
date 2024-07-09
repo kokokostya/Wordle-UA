@@ -17,6 +17,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function App(props) {
+  var availableEditions = [5, 6];
   var lettersLimit = parseInt(props.letters) || 5;
   var attemptsLimit;
   var firstDay;
@@ -642,10 +643,7 @@ function App(props) {
       setModal(type);
     }, "100");
   }
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h1", null, "Wordle ", /*#__PURE__*/React.createElement("a", {
-    href: "/" + (lettersLimit == 5 ? 6 : 5) + ".html",
-    id: "edition"
-  }, lettersLimit), " ", /*#__PURE__*/React.createElement("em", null, "\u0443\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u043E\u044E")), /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h1", null, "Wordle ", /*#__PURE__*/React.createElement("em", null, "\u0443\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u043E\u044E")), /*#__PURE__*/React.createElement("div", {
     id: "russianShip"
   }, /*#__PURE__*/React.createElement("div", null), /*#__PURE__*/React.createElement("span", null, "\u0420\u043E\u0441\u0456\u0439\u0441\u044C\u043A\u0438\u0439 \u043A\u043E\u0440\u0430\u0431\u0435\u043B\u044C, \u0439\u0434\u0438 \u043D\u0430\u0445\u0443\u0439")), /*#__PURE__*/React.createElement("button", {
     id: "btn-help",
@@ -663,6 +661,22 @@ function App(props) {
     d: "M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
   }), /*#__PURE__*/React.createElement("path", {
     d: "M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"
+  }))), /*#__PURE__*/React.createElement("div", {
+    id: "selector-editions"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "button icon edition selected"
+  }, lettersLimit, /*#__PURE__*/React.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    width: "16",
+    height: "16",
+    viewBox: "0 0 16 16"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+  }))), /*#__PURE__*/React.createElement("ul", null, availableEditions.map(function (i) {
+    return /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
+      href: "/" + i + ".html",
+      className: "edition" + (i == lettersLimit ? " selected" : "")
+    }, i));
   }))), /*#__PURE__*/React.createElement("button", {
     id: "btn-stats",
     className: "icon ml-auto",

@@ -7,6 +7,7 @@
   --text-fade: #888;
   --bkgnd: #fff;
   --bkgnd-transparent: rgba(255,255,255,.75);
+  --bkgnd-icon: #e6e6e6;
   --miss: #888;
   --found: #cb4;
   --hit: #0a5;
@@ -42,6 +43,7 @@
   --text-fade: #566;
   --bkgnd: #00201f;
   --bkgnd-transparent: rgba(24,27,27,.75);
+  --bkgnd-icon: #233;
   --miss: #344;
   --found: #cb4;
   --hit: #0a5;
@@ -190,7 +192,7 @@ header {
   position: relative;
 
   h1 {
-    order: 2;
+    order: 3;
     position: absolute;
     top: .75rem;
     left: 50%;
@@ -198,28 +200,82 @@ header {
     transform: translate(-50%, 0);
   }
 
-  #edition {
-    position: absolute;
-    top: -.25rem;
-    right: -1.4rem;
-    display: inline-block;
-    width: 1.25rem;
-    height: 1.25rem;
-    border-radius: 1rem;
-    text-decoration: none;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-weight: bold;
-    font-style: italic;
-    font-size: 1.33rem;
-    line-height: 1.1rem;
-    background: var(--hit);
-    color: var(--white);
+  #selector-editions {
+    order: 2;
+    position: relative;
+
+    .button {
+      padding: 0;
+      margin: 0;
+
+      svg {
+        width: 12px;
+        height: 12px;
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        transform: translate(30%, -40%);
+      }
+    }
+
+    ul {
+      display: none;
+      position: absolute;
+      top: -.5rem;
+      left: -.5rem;
+      padding: .5rem;
+      margin: 0;
+      background: var(--bkgnd);
+      border-radius: var(--border-radius);
+      box-shadow: var(--overlay-shadow);
+
+      li {
+        list-style-type: none;
+        margin-bottom: .5rem;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .edition:not(.selected):hover {
+          color: var(--text);
+        }
+      }
+    }
+
+    &:hover {
+      ul {
+        display: block;
+      }
+    }
+
+    .edition {
+      display: block;
+      width: 1.33rem;
+      height: 1.33rem;
+      border-radius: .7rem;
+      text-decoration: none;font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+      font-weight: bold;
+      font-style: italic;
+      font-size: 1.5rem;
+      line-height: 1.1rem;
+      text-align: center;
+      color: var(--icon);
+      background: var(--bkgnd-icon);
+
+      &.selected {
+        background: var(--hit);
+        color: var(--white);
+        cursor: auto;
+      }
+    }
   }
 
   #russianShip {
     display: none;
   }
 
-  button {
+  button, .button {
     fill: var(--icon);
     margin: 0 1rem 0 0;
     padding: 0 .25rem;
@@ -231,6 +287,18 @@ header {
     &:hover {
       fill: var(--text);
     }
+  }
+
+  #btn-help {
+    order: 1;
+  }
+  
+  #btn-stats {
+    order: 4;
+  }
+  
+  #btn-settings {
+    order: 5;
   }
 }
 
@@ -290,18 +358,6 @@ header {
     height: 1.25rem;
     width: 1.25rem;
   }
-}
-
-#btn-help {
-  order: 1;
-}
-
-#btn-stats {
-  order: 3;
-}
-
-#btn-settings {
-  order: 4;
 }
 
 .rainbow {

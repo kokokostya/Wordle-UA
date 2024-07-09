@@ -6,6 +6,7 @@
   --text-fade: #888;
   --bkgnd: #fff;
   --bkgnd-transparent: rgba(255,255,255,.75);
+  --bkgnd-icon: #e6e6e6;
   --miss: #888;
   --found: #cb4;
   --hit: #0a5;
@@ -36,6 +37,7 @@
   --text-fade: #566;
   --bkgnd: #00201f;
   --bkgnd-transparent: rgba(24,27,27,.75);
+  --bkgnd-icon: #233;
   --miss: #344;
   --found: #cb4;
   --hit: #0a5;
@@ -175,43 +177,95 @@ header {
   position: relative;
 }
 header h1 {
-  order: 2;
+  order: 3;
   position: absolute;
   top: 0.75rem;
   left: 50%;
   margin: 0;
   transform: translate(-50%, 0);
 }
-header #edition {
+header #selector-editions {
+  order: 2;
+  position: relative;
+}
+header #selector-editions .button {
+  padding: 0;
+  margin: 0;
+}
+header #selector-editions .button svg {
+  width: 12px;
+  height: 12px;
   position: absolute;
-  top: -0.25rem;
-  right: -1.4rem;
-  display: inline-block;
-  width: 1.25rem;
-  height: 1.25rem;
-  border-radius: 1rem;
+  top: 50%;
+  left: 100%;
+  transform: translate(30%, -40%);
+}
+header #selector-editions ul {
+  display: none;
+  position: absolute;
+  top: -0.5rem;
+  left: -0.5rem;
+  padding: 0.5rem;
+  margin: 0;
+  background: var(--bkgnd);
+  border-radius: var(--border-radius);
+  box-shadow: var(--overlay-shadow);
+}
+header #selector-editions ul li {
+  list-style-type: none;
+  margin-bottom: 0.5rem;
+}
+header #selector-editions ul li:last-child {
+  margin-bottom: 0;
+}
+header #selector-editions ul li .edition:not(.selected):hover {
+  color: var(--text);
+}
+header #selector-editions:hover ul {
+  display: block;
+}
+header #selector-editions .edition {
+  display: block;
+  width: 1.33rem;
+  height: 1.33rem;
+  border-radius: 0.7rem;
   text-decoration: none;
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   font-weight: bold;
   font-style: italic;
-  font-size: 1.33rem;
+  font-size: 1.5rem;
   line-height: 1.1rem;
+  text-align: center;
+  color: var(--icon);
+  background: var(--bkgnd-icon);
+}
+header #selector-editions .edition.selected {
   background: var(--hit);
   color: var(--white);
+  cursor: auto;
 }
 header #russianShip {
   display: none;
 }
-header button {
+header button, header .button {
   fill: var(--icon);
   margin: 0 1rem 0 0;
   padding: 0 0.25rem;
 }
-header button:last-child {
+header button:last-child, header .button:last-child {
   margin-right: 0;
 }
-header button:hover {
+header button:hover, header .button:hover {
   fill: var(--text);
+}
+header #btn-help {
+  order: 1;
+}
+header #btn-stats {
+  order: 4;
+}
+header #btn-settings {
+  order: 5;
 }
 
 .ukraine header h1 {
@@ -261,18 +315,6 @@ header button:hover {
 .icon svg {
   height: 1.25rem;
   width: 1.25rem;
-}
-
-#btn-help {
-  order: 1;
-}
-
-#btn-stats {
-  order: 3;
-}
-
-#btn-settings {
-  order: 4;
 }
 
 .rainbow {
