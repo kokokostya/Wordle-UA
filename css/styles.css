@@ -230,26 +230,6 @@ header #selector-editions ul li .edition:not(.selected):hover {
 header #selector-editions:hover ul {
   display: block;
 }
-header #selector-editions .edition {
-  display: block;
-  width: 1.33rem;
-  height: 1.33rem;
-  border-radius: 0.7rem;
-  text-decoration: none;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  font-weight: bold;
-  font-style: italic;
-  font-size: 1.5rem;
-  line-height: 1.1rem;
-  text-align: center;
-  color: var(--icon);
-  background: var(--bkgnd-icon);
-}
-header #selector-editions .edition.selected {
-  background: var(--hit);
-  color: var(--white);
-  cursor: auto;
-}
 header #russianShip {
   display: none;
 }
@@ -272,6 +252,27 @@ header #btn-stats {
 }
 header #btn-settings {
   order: 5;
+}
+
+.edition {
+  display: inline-block;
+  width: 1.33rem;
+  height: 1.33rem;
+  border-radius: 0.7rem;
+  text-decoration: none;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 1.1rem;
+  text-align: center;
+  color: var(--icon);
+  background: var(--bkgnd-icon);
+}
+.edition.selected {
+  background: var(--hit);
+  color: var(--white);
+  cursor: auto;
 }
 
 .ukraine header h1 {
@@ -541,7 +542,7 @@ header #btn-settings {
   margin: 3.5rem auto;
   border-radius: var(--border-radius);
   box-shadow: var(--overlay-shadow);
-  padding: 0 1.5rem 1rem;
+  padding: 0 1.5rem 1.5rem;
   box-sizing: border-box;
   position: relative;
   animation: movein 0.3s forwards ease-out;
@@ -915,6 +916,23 @@ header #btn-settings {
   fill: var(--white);
   height: 1rem;
   width: 1rem;
+}
+
+#try-6 {
+  margin: 0 -1.5rem -0.25rem;
+  padding: 1rem 1.5rem 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+#try-6 h3 {
+  margin: 0;
+}
+#try-6 a {
+  text-decoration: none;
+}
+
+.hint + #try-6 {
+  margin-top: 1rem;
 }
 
 .alert {
