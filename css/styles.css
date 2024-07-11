@@ -209,6 +209,7 @@ header #selector-editions .button svg {
 header #selector-editions ul {
   display: none;
   position: absolute;
+  z-index: 100;
   top: -0.75rem;
   left: -0.75rem;
   padding: 0.75rem;
