@@ -209,9 +209,9 @@ header #selector-editions .button svg {
 header #selector-editions ul {
   display: none;
   position: absolute;
-  top: -0.5rem;
-  left: -0.5rem;
-  padding: 0.5rem;
+  top: -0.75rem;
+  left: -0.75rem;
+  padding: 0.75rem;
   margin: 0;
   background: var(--bkgnd);
   border-radius: var(--border-radius);
@@ -219,7 +219,7 @@ header #selector-editions ul {
 }
 header #selector-editions ul li {
   list-style-type: none;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.85rem;
 }
 header #selector-editions ul li:last-child {
   margin-bottom: 0;
