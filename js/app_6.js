@@ -870,6 +870,9 @@ function Modal(props) {
   for (var _key2 in props.averageStats.attempts) {
     avgGraphWidths[_key2] = props.averageStats.attempts[_key2] * total / maxAttempts * 100;
   }
+  var differentEdition = props.lettersLimit == 5 ? 6 : 5;
+  var differentEditionButton = props.lettersLimit == 5 ? "Спробуйте" : "Зіграйте у";
+  var differentEditionMessage = props.lettersLimit == 5 ? "Все те ж саме, тільки на 20% цікавіше!" : "Оригінальна версія гри";
   if (props.type == "help") {
     title = "Як грати?";
     content = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("b", null, "\u0412\u0433\u0430\u0434\u0430\u0439\u0442\u0435 \u0441\u043B\u043E\u0432\u043E \u0437 \u0448\u0435\u0441\u0442\u0438 \u0441\u043F\u0440\u043E\u0431."), " \u041A\u043E\u0436\u043D\u0430 \u0437\u0434\u043E\u0433\u0430\u0434\u043A\u0430 \u043C\u0443\u0441\u0438\u0442\u044C \u0431\u0443\u0442\u0438 \u0441\u043B\u043E\u0432\u043D\u0438\u043A\u043E\u0432\u0438\u043C \u0456\u043C\u0435\u043D\u043D\u0438\u043A\u043E\u043C, \u0430\u043B\u0435 \u043D\u0435 \u0432\u043B\u0430\u0441\u043D\u043E\u044E \u043D\u0430\u0437\u0432\u043E\u044E. \u041F\u0456\u0441\u043B\u044F \u043A\u043E\u0436\u043D\u043E\u0457 \u0441\u043F\u0440\u043E\u0431\u0438 \u043A\u043E\u043B\u0456\u0440 \u043F\u0456\u0434\u043A\u0430\u0436\u0435, \u043D\u0430\u0441\u043A\u0456\u043B\u044C\u043A\u0438 \u0431\u043B\u0438\u0437\u044C\u043A\u043E \u0432\u0438 \u0431\u0443\u043B\u0438:"), /*#__PURE__*/React.createElement("dl", {
@@ -1039,15 +1042,15 @@ function Modal(props) {
       d: "M12.4444 1.55556H10.8889V0H3.11111V1.55556H1.55556C0.7 1.55556 0 2.25556 0 3.11111V3.88889C0 5.87222 1.49333 7.49 3.41444 7.73111C3.90444 8.89778 4.95444 9.77667 6.22222 10.0333V12.4444H3.11111V14H10.8889V12.4444H7.77778V10.0333C9.04556 9.77667 10.0956 8.89778 10.5856 7.73111C12.5067 7.49 14 5.87222 14 3.88889V3.11111C14 2.25556 13.3 1.55556 12.4444 1.55556ZM1.55556 3.88889V3.11111H3.11111V6.08222C2.20889 5.75556 1.55556 4.9 1.55556 3.88889ZM12.4444 3.88889C12.4444 4.9 11.7911 5.75556 10.8889 6.08222V3.11111H12.4444V3.88889Z"
     })), /*#__PURE__*/React.createElement("span", null, "\u042F \u043C\u043E\u043B\u043E\u0434\u0435\u0446\u044C?"))), props.settings.shareStats && props.stats.games < 10 && /*#__PURE__*/React.createElement("div", {
       className: "small hint"
-    }, "\u0417\u0456\u0433\u0440\u0430\u0439\u0442\u0435 ", /*#__PURE__*/React.createElement("b", null, props.stats.games ? "ще" : null, " ", 10 - props.stats.games, " ", nTimes(10 - props.stats.games)), " \u0449\u043E\u0431 \u043F\u043E\u0431\u0430\u0447\u0438\u0442\u0438, \u044F\u043A \u0432\u0438 \u0433\u0440\u0430\u043B\u0438 \u043F\u043E\u0440\u0456\u0432\u043D\u044F\u043D\u043E \u0437 \u0456\u043D\u0448\u0438\u043C\u0438."), props.lettersLimit == 5 && /*#__PURE__*/React.createElement("div", {
-      id: "try-6"
+    }, "\u0417\u0456\u0433\u0440\u0430\u0439\u0442\u0435 ", /*#__PURE__*/React.createElement("b", null, props.stats.games ? "ще" : null, " ", 10 - props.stats.games, " ", nTimes(10 - props.stats.games)), " \u0449\u043E\u0431 \u043F\u043E\u0431\u0430\u0447\u0438\u0442\u0438, \u044F\u043A \u0432\u0438 \u0433\u0440\u0430\u043B\u0438 \u043F\u043E\u0440\u0456\u0432\u043D\u044F\u043D\u043E \u0437 \u0456\u043D\u0448\u0438\u043C\u0438."), /*#__PURE__*/React.createElement("div", {
+      id: "try-different-edition"
     }, /*#__PURE__*/React.createElement("h3", null, /*#__PURE__*/React.createElement("a", {
-      href: "/6.html"
-    }, "\u0421\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 WORDLE ", /*#__PURE__*/React.createElement("i", {
+      href: "/" + differentEdition + ".html"
+    }, differentEditionButton, " WORDLE ", /*#__PURE__*/React.createElement("i", {
       className: "edition selected"
-    }, "6"))), /*#__PURE__*/React.createElement("span", {
+    }, differentEdition))), /*#__PURE__*/React.createElement("span", {
       className: "small fade"
-    }, "\u0412\u0441\u0435 \u0442\u0435 \u0436 \u0441\u0430\u043C\u0435, \u0442\u0456\u043B\u044C\u043A\u0438 \u043D\u0430 20% \u0446\u0456\u043A\u0430\u0432\u0456\u0448\u0435!")));
+    }, differentEditionMessage)));
   } else if (props.type == "avg-stats") {
     title = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("svg", {
       xmlns: "http://www.w3.org/2000/svg",

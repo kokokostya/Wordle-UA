@@ -919,16 +919,16 @@ header #btn-settings {
   width: 1rem;
 }
 
-#try-6 {
-  margin: 0 -1.5rem -0.25rem;
+#try-different-edition {
+  margin: 1rem -1.5rem -0.25rem;
   padding: 1rem 1.5rem 0;
   border-top: 1px solid var(--border);
   text-align: center;
 }
-#try-6 h3 {
+#try-different-edition h3 {
   margin: 0;
 }
-#try-6 a {
+#try-different-edition a {
   text-decoration: none;
 }
 
