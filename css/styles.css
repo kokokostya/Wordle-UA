@@ -131,12 +131,18 @@ body.ukraine {
   line-height: 1.1rem;
 }
 
-h1, .h1, h2, .h2, h3, .h3 {
+h1, .h1, h2, .h2, h3, .h3, h4 {
   text-align: center;
   text-transform: uppercase;
   font-weight: 700;
+  margin: 0rem;
 }
-h1 em, .h1 em, h2 em, .h2 em, h3 em, .h3 em {
+
+h1, .h1 {
+  font-size: 2rem;
+  letter-spacing: 2px;
+}
+h1 em, .h1 em {
   display: block;
   font-family: serif;
   text-transform: none;
@@ -147,11 +153,6 @@ h1 em, .h1 em, h2 em, .h2 em, h3 em, .h3 em {
   margin-top: 2px;
 }
 
-h1, .h1 {
-  font-size: 2rem;
-  letter-spacing: 2px;
-}
-
 h2, .h2 {
   font-size: 1.25rem;
 }
@@ -159,6 +160,10 @@ h2, .h2 {
 h3, .h3 {
   font-size: 1rem;
   margin-top: 1.5rem;
+}
+
+h4 {
+  font-size: 0.75rem;
 }
 
 header, hr {
@@ -926,7 +931,7 @@ header #btn-settings {
   text-align: center;
 }
 #try-different-edition h3 {
-  margin: 0;
+  margin-top: 0.15rem;
 }
 #try-different-edition a {
   text-decoration: none;

@@ -871,7 +871,6 @@ function Modal(props) {
     avgGraphWidths[_key2] = props.averageStats.attempts[_key2] * total / maxAttempts * 100;
   }
   var differentEdition = props.lettersLimit == 5 ? 6 : 5;
-  var differentEditionButton = props.lettersLimit == 5 ? "Спробуйте" : "Зіграйте у";
   var differentEditionMessage = props.lettersLimit == 5 ? "Все те ж саме, тільки на 20% цікавіше!" : "Оригінальна версія гри";
   if (props.type == "help") {
     title = "Як грати?";
@@ -1044,9 +1043,9 @@ function Modal(props) {
       className: "small hint"
     }, "\u0417\u0456\u0433\u0440\u0430\u0439\u0442\u0435 ", /*#__PURE__*/React.createElement("b", null, props.stats.games ? "ще" : null, " ", 10 - props.stats.games, " ", nTimes(10 - props.stats.games)), " \u0449\u043E\u0431 \u043F\u043E\u0431\u0430\u0447\u0438\u0442\u0438, \u044F\u043A \u0432\u0438 \u0433\u0440\u0430\u043B\u0438 \u043F\u043E\u0440\u0456\u0432\u043D\u044F\u043D\u043E \u0437 \u0456\u043D\u0448\u0438\u043C\u0438."), /*#__PURE__*/React.createElement("div", {
       id: "try-different-edition"
-    }, /*#__PURE__*/React.createElement("h3", null, /*#__PURE__*/React.createElement("a", {
+    }, /*#__PURE__*/React.createElement("h4", null, "\u0422\u0438\u043C \u0447\u0430\u0441\u043E\u043C"), /*#__PURE__*/React.createElement("h3", null, /*#__PURE__*/React.createElement("a", {
       href: "/" + differentEdition + ".html"
-    }, differentEditionButton, " WORDLE ", /*#__PURE__*/React.createElement("i", {
+    }, "\u0417\u0456\u0433\u0440\u0430\u0439\u0442\u0435 \u0443 WORDLE ", /*#__PURE__*/React.createElement("i", {
       className: "edition selected"
     }, differentEdition))), /*#__PURE__*/React.createElement("span", {
       className: "small fade"
