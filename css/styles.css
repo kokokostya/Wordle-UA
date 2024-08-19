@@ -23,6 +23,8 @@
   --button-danger: #aaa;
   --button-primary: #aaa;
   --button-success: #9da;
+  --link: #06c;
+  --link-hover: #04c;
   --active-shadow: 0 0 6px rgba(48,124,255,1);
   --overlay-shadow: 0 0 25px rgba(0,0,0,.25);
   --button-hover: brightness(95%);
@@ -161,6 +163,7 @@ h2, .h2 {
 h3, .h3 {
   font-size: 1rem;
   margin-top: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 h4 {
@@ -275,6 +278,7 @@ header #btn-settings {
   text-align: center;
   color: var(--icon);
   background: var(--bkgnd-icon);
+  cursor: pointer;
 }
 .edition.selected {
   background: var(--hit);
@@ -933,9 +937,15 @@ header #btn-settings {
 }
 #try-different-edition h3 {
   margin-top: 0.15rem;
+  margin-bottom: 0;
 }
 #try-different-edition a {
+  color: var(--link);
   text-decoration: none;
+  cursor: pointer;
+}
+#try-different-edition a:hover {
+  color: var(--link-hover);
 }
 
 .hint + #try-6 {
