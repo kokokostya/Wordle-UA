@@ -121,6 +121,10 @@ function App(props) {
     } else {
       resetGame();
     }
+
+    if (!result) {
+      switchModal(null);
+    }
   }, [currentEdition]);
 
   // Keep track of time and reset once new game is out
@@ -230,6 +234,7 @@ function App(props) {
       newStats.streak = 0;
       setStats(newStats);
     }
+    console.log("Game reset: " + lastPlayed + " → " + currentlyPlayed);
 
     setAttempts([]);
     setFeedback([]);
