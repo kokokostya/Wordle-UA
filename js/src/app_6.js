@@ -1009,7 +1009,7 @@ function Modal(props) {
           props.averageStats.leaderboard[props.averageStats.leaderboard.length - 1] && 
           props.stats.maxStreak/props.averageStats.leaderboard[props.averageStats.leaderboard.length - 1].maxStreak < .1
         ) 
-        ? <div className="small hint">😉 Місцями не дуже? Наздоженете! Вони теж з чогось починали.</div>
+        ? <div className="small hint">😉 Місцями не дуже? Наздоженете! Всі з чогось починали.</div>
         : <hr />
       }
 
