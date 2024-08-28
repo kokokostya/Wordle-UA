@@ -7,3 +7,4 @@ package.json
 babel.config.json
 commands.txt
 words/*
+dic_functions_6.js
