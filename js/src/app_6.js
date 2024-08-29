@@ -792,7 +792,7 @@ function Modal(props) {
             <div className="tile miss">ь</div>
           </dt>
         }
-        <dd className="small">Буква <b>Р</b> є в слові, але не в цьому місці</dd>
+        <dd className="small">Буква <b>Т</b> є в слові, але не в цьому місці</dd>
       </dl>
 
       <dl className="example">
