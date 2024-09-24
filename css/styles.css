@@ -200,7 +200,8 @@ header h1 {
   transform: translate(-50%, 0);
 }
 header #selector-editions {
-  order: 2;
+  order: 4;
+  margin-right: 1.5rem;
   position: relative;
 }
 header #selector-editions .button {
@@ -261,7 +262,7 @@ header #btn-stats {
   order: 4;
 }
 header #btn-settings {
-  order: 5;
+  order: 2;
 }
 
 .edition {

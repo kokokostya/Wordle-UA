@@ -681,8 +681,25 @@ function App(props) {
     d: "M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
   }), /*#__PURE__*/React.createElement("path", {
     d: "M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"
+  }))), /*#__PURE__*/React.createElement("button", {
+    id: "btn-settings",
+    className: "icon",
+    "aria-label": "\u041D\u0430\u043B\u0430\u0448\u0442\u0443\u0432\u0430\u043D\u043D\u044F",
+    onClick: function onClick() {
+      return setModal("settings");
+    }
+  }, /*#__PURE__*/React.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    width: "16",
+    height: "16",
+    viewBox: "0 0 16 16"
+  }, /*#__PURE__*/React.createElement("path", {
+    fillRule: "evenodd",
+    d: "M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"
   }))), /*#__PURE__*/React.createElement("div", {
-    id: "selector-editions"
+    id: "selector-editions",
+    className: "ml-auto",
+    "aria-label": "\u0412\u0430\u0440\u0456\u0430\u043D\u0442 \u0433\u0440\u0438"
   }, /*#__PURE__*/React.createElement("div", {
     className: "button icon edition selected"
   }, currentEdition.lettersLimit, /*#__PURE__*/React.createElement("svg", {
@@ -701,7 +718,7 @@ function App(props) {
     }, edition.lettersLimit));
   }))), /*#__PURE__*/React.createElement("button", {
     id: "btn-stats",
-    className: "icon ml-auto",
+    className: "icon",
     "aria-label": "\u041C\u043E\u044F \u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043A\u0430",
     onClick: function onClick() {
       return setModal("stats");
@@ -713,21 +730,6 @@ function App(props) {
     viewBox: "0 0 16 16"
   }, /*#__PURE__*/React.createElement("path", {
     d: "M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"
-  }))), /*#__PURE__*/React.createElement("button", {
-    id: "btn-settings",
-    className: "icon",
-    "aria-label": "\u041D\u0430\u043B\u0430\u0448\u0442\u0443\u0432\u0430\u043D\u043D\u044F",
-    onClick: function onClick() {
-      return setModal("settings");
-    }
-  }, /*#__PURE__*/React.createElement("svg", {
-    xmlns: "http://www.w3.org/2000/svg",
-    width: "16",
-    height: "16",
-    viewBox: "0 0 16 16"
-  }, /*#__PURE__*/React.createElement("path", {
-    fillRule: "evenodd",
-    d: "M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"
   })))), /*#__PURE__*/React.createElement("main", {
     id: "board-container"
   }, /*#__PURE__*/React.createElement("div", {
@@ -1159,7 +1161,7 @@ function Modal(props) {
       });
     })), props.averageStatsLoaded && (props.stats.games <= 30 && props.stats.attempts[1] / props.stats.won >= .1 || props.stats.games > 30 && props.stats.games <= 100 && props.stats.attempts[1] / props.stats.won >= .075 || props.stats.games > 100 && props.stats.attempts[1] / props.stats.won >= .05) ? /*#__PURE__*/React.createElement("div", {
       className: "small hint"
-    }, "\uD83E\uDDD0 ", props.stats.attempts[1], " \u0437 ", props.stats.won, " \u0437 \u043F\u0435\u0440\u0448\u043E\u0457 \u0441\u043F\u0440\u043E\u0431\u0438??? \u0412\u0438 \u0447\u0430\u0441\u043E\u043C \u043D\u0435 \u0447\u0456\u0442\u0435\u0440?") : props.averageStatsLoaded && (props.averageStats.gamesPercentile < .5 || props.averageStats.wonPercentile < .5 || props.averageStats.maxStreakPercentile < .5 || props.averageStats.leaderboard[props.averageStats.leaderboard.length - 1] && props.stats.maxStreak / props.averageStats.leaderboard[props.averageStats.leaderboard.length - 1].maxStreak < .1) ? /*#__PURE__*/React.createElement("div", {
+    }, "\uD83E\uDDD0 ", props.stats.attempts[1], " \u0437 ", props.stats.won, " \u0437 \u043F\u0435\u0440\u0448\u043E\u0457 \u0441\u043F\u0440\u043E\u0431\u0438??? \u0412\u0438 \u0447\u0430\u0441\u043E\u043C \u043D\u0435 \u0447\u0456\u0442\u0435\u0440?") : props.averageStatsLoaded && (props.averageStats.gamesPercentile < .5 || props.averageStats.maxStreakPercentile < .5 || props.averageStats.leaderboard[props.averageStats.leaderboard.length - 1] && props.stats.maxStreak / props.averageStats.leaderboard[props.averageStats.leaderboard.length - 1].maxStreak < .1) ? /*#__PURE__*/React.createElement("div", {
       className: "small hint"
     }, "\uD83D\uDE09 \u041C\u0456\u0441\u0446\u044F\u043C\u0438 \u043D\u0435 \u0434\u0443\u0436\u0435? \u041D\u0430\u0437\u0434\u043E\u0436\u0435\u043D\u0435\u0442\u0435! \u0412\u0441\u0456 \u0437 \u0447\u043E\u0433\u043E\u0441\u044C \u043F\u043E\u0447\u0438\u043D\u0430\u043B\u0438.") : /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("p", {
       className: "small fade"
