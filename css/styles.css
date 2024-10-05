@@ -931,10 +931,12 @@ header #btn-settings {
 }
 
 #try-different-edition {
-  margin: 1rem -1.5rem -0.25rem;
-  padding: 1rem 1.5rem 0;
+  padding: 1rem 1.5rem 0.5rem;
   border-top: 1px solid var(--border);
   text-align: center;
+}
+#try-different-edition.inset {
+  margin: 1rem -1.5rem -0.5rem;
 }
 #try-different-edition h3 {
   margin-top: 0.15rem;
