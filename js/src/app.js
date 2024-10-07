@@ -296,7 +296,7 @@ function App(props) {
     if (!options.skipSetting) {
       if (loadedObj) {
         // Add missing props from new obj definition
-        if (!options.skipUpdating) {
+        if (!options.skipUpdating && typeof obj === 'object' && obj !== null) {
           for (var prop in obj) {
             if (obj.hasOwnProperty(prop) && !loadedObj.hasOwnProperty(prop)) {
               loadedObj[prop] = obj[prop]
