@@ -113,7 +113,16 @@ function App(props) {
   React.useEffect(() => {
     saveToLocalStorage("lastPlayedEdition", currentEdition.lettersLimit, true);
     const newDefaultStats = createDefaultStats(currentEdition.attemptsLimit);
-    tryLoadingFromLocalStorage("stats", stats, {setter: setStats, defaultValue: newDefaultStats});
+    let localStats = tryLoadingFromLocalStorage("stats", stats, {skipSetting: true, defaultValue: newDefaultStats});
+    // Fix stats
+    const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
+    if (currentEdition.lettersLimit == 6 && getIssueNumber(6) >=26 && localStats.streak == 0 && localStats.maxStreak > 0 && ["lzuy54zd2vv3pc79k","m16bvdep2d8wqd9tm","m15572443cq1vzj4g","lzik7sf7zp4ero1w","lz2jru7kyz819p2v","lxu6i0yx33r0yvytk","m07cn8tao5n0ih82","lc1x6pfg1st83cicm","lc1t36af1hs4j9q8c","lppnuldyh0lusqar","m1w9n6fhkf3mdyhq","m1f1oqbs14q25u3da","m1kc6pqs3fad2r12c","m0c0mlou1bn75tz1c","m1s1u9pr2hexwq1uv","lbzroob1267vg78hc","lucr2953tcb9p5cs","lu0380go2xdvngeg2","m1ged9mk331yyk3m6","lvp9f9jm2bljvl5zy","lxh4t5lf1tm6bdvoy","lofd1k6w1dxo7t1d4","lztpxn2o25rt7uk9k","lu4fwdtoz6m99mrl","m0c57fib2jenn3e64","lcaflonz1c2jiiilh","lpyn5kiof897ra98","lyn2houjlfe4ho5t","m068fsb335r0iuxhu","lcuhi4pd3446dqe43","lktd42j91o8v1nlhk","ls7jkqhz1v8cz5zmn","luu0b9iixs6kdpi1","lzc8jx6929fyh34lu","lz5r5mau1pvfe64k3","ldx2mep7141c4dcux","lx8egbyf2igfqr3bo","lzc0pgvv2nsoai06t","m18r6saf18eit855j","lwjmowsy35a7fgxwh","m0u50a8c2iwg6nr9d","lw5ftv4d2zdipkj6v","m16tdfze2i8bqu4f1","lr7qk1yr37vlq0k0s","lvl87t4a238cdnxro","lu9epi2u305t4y5k2","m1cdzqto24z0xljma","lutk2kti234wxqpq7","m1renf5d17yiozg75","lgfu5so3qedad6hp","ljds9jeg22ect9s1y","lt01cggfpf87phx6","m0igqx9i15jj8q1dt","lxo9wwyq1ioaopd6z","lc2t2nf31vekoneud","lc1b91vs1hptbdfz2","m0r1ctgn2prxoltoq","m1igp5hy3i4gmlqaw","lc0b5cyb2ls7e4n8v","m18ompyq3h4fc1t2s","lpcsjly01pb8nibki","m099pi871n69kbn1e","lenka1wd20rdsw3aw","lc474aad2u4d3slwt","lzbultq52j9zec919","m1v9fcw43a9aatkfu","ltuooork24lr7zbpl","m1rfmmm21ffl0uvxq","m0nocskk2l39sapxg","ltuonhkm2thj6th9v","liaua8xanjbt08wu","li55956w1gz6bose8","m16y2ed21ccc60s2a","m1quk1dp266gzi7fc","lzkxenpg37fwmugjk","m117gcwgsykx9jgy","logep45l16l6h2lu4","llv84irg1fh39mbel"].includes(localUID)) {
+      localStats.streak = localStats.maxStreak;
+      setMessage({ msg: "7 жовтня в цій версії гри стався збій. Всім, хто грав в цей день, повертаємо їхні виграші підряд! 🐹🐹🐹" });
+    } else {
+      setMessage(null);
+    }
+    setStats(localStats);
 
     if (getFromLocalStorage("lastPlayedIssueNumber") == getIssueNumber(currentEdition.lettersLimit)) {
       var localAttempts = tryLoadingFromLocalStorage("attempts", attempts, {setter: setAttempts, defaultValue: [], skipUpdating: true});
@@ -126,8 +135,6 @@ function App(props) {
     } else {
       resetGame();
     }
-
-    setMessage({ msg: "test" })
     
     var url = new window.URL(document.location);
     url.searchParams.set("edition", currentEdition.lettersLimit);
@@ -582,7 +589,7 @@ function App(props) {
           </svg>
         </button>
         
-        <div id="selector-editions" className="ml-auto"  aria-label="Варіант гри">
+        <div id="selector-editions" className="ml-auto" aria-label="Варіант гри">
           <div className="button icon edition selected">
             {currentEdition.lettersLimit}
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -1110,12 +1117,12 @@ function Message(props) {
   return(
     <div className={"alert " + (props.tmp && "tmp")}>
       { props.message }
-      <button id="btn-close" className="icon" aria-label="Закрити повідомлення" onClick={(e) => props.handleClose(null)}>
+      { !props.tmp && <button id="btn-close" className="icon" aria-label="Закрити повідомлення" onClick={(e) => props.handleClose(null)}>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" className="bi bi-x-lg" viewBox="0 0 16 16">
           <path fillRule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
           <path fillRule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
         </svg>
-      </button>
+      </button> }
     </div>
   )
 }

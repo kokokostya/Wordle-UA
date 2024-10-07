@@ -330,6 +330,7 @@ header #btn-settings {
   background: none;
   border: 0 none;
   cursor: pointer;
+  padding: 0 0.25rem;
 }
 .icon svg {
   height: 1.25rem;
@@ -958,18 +959,25 @@ header #btn-settings {
 
 .alert {
   display: flex;
+  align-items: start;
   position: absolute;
   bottom: 0;
+  max-width: 33rem;
   padding: 0.5rem 1rem;
+  margin: 0 2rem;
   border-radius: var(--border-radius-button);
   text-align: center;
-  z-index: 10000;
-  white-space: nowrap;
+  z-index: 900;
+  text-align: left;
   background-color: var(--text);
   color: var(--text-inverted);
 }
 .alert.tmp {
   animation: fadeout 3s forwards linear;
+}
+.alert button {
+  padding: 0;
+  margin-left: 0.5rem;
 }
 .alert button svg {
   fill: var(--icon);

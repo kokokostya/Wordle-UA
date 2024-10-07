@@ -373,6 +373,7 @@ header {
   background: none;
   border: 0 none;
   cursor: pointer;
+  padding: 0 .25rem;
 
   svg {
     height: 1.25rem;
@@ -1093,13 +1094,17 @@ background-color: var(--button-primary);
 
 .alert {
   display: flex;
+  align-items: start;
   position: absolute;
   bottom: 0;
+  max-width: 33rem;
   padding: .5rem 1rem;
+  margin: 0 2rem;
   border-radius: var(--border-radius-button);
   text-align: center;
-  z-index: 10000;
-  white-space: nowrap;
+  z-index: 900;
+  text-align: left;
+  // white-space: nowrap;
   background-color: var(--text);
   color: var(--text-inverted);
 
@@ -1108,6 +1113,9 @@ background-color: var(--button-primary);
   }
 
   button {
+    padding: 0;
+    margin-left: .5rem;
+
     svg {
       fill: var(--icon);
     }
