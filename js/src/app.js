@@ -995,7 +995,6 @@ function Modal(props) {
             secondaryHeight={(props.stats.streak < props.stats.maxStreak) && leaderboard.myMaxHeight} />
         }
       </div>
-      { (props.stats.streak == 0) && (props.stats.maxStreak > 0) && <p className="small fade">А тепер наздоганяти як вони!</p> }
       { leaderboard.amIn && (props.stats.streak > 0) && <div className="small hint">🧠 В чому ваш секрет?</div> }
 
       <hr />
