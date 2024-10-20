@@ -730,7 +730,8 @@ function Modal(props) {
     maxHeights: {},
     myHeight: 0,
     myMaxHeight: 0,
-    amIn: false
+    amIn: false,
+    hasLoosers: false
   }
   leaderboard.absMax = Math.max(...props.averageStats.leaderboard.map(leader => (props.stats.streak < props.stats.maxStreak) ? leader.maxStreak : leader.streak));
   if (leaderboard.absMax <=0) {
@@ -740,6 +741,9 @@ function Modal(props) {
     leaderboard.heights[leader.uid] = leader.streak/leaderboard.absMax*100;
     if (props.stats.streak < props.stats.maxStreak) {
       leaderboard.maxHeights[leader.uid] = leader.maxStreak/leaderboard.absMax*100;
+      leaderboard.hasLoosers = true;
+    } else {
+      leaderboard.maxHeights[leader.uid] = leaderboard.heights[leader.uid]
     }
   });
   leaderboard.myHeight = props.stats.streak/leaderboard.absMax*100;
@@ -996,7 +1000,7 @@ function Modal(props) {
         }
       </div>
       { leaderboard.amIn && (props.stats.streak > 0) && <div className="small hint">🧠 В чому ваш секрет?</div> }
-      <p className="small fade">Деякі гравці можуть наздоганяти свій минулий рекорд.</p>
+      { leaderboard.hasLoosers && <p className="small fade">Деякі гравці наздоганяють свій минулий рекорд.</p> }
 
       <hr />
       
@@ -1213,7 +1217,7 @@ function GraphBarVertical(props) {
         <div className={"bar" + (props.uid == props.myUid ? (props.pos > 0 ? "" : " none") : " average")} style={{height: props.height + "%"}}>
           <span className="value">{ props.value }</span>
         </div>
-        { props.secondaryValue && <div className={"bar secondary" + (props.uid == props.myUid ? (props.pos > 0 ? "" : " none") : " average")} style={{height: props.secondaryHeight + "%"}}>
+        { props.secondaryValue && (props.value != props.secondaryValue) && <div className={"bar secondary" + (props.uid == props.myUid ? (props.pos > 0 ? "" : " none") : " average")} style={{height: props.secondaryHeight + "%"}}>
             <span className="value">{ props.secondaryValue }</span>
           </div> 
         }
