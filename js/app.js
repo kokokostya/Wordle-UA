@@ -1146,8 +1146,8 @@ function Modal(props) {
         value: leader.streak,
         myUid: props.uid,
         height: leaderboard.heights[leader.uid],
-        secondaryValue: props.stats.streak < props.stats.maxStreak && leader.maxStreak,
-        secondaryHeight: props.stats.streak < props.stats.maxStreak && leaderboard.maxHeights[leader.uid]
+        secondaryValue: props.stats.streak == 0 && props.stats.maxStreak > 0 && leader.maxStreak,
+        secondaryHeight: props.stats.streak == 0 && props.stats.maxStreak > 0 && leaderboard.maxHeights[leader.uid]
       });
     }), !leaderboard.amIn && /*#__PURE__*/React.createElement(GraphBarVertical, {
       uid: props.uid,
@@ -1155,8 +1155,8 @@ function Modal(props) {
       value: props.stats.streak,
       myUid: props.uid,
       height: leaderboard.myHeight,
-      secondaryValue: props.stats.streak < props.stats.maxStreak && props.stats.maxStreak,
-      secondaryHeight: props.stats.streak < props.stats.maxStreak && leaderboard.myMaxHeight
+      secondaryValue: props.stats.streak == 0 && props.stats.maxStreak > 0 && props.stats.maxStreak,
+      secondaryHeight: props.stats.streak == 0 && props.stats.maxStreak > 0 && leaderboard.myMaxHeight
     })), leaderboard.amIn && props.stats.streak > 0 && /*#__PURE__*/React.createElement("div", {
       className: "small hint"
     }, "\uD83E\uDDE0 \u0412 \u0447\u043E\u043C\u0443 \u0432\u0430\u0448 \u0441\u0435\u043A\u0440\u0435\u0442?"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), /*#__PURE__*/React.createElement(Metric, {
