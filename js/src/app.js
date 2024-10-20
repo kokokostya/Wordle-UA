@@ -982,8 +982,8 @@ function Modal(props) {
             value={leader.streak}
             myUid={props.uid}
             height={leaderboard.heights[leader.uid]}
-            secondaryValue={(props.stats.streak < props.stats.maxStreak) && leader.maxStreak}
-            secondaryHeight={(props.stats.streak < props.stats.maxStreak) && leaderboard.maxHeights[leader.uid]} />
+            secondaryValue={leader.maxStreak}
+            secondaryHeight={leaderboard.maxHeights[leader.uid]} />
         )}
         { !leaderboard.amIn && <GraphBarVertical
             uid={props.uid}
@@ -991,11 +991,12 @@ function Modal(props) {
             value={props.stats.streak}
             myUid={props.uid}
             height={leaderboard.myHeight}
-            secondaryValue={(props.stats.streak < props.stats.maxStreak) && props.stats.maxStreak}
-            secondaryHeight={(props.stats.streak < props.stats.maxStreak) && leaderboard.myMaxHeight} />
+            secondaryValue={props.stats.maxStreak}
+            secondaryHeight={leaderboard.myMaxHeight} />
         }
       </div>
       { leaderboard.amIn && (props.stats.streak > 0) && <div className="small hint">🧠 В чому ваш секрет?</div> }
+      <p className="small fade">Деякі гравці можуть наздоганяти свій минулий рекорд.</p>
 
       <hr />
       

@@ -1146,8 +1146,8 @@ function Modal(props) {
         value: leader.streak,
         myUid: props.uid,
         height: leaderboard.heights[leader.uid],
-        secondaryValue: props.stats.streak == 0 && props.stats.maxStreak > 0 && leader.maxStreak,
-        secondaryHeight: props.stats.streak == 0 && props.stats.maxStreak > 0 && leaderboard.maxHeights[leader.uid]
+        secondaryValue: leader.maxStreak,
+        secondaryHeight: leaderboard.maxHeights[leader.uid]
       });
     }), !leaderboard.amIn && /*#__PURE__*/React.createElement(GraphBarVertical, {
       uid: props.uid,
@@ -1155,11 +1155,13 @@ function Modal(props) {
       value: props.stats.streak,
       myUid: props.uid,
       height: leaderboard.myHeight,
-      secondaryValue: props.stats.streak == 0 && props.stats.maxStreak > 0 && props.stats.maxStreak,
-      secondaryHeight: props.stats.streak == 0 && props.stats.maxStreak > 0 && leaderboard.myMaxHeight
+      secondaryValue: props.stats.maxStreak,
+      secondaryHeight: leaderboard.myMaxHeight
     })), leaderboard.amIn && props.stats.streak > 0 && /*#__PURE__*/React.createElement("div", {
       className: "small hint"
-    }, "\uD83E\uDDE0 \u0412 \u0447\u043E\u043C\u0443 \u0432\u0430\u0448 \u0441\u0435\u043A\u0440\u0435\u0442?"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), /*#__PURE__*/React.createElement(Metric, {
+    }, "\uD83E\uDDE0 \u0412 \u0447\u043E\u043C\u0443 \u0432\u0430\u0448 \u0441\u0435\u043A\u0440\u0435\u0442?"), /*#__PURE__*/React.createElement("p", {
+      className: "small fade"
+    }, "\u0414\u0435\u044F\u043A\u0456 \u0433\u0440\u0430\u0432\u0446\u0456 \u043C\u043E\u0436\u0443\u0442\u044C \u043D\u0430\u0437\u0434\u043E\u0433\u0430\u043D\u044F\u0442\u0438 \u0441\u0432\u0456\u0439 \u043C\u0438\u043D\u0443\u043B\u0438\u0439 \u0440\u0435\u043A\u043E\u0440\u0434."), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), /*#__PURE__*/React.createElement(Metric, {
       value: props.averageStats.averageAttemptPercentile
     }, "\u0412 \u0441\u0435\u0440\u0435\u0434\u043D\u044C\u043E\u043C\u0443 \u0432\u0438 \u0432\u0433\u0430\u0434\u0443\u0432\u0430\u043B\u0438 ", /*#__PURE__*/React.createElement("b", null, "\u0437 ", averageAttempt, "-\u0457 \u0441\u043F\u0440\u043E\u0431\u0438")), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("div", {
       className: "rel"
