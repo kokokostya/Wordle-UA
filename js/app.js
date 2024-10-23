@@ -227,7 +227,8 @@ function App(props) {
       ignoreLettersLimit: true
     });
     tryLoadingFromLocalStorage("settings", settings, {
-      setter: setSettings
+      setter: setSettings,
+      ignoreLettersLimit: true
     });
   }, []);
 
@@ -434,6 +435,7 @@ function App(props) {
       loadedObj = getFromLocalStorage(propName, options.ignoreLettersLimit);
     } catch (e) {
       loadedObj = null;
+      console.log("Failed loading " + propName + " from local storage");
     }
     if (!options.skipSetting) {
       if (loadedObj) {

@@ -106,7 +106,7 @@ function App(props) {
   // Load edition independent settings from local storage
   React.useEffect(() => {
     tryLoadingFromLocalStorage("UID", UID, {setter: setUID, defaultValue: Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36), ignoreLettersLimit: true});
-    tryLoadingFromLocalStorage("settings", settings, {setter: setSettings});
+    tryLoadingFromLocalStorage("settings", settings, {setter: setSettings, ignoreLettersLimit: true});
   }, []);
 
   // Load last game if still valid
@@ -300,11 +300,12 @@ function App(props) {
       loadedObj = getFromLocalStorage(propName, options.ignoreLettersLimit);
     } catch(e) {
       loadedObj = null
+      console.log("Failed loading " + propName + " from local storage")
     }
     if (!options.skipSetting) {
       if (loadedObj) {
         // Add missing props from new obj definition
-        if (!options.skipUpdating && typeof obj === 'object' && obj !== null) {
+        if (!options.skipUpdating && (typeof obj === 'object') && (obj !== null)) {
           for (var prop in obj) {
             if (obj.hasOwnProperty(prop) && !loadedObj.hasOwnProperty(prop)) {
               loadedObj[prop] = obj[prop]
