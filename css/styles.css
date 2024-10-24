@@ -795,9 +795,10 @@ header #btn-settings {
 }
 .graph-vertical-container .graph-vertical {
   flex: 1;
-  margin: 0 0.25rem;
+  margin: 0 0.25rem 1rem;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 .graph-vertical-container .graph-vertical:first-child {
   margin-left: 0;
@@ -831,7 +832,10 @@ header #btn-settings {
   color: var(--miss);
 }
 .graph-vertical-container .graph-vertical .label {
+  position: absolute;
+  bottom: -1.25rem;
   font-size: 0.75rem;
+  white-space: nowrap;
 }
 
 .graph-horizontal {
@@ -1042,4 +1046,4 @@ header #btn-settings {
   .graph-vertical-container .graph-vertical .label {
     font-size: 0.66rem;
   }
-}
+}/*# sourceMappingURL=styles.css.map */

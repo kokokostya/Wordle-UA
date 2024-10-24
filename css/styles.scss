@@ -901,9 +901,10 @@ background-color: var(--button-primary);
 
   .graph-vertical {
     flex: 1;
-    margin: 0 .25rem;
+    margin: 0 .25rem 1rem;
     display: flex;
     flex-direction: column;
+    position: relative;
 
     &:first-child {
       margin-left: 0;
@@ -946,7 +947,10 @@ background-color: var(--button-primary);
     }
 
     .label {
+      position: absolute;
+      bottom: -1.25rem;
       font-size: .75rem;
+      white-space: nowrap;
     }
   }
 }

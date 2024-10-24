@@ -48,16 +48,24 @@ function App(props) {
     gamesPercentile: 0, 
     wonPercentile: 0,
     maxStreakPercentile: 0,
-    leagueName: "",
-    leaderboard: [],
+    league: {
+      name: "",
+      leaderboard: []
+    },
+    allTimeTop: [],
     averageAttemptPercentile: 0,
     attempts: {}
   }
   for (let i = 1; i <= 10; i++) {
-    defaultAverageStats.leaderboard.push({
+    defaultAverageStats.league.leaderboard.push({
       uid: "uid",
       pos: i,
       streak: 0,
+      maxStreak: 0
+    });
+    defaultAverageStats.allTimeTop.push({
+      uid: "uid",
+      pos: i,
       maxStreak: 0
     });
   }
@@ -724,34 +732,53 @@ function Modal(props) {
   var title;
   var content;
 
-  // Calculating bar heights for leaderboard graph
-  var leaderboard = {
+  // Calculating bar heights for league leaderboard graph
+  var leagueLeaderboardChart = {
     absMax: 0,
     heights: {},
-    maxHeights: {},
+    secondaryHeights: {},
     myHeight: 0,
-    myMaxHeight: 0,
+    mySecondaryHeight: 0,
     amIn: false,
     hasLoosers: false
   }
-  leaderboard.absMax = Math.max(...props.averageStats.leaderboard.map(leader => (props.stats.streak < props.stats.maxStreak) ? leader.maxStreak : leader.streak));
-  if (leaderboard.absMax <=0) {
-    leaderboard.absMax = props.stats.maxStreak;
+  leagueLeaderboardChart.absMax = Math.max(...props.averageStats.league.leaderboard.map(leader => (leader.streak < leader.maxStreak) ? leader.maxStreak : leader.streak));
+  if (leagueLeaderboardChart.absMax <= 0) {
+    leagueLeaderboardChart.absMax = props.stats.maxStreak;
   }
-  props.averageStats.leaderboard.forEach(leader => {
-    leaderboard.heights[leader.uid] = leader.streak/leaderboard.absMax*100;
-    if (props.stats.streak < props.stats.maxStreak) {
-      leaderboard.maxHeights[leader.uid] = leader.maxStreak/leaderboard.absMax*100;
-      leaderboard.hasLoosers = true;
+  props.averageStats.league.leaderboard.forEach(leader => {
+    leagueLeaderboardChart.heights[leader.uid] = leader.streak/leagueLeaderboardChart.absMax*100;
+    if (leader.streak < leader.maxStreak) {
+      leagueLeaderboardChart.secondaryHeights[leader.uid] = leader.maxStreak/leagueLeaderboardChart.absMax*100;
+      leagueLeaderboardChart.hasLoosers = true;
     } else {
-      leaderboard.maxHeights[leader.uid] = leaderboard.heights[leader.uid]
+      leagueLeaderboardChart.secondaryHeights[leader.uid] = leagueLeaderboardChart.heights[leader.uid]
     }
   });
-  leaderboard.myHeight = props.stats.streak/leaderboard.absMax*100;
+  leagueLeaderboardChart.myHeight = props.stats.streak/leagueLeaderboardChart.absMax*100;
   if (props.stats.streak < props.stats.maxStreak) {
-    leaderboard.myMaxHeight = props.stats.maxStreak/leaderboard.absMax*100;
+    leagueLeaderboardChart.mySecondaryHeight = props.stats.maxStreak/leagueLeaderboardChart.absMax*100;
+  } else {
+    leagueLeaderboardChart.mySecondaryHeight = leagueLeaderboardChart.myHeight;
   }
-  leaderboard.amIn = props.averageStats.leaderboard.map((leader) => leader.uid).includes(props.uid);
+  leagueLeaderboardChart.amIn = props.averageStats.league.leaderboard.map(leader => leader.uid).includes(props.uid);
+
+  // Calculating bar heights for all time leaderboard graph
+  var allTimeLeaderboardChart = {
+    absMax: 0,
+    heights: {},
+    myHeight: 0,
+    amIn: false,
+  }
+  allTimeLeaderboardChart.absMax = Math.max(...props.averageStats.allTimeTop.map(leader => leader.maxStreak));
+  if (allTimeLeaderboardChart.absMax <= 0) {
+    allTimeLeaderboardChart.absMax = props.stats.maxStreak;
+  }
+  props.averageStats.allTimeTop.forEach(leader => {
+    allTimeLeaderboardChart.heights[leader.uid] = leader.maxStreak/allTimeLeaderboardChart.absMax*100;
+  });
+  allTimeLeaderboardChart.myHeight = props.stats.maxStreak/allTimeLeaderboardChart.absMax*100;
+  allTimeLeaderboardChart.amIn = props.averageStats.allTimeTop.map(leader => leader.uid).includes(props.uid);
 
   // Calculating average attempt
   var averageAttempt = 0;
@@ -978,31 +1005,54 @@ function Modal(props) {
 
       <hr />
 
-      <h3>{props.averageStats.leagueName}</h3>
+      <h3>{props.averageStats.league.name}</h3>
       <div className="graph-vertical-container">
-        { props.averageStats.leaderboard.map((leader) =>
+        { props.averageStats.league.leaderboard.map((leader) =>
           <GraphBarVertical
             uid={leader.uid}
             pos={leader.pos}
             value={leader.streak}
             myUid={props.uid}
-            height={leaderboard.heights[leader.uid]}
+            height={leagueLeaderboardChart.heights[leader.uid]}
             secondaryValue={leader.maxStreak}
-            secondaryHeight={leaderboard.maxHeights[leader.uid]} />
+            secondaryHeight={leagueLeaderboardChart.secondaryHeights[leader.uid]} />
         )}
-        { !leaderboard.amIn && <GraphBarVertical
+        { !leagueLeaderboardChart.amIn && <GraphBarVertical
             uid={props.uid}
             pos={-1}
             value={props.stats.streak}
             myUid={props.uid}
-            height={leaderboard.myHeight}
+            height={leagueLeaderboardChart.myHeight}
             secondaryValue={props.stats.maxStreak}
-            secondaryHeight={leaderboard.myMaxHeight} />
+            secondaryHeight={leagueLeaderboardChart.mySecondaryHeight} />
         }
       </div>
-      { leaderboard.amIn && (props.stats.streak > 0) && <div className="small hint">🧠 В чому ваш секрет?</div> }
-      { leaderboard.hasLoosers && <p className="small fade">Деякі гравці наздоганяють свій минулий рекорд.</p> }
+      
+      { leagueLeaderboardChart.hasLoosers && <p className="small fade">Деякі гравці наздоганяють свій минулий рекорд.</p> }
 
+      <hr />
+
+      <h3>Tоп рекордів</h3>
+      <div className="graph-vertical-container">
+        { props.averageStats.allTimeTop.map((leader) =>
+          <GraphBarVertical
+            uid={leader.uid}
+            pos={leader.pos}
+            value={leader.maxStreak}
+            myUid={props.uid}
+            height={allTimeLeaderboardChart.heights[leader.uid]} />
+        )}
+        { !allTimeLeaderboardChart.amIn && <GraphBarVertical
+            uid={props.uid}
+            pos={-1}
+            value={props.stats.maxStreak}
+            myUid={props.uid}
+            height={allTimeLeaderboardChart.myHeight} />
+        }
+      </div>
+
+      { (leagueLeaderboardChart.amIn || allTimeLeaderboardChart.amIn) && (props.stats.streak > 0) && <div className="small hint">🧠 В чому ваш секрет?</div> }
+      
       <hr />
       
       <h3>Виграшні спроби</h3>
@@ -1038,8 +1088,7 @@ function Modal(props) {
         : props.averageStatsLoaded && (
           props.averageStats.gamesPercentile < .5 || 
           props.averageStats.maxStreakPercentile < .5 || 
-          props.averageStats.leaderboard[props.averageStats.leaderboard.length - 1] && 
-          props.stats.maxStreak/props.averageStats.leaderboard[props.averageStats.leaderboard.length - 1].maxStreak < .1
+          leagueLeaderboardChart.myHeight < 10
         ) 
         ? <div className="small hint">😉 Місцями не дуже? Наздоженете! Всі з чогось починали.</div>
         : <hr />
@@ -1218,12 +1267,12 @@ function GraphBarVertical(props) {
         <div className={"bar" + (props.uid == props.myUid ? (props.pos > 0 ? "" : " none") : " average")} style={{height: props.height + "%"}}>
           <span className="value">{ props.value }</span>
         </div>
-        { props.secondaryValue && (props.value != props.secondaryValue) && <div className={"bar secondary" + (props.uid == props.myUid ? (props.pos > 0 ? "" : " none") : " average")} style={{height: props.secondaryHeight + "%"}}>
+        { (props.secondaryValue > 0) && (props.value != props.secondaryValue) && <div className={"bar secondary" + (props.uid == props.myUid ? (props.pos > 0 ? "" : " none") : " average")} style={{height: props.secondaryHeight + "%"}}>
             <span className="value">{ props.secondaryValue }</span>
           </div> 
         }
       </div>
-      <div className="label">{ props.uid == props.myUid ? "Ви" : "#" + props.pos }</div>
+      <div className={"label" + (props.uid == props.myUid ? " always-show" : "")}>{ props.uid == props.myUid ? "Ви" : "#" + props.pos }</div>
     </div>
   )
 }

@@ -124,16 +124,24 @@ function App(props) {
     gamesPercentile: 0,
     wonPercentile: 0,
     maxStreakPercentile: 0,
-    leagueName: "",
-    leaderboard: [],
+    league: {
+      name: "",
+      leaderboard: []
+    },
+    allTimeTop: [],
     averageAttemptPercentile: 0,
     attempts: {}
   };
   for (var i = 1; i <= 10; i++) {
-    defaultAverageStats.leaderboard.push({
+    defaultAverageStats.league.leaderboard.push({
       uid: "uid",
       pos: i,
       streak: 0,
+      maxStreak: 0
+    });
+    defaultAverageStats.allTimeTop.push({
+      uid: "uid",
+      pos: i,
       maxStreak: 0
     });
   }
@@ -879,36 +887,59 @@ function Modal(props) {
   var title;
   var content;
 
-  // Calculating bar heights for leaderboard graph
-  var leaderboard = {
+  // Calculating bar heights for league leaderboard graph
+  var leagueLeaderboardChart = {
     absMax: 0,
     heights: {},
-    maxHeights: {},
+    secondaryHeights: {},
     myHeight: 0,
-    myMaxHeight: 0,
+    mySecondaryHeight: 0,
     amIn: false,
     hasLoosers: false
   };
-  leaderboard.absMax = Math.max.apply(Math, _toConsumableArray(props.averageStats.leaderboard.map(function (leader) {
-    return props.stats.streak < props.stats.maxStreak ? leader.maxStreak : leader.streak;
+  leagueLeaderboardChart.absMax = Math.max.apply(Math, _toConsumableArray(props.averageStats.league.leaderboard.map(function (leader) {
+    return leader.streak < leader.maxStreak ? leader.maxStreak : leader.streak;
   })));
-  if (leaderboard.absMax <= 0) {
-    leaderboard.absMax = props.stats.maxStreak;
+  if (leagueLeaderboardChart.absMax <= 0) {
+    leagueLeaderboardChart.absMax = props.stats.maxStreak;
   }
-  props.averageStats.leaderboard.forEach(function (leader) {
-    leaderboard.heights[leader.uid] = leader.streak / leaderboard.absMax * 100;
-    if (props.stats.streak < props.stats.maxStreak) {
-      leaderboard.maxHeights[leader.uid] = leader.maxStreak / leaderboard.absMax * 100;
-      leaderboard.hasLoosers = true;
+  props.averageStats.league.leaderboard.forEach(function (leader) {
+    leagueLeaderboardChart.heights[leader.uid] = leader.streak / leagueLeaderboardChart.absMax * 100;
+    if (leader.streak < leader.maxStreak) {
+      leagueLeaderboardChart.secondaryHeights[leader.uid] = leader.maxStreak / leagueLeaderboardChart.absMax * 100;
+      leagueLeaderboardChart.hasLoosers = true;
     } else {
-      leaderboard.maxHeights[leader.uid] = leaderboard.heights[leader.uid];
+      leagueLeaderboardChart.secondaryHeights[leader.uid] = leagueLeaderboardChart.heights[leader.uid];
     }
   });
-  leaderboard.myHeight = props.stats.streak / leaderboard.absMax * 100;
+  leagueLeaderboardChart.myHeight = props.stats.streak / leagueLeaderboardChart.absMax * 100;
   if (props.stats.streak < props.stats.maxStreak) {
-    leaderboard.myMaxHeight = props.stats.maxStreak / leaderboard.absMax * 100;
+    leagueLeaderboardChart.mySecondaryHeight = props.stats.maxStreak / leagueLeaderboardChart.absMax * 100;
+  } else {
+    leagueLeaderboardChart.mySecondaryHeight = leagueLeaderboardChart.myHeight;
   }
-  leaderboard.amIn = props.averageStats.leaderboard.map(function (leader) {
+  leagueLeaderboardChart.amIn = props.averageStats.league.leaderboard.map(function (leader) {
+    return leader.uid;
+  }).includes(props.uid);
+
+  // Calculating bar heights for all time leaderboard graph
+  var allTimeLeaderboardChart = {
+    absMax: 0,
+    heights: {},
+    myHeight: 0,
+    amIn: false
+  };
+  allTimeLeaderboardChart.absMax = Math.max.apply(Math, _toConsumableArray(props.averageStats.allTimeTop.map(function (leader) {
+    return leader.maxStreak;
+  })));
+  if (allTimeLeaderboardChart.absMax <= 0) {
+    allTimeLeaderboardChart.absMax = props.stats.maxStreak;
+  }
+  props.averageStats.allTimeTop.forEach(function (leader) {
+    allTimeLeaderboardChart.heights[leader.uid] = leader.maxStreak / allTimeLeaderboardChart.absMax * 100;
+  });
+  allTimeLeaderboardChart.myHeight = props.stats.maxStreak / allTimeLeaderboardChart.absMax * 100;
+  allTimeLeaderboardChart.amIn = props.averageStats.allTimeTop.map(function (leader) {
     return leader.uid;
   }).includes(props.uid);
 
@@ -1143,31 +1174,47 @@ function Modal(props) {
       className: "small hint"
     }, "\uD83D\uDE33 \u0412 \u043D\u0430\u0441 \u043E\u0434\u043D\u0435 \u043F\u0438\u0442\u0430\u043D\u043D\u044F: \u044F\u043A???"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement(Metric, {
       value: props.averageStats.maxStreakPercentile
-    }, "\u0412\u0430\u0448 \u0440\u0435\u043A\u043E\u0440\u0434: ", /*#__PURE__*/React.createElement("b", null, props.stats.maxStreak, " ", nTimes(props.stats.maxStreak), " \u043F\u0456\u0434\u0440\u044F\u0434")), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, props.averageStats.leagueName), /*#__PURE__*/React.createElement("div", {
+    }, "\u0412\u0430\u0448 \u0440\u0435\u043A\u043E\u0440\u0434: ", /*#__PURE__*/React.createElement("b", null, props.stats.maxStreak, " ", nTimes(props.stats.maxStreak), " \u043F\u0456\u0434\u0440\u044F\u0434")), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, props.averageStats.league.name), /*#__PURE__*/React.createElement("div", {
       className: "graph-vertical-container"
-    }, props.averageStats.leaderboard.map(function (leader) {
+    }, props.averageStats.league.leaderboard.map(function (leader) {
       return /*#__PURE__*/React.createElement(GraphBarVertical, {
         uid: leader.uid,
         pos: leader.pos,
         value: leader.streak,
         myUid: props.uid,
-        height: leaderboard.heights[leader.uid],
+        height: leagueLeaderboardChart.heights[leader.uid],
         secondaryValue: leader.maxStreak,
-        secondaryHeight: leaderboard.maxHeights[leader.uid]
+        secondaryHeight: leagueLeaderboardChart.secondaryHeights[leader.uid]
       });
-    }), !leaderboard.amIn && /*#__PURE__*/React.createElement(GraphBarVertical, {
+    }), !leagueLeaderboardChart.amIn && /*#__PURE__*/React.createElement(GraphBarVertical, {
       uid: props.uid,
       pos: -1,
       value: props.stats.streak,
       myUid: props.uid,
-      height: leaderboard.myHeight,
+      height: leagueLeaderboardChart.myHeight,
       secondaryValue: props.stats.maxStreak,
-      secondaryHeight: leaderboard.myMaxHeight
-    })), leaderboard.amIn && props.stats.streak > 0 && /*#__PURE__*/React.createElement("div", {
-      className: "small hint"
-    }, "\uD83E\uDDE0 \u0412 \u0447\u043E\u043C\u0443 \u0432\u0430\u0448 \u0441\u0435\u043A\u0440\u0435\u0442?"), leaderboard.hasLoosers && /*#__PURE__*/React.createElement("p", {
+      secondaryHeight: leagueLeaderboardChart.mySecondaryHeight
+    })), leagueLeaderboardChart.hasLoosers && /*#__PURE__*/React.createElement("p", {
       className: "small fade"
-    }, "\u0414\u0435\u044F\u043A\u0456 \u0433\u0440\u0430\u0432\u0446\u0456 \u043D\u0430\u0437\u0434\u043E\u0433\u0430\u043D\u044F\u044E\u0442\u044C \u0441\u0432\u0456\u0439 \u043C\u0438\u043D\u0443\u043B\u0438\u0439 \u0440\u0435\u043A\u043E\u0440\u0434."), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), /*#__PURE__*/React.createElement(Metric, {
+    }, "\u0414\u0435\u044F\u043A\u0456 \u0433\u0440\u0430\u0432\u0446\u0456 \u043D\u0430\u0437\u0434\u043E\u0433\u0430\u043D\u044F\u044E\u0442\u044C \u0441\u0432\u0456\u0439 \u043C\u0438\u043D\u0443\u043B\u0438\u0439 \u0440\u0435\u043A\u043E\u0440\u0434."), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "T\u043E\u043F \u0440\u0435\u043A\u043E\u0440\u0434\u0456\u0432"), /*#__PURE__*/React.createElement("div", {
+      className: "graph-vertical-container"
+    }, props.averageStats.allTimeTop.map(function (leader) {
+      return /*#__PURE__*/React.createElement(GraphBarVertical, {
+        uid: leader.uid,
+        pos: leader.pos,
+        value: leader.maxStreak,
+        myUid: props.uid,
+        height: allTimeLeaderboardChart.heights[leader.uid]
+      });
+    }), !allTimeLeaderboardChart.amIn && /*#__PURE__*/React.createElement(GraphBarVertical, {
+      uid: props.uid,
+      pos: -1,
+      value: props.stats.maxStreak,
+      myUid: props.uid,
+      height: allTimeLeaderboardChart.myHeight
+    })), (leagueLeaderboardChart.amIn || allTimeLeaderboardChart.amIn) && props.stats.streak > 0 && /*#__PURE__*/React.createElement("div", {
+      className: "small hint"
+    }, "\uD83E\uDDE0 \u0412 \u0447\u043E\u043C\u0443 \u0432\u0430\u0448 \u0441\u0435\u043A\u0440\u0435\u0442?"), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "\u0412\u0438\u0433\u0440\u0430\u0448\u043D\u0456 \u0441\u043F\u0440\u043E\u0431\u0438"), /*#__PURE__*/React.createElement(Metric, {
       value: props.averageStats.averageAttemptPercentile
     }, "\u0412 \u0441\u0435\u0440\u0435\u0434\u043D\u044C\u043E\u043C\u0443 \u0432\u0438 \u0432\u0433\u0430\u0434\u0443\u0432\u0430\u043B\u0438 ", /*#__PURE__*/React.createElement("b", null, "\u0437 ", averageAttempt, "-\u0457 \u0441\u043F\u0440\u043E\u0431\u0438")), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("div", {
       className: "rel"
@@ -1188,7 +1235,7 @@ function Modal(props) {
       });
     })), props.averageStatsLoaded && (props.stats.games <= 30 && props.stats.attempts[1] / props.stats.won >= .1 || props.stats.games > 30 && props.stats.games <= 100 && props.stats.attempts[1] / props.stats.won >= .075 || props.stats.games > 100 && props.stats.attempts[1] / props.stats.won >= .05) ? /*#__PURE__*/React.createElement("div", {
       className: "small hint"
-    }, "\uD83E\uDDD0 ", props.stats.attempts[1], " \u0437 ", props.stats.won, " \u0437 \u043F\u0435\u0440\u0448\u043E\u0457 \u0441\u043F\u0440\u043E\u0431\u0438??? \u0412\u0438 \u0447\u0430\u0441\u043E\u043C \u043D\u0435 \u0447\u0456\u0442\u0435\u0440?") : props.averageStatsLoaded && (props.averageStats.gamesPercentile < .5 || props.averageStats.maxStreakPercentile < .5 || props.averageStats.leaderboard[props.averageStats.leaderboard.length - 1] && props.stats.maxStreak / props.averageStats.leaderboard[props.averageStats.leaderboard.length - 1].maxStreak < .1) ? /*#__PURE__*/React.createElement("div", {
+    }, "\uD83E\uDDD0 ", props.stats.attempts[1], " \u0437 ", props.stats.won, " \u0437 \u043F\u0435\u0440\u0448\u043E\u0457 \u0441\u043F\u0440\u043E\u0431\u0438??? \u0412\u0438 \u0447\u0430\u0441\u043E\u043C \u043D\u0435 \u0447\u0456\u0442\u0435\u0440?") : props.averageStatsLoaded && (props.averageStats.gamesPercentile < .5 || props.averageStats.maxStreakPercentile < .5 || leagueLeaderboardChart.myHeight < 10) ? /*#__PURE__*/React.createElement("div", {
       className: "small hint"
     }, "\uD83D\uDE09 \u041C\u0456\u0441\u0446\u044F\u043C\u0438 \u043D\u0435 \u0434\u0443\u0436\u0435? \u041D\u0430\u0437\u0434\u043E\u0436\u0435\u043D\u0435\u0442\u0435! \u0412\u0441\u0456 \u0437 \u0447\u043E\u0433\u043E\u0441\u044C \u043F\u043E\u0447\u0438\u043D\u0430\u043B\u0438.") : /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("p", {
       className: "small fade"
@@ -1408,7 +1455,7 @@ function GraphBarVertical(props) {
     }
   }, /*#__PURE__*/React.createElement("span", {
     className: "value"
-  }, props.value)), props.secondaryValue && props.value != props.secondaryValue && /*#__PURE__*/React.createElement("div", {
+  }, props.value)), props.secondaryValue > 0 && props.value != props.secondaryValue && /*#__PURE__*/React.createElement("div", {
     className: "bar secondary" + (props.uid == props.myUid ? props.pos > 0 ? "" : " none" : " average"),
     style: {
       height: props.secondaryHeight + "%"
@@ -1416,7 +1463,7 @@ function GraphBarVertical(props) {
   }, /*#__PURE__*/React.createElement("span", {
     className: "value"
   }, props.secondaryValue))), /*#__PURE__*/React.createElement("div", {
-    className: "label"
+    className: "label" + (props.uid == props.myUid ? " always-show" : "")
   }, props.uid == props.myUid ? "Ви" : "#" + props.pos));
 }
 function nTimes(n) {
