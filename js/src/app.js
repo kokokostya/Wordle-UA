@@ -778,7 +778,7 @@ function Modal(props) {
     allTimeLeaderboardChart.heights[leader.uid] = leader.maxStreak/allTimeLeaderboardChart.absMax*100;
   });
   allTimeLeaderboardChart.myHeight = props.stats.maxStreak/allTimeLeaderboardChart.absMax*100;
-  allTimeLeaderboardChart.amIn = props.averageStats.allTimeTop.map(leader => leader.uid).includes(props.uid);
+  leagueLeaderboardChart.amIn = props.averageStats.league.leaderboard.map(leader => leader.uid).includes(props.uid);
 
   // Calculating average attempt
   var averageAttempt = 0;
@@ -1033,7 +1033,7 @@ function Modal(props) {
       <hr />
 
       <h3>Tоп рекордів</h3>
-      <div className="graph-vertical-container">
+      <div className="graph-vertical-container compact">
         { props.averageStats.allTimeTop.map((leader) =>
           <GraphBarVertical
             uid={leader.uid}

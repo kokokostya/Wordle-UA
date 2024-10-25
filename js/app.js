@@ -939,7 +939,7 @@ function Modal(props) {
     allTimeLeaderboardChart.heights[leader.uid] = leader.maxStreak / allTimeLeaderboardChart.absMax * 100;
   });
   allTimeLeaderboardChart.myHeight = props.stats.maxStreak / allTimeLeaderboardChart.absMax * 100;
-  allTimeLeaderboardChart.amIn = props.averageStats.allTimeTop.map(function (leader) {
+  leagueLeaderboardChart.amIn = props.averageStats.league.leaderboard.map(function (leader) {
     return leader.uid;
   }).includes(props.uid);
 
@@ -1197,7 +1197,7 @@ function Modal(props) {
     })), leagueLeaderboardChart.hasLoosers && /*#__PURE__*/React.createElement("p", {
       className: "small fade"
     }, "\u0414\u0435\u044F\u043A\u0456 \u0433\u0440\u0430\u0432\u0446\u0456 \u043D\u0430\u0437\u0434\u043E\u0433\u0430\u043D\u044F\u044E\u0442\u044C \u0441\u0432\u0456\u0439 \u043C\u0438\u043D\u0443\u043B\u0438\u0439 \u0440\u0435\u043A\u043E\u0440\u0434."), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("h3", null, "T\u043E\u043F \u0440\u0435\u043A\u043E\u0440\u0434\u0456\u0432"), /*#__PURE__*/React.createElement("div", {
-      className: "graph-vertical-container"
+      className: "graph-vertical-container compact"
     }, props.averageStats.allTimeTop.map(function (leader) {
       return /*#__PURE__*/React.createElement(GraphBarVertical, {
         uid: leader.uid,

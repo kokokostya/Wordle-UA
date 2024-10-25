@@ -953,6 +953,26 @@ background-color: var(--button-primary);
       white-space: nowrap;
     }
   }
+
+  &.compact {
+    .graph-vertical {
+      margin-left: 2px;
+      margin-right: 2px;
+
+      .bar-container .bar .value,
+      .label {
+        font-size: .6rem;
+      }
+
+      .bar-container .bar .value {
+        top: -.8rem;
+      }
+
+      .label {
+        bottom: -1.1rem;
+      }
+    }
+  }
 }
 
 .graph-horizontal {
