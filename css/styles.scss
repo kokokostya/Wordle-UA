@@ -1196,8 +1196,17 @@ background-color: var(--button-primary);
     }
   }
 
-  .graph-vertical-container .graph-vertical .bar-container .bar .value,
-  .graph-vertical-container .graph-vertical .label {
-    font-size: .66rem;
+  .graph-vertical-container {
+    .graph-vertical .bar-container .bar .value,
+    .graph-vertical .label {
+      font-size: .66rem;
+    }
+
+    &.compact {
+      .graph-vertical .bar-container .bar .value,
+      .graph-vertical .label {
+        font-size: .5rem;
+      }
+    }
   }
 }

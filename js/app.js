@@ -939,7 +939,7 @@ function Modal(props) {
     allTimeLeaderboardChart.heights[leader.uid] = leader.maxStreak / allTimeLeaderboardChart.absMax * 100;
   });
   allTimeLeaderboardChart.myHeight = props.stats.maxStreak / allTimeLeaderboardChart.absMax * 100;
-  leagueLeaderboardChart.amIn = props.averageStats.league.leaderboard.map(function (leader) {
+  allTimeLeaderboardChart.amIn = props.averageStats.allTimeTop.map(function (leader) {
     return leader.uid;
   }).includes(props.uid);
 
