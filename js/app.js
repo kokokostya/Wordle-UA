@@ -900,7 +900,7 @@ function Modal(props) {
   leagueLeaderboardChart.absMax = Math.max.apply(Math, _toConsumableArray(props.averageStats.league.leaderboard.map(function (leader) {
     return leader.streak < leader.maxStreak ? leader.maxStreak : leader.streak;
   })));
-  if (leagueLeaderboardChart.absMax <= 0) {
+  if (leagueLeaderboardChart.absMax <= 0 || leagueLeaderboardChart.absMax < props.stats.maxStreak) {
     leagueLeaderboardChart.absMax = props.stats.maxStreak;
   }
   props.averageStats.league.leaderboard.forEach(function (leader) {
