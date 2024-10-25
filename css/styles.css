@@ -1060,4 +1060,8 @@ header #btn-settings {
   .graph-vertical-container .graph-vertical .label {
     font-size: 0.66rem;
   }
+  .graph-vertical-container.compact .graph-vertical .bar-container .bar .value,
+  .graph-vertical-container.compact .graph-vertical .label {
+    font-size: 0.5rem;
+  }
 }/*# sourceMappingURL=styles.css.map */
