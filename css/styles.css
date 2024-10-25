@@ -846,7 +846,7 @@ header #btn-settings {
   font-size: 0.6rem;
 }
 .graph-vertical-container.compact .graph-vertical .bar-container .bar .value {
-  top: -0.8rem;
+  transform: rotate(-45deg);
 }
 .graph-vertical-container.compact .graph-vertical .label {
   bottom: -1.1rem;

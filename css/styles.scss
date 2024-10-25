@@ -965,7 +965,7 @@ background-color: var(--button-primary);
       }
 
       .bar-container .bar .value {
-        top: -.8rem;
+        transform: rotate(-45deg);
       }
 
       .label {
@@ -1205,7 +1205,7 @@ background-color: var(--button-primary);
     &.compact {
       .graph-vertical .bar-container .bar .value,
       .graph-vertical .label {
-        font-size: .5rem;
+        font-size: .4rem;
       }
     }
   }
