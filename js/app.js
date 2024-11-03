@@ -244,29 +244,20 @@ function App(props) {
   React.useEffect(function () {
     saveToLocalStorage("lastPlayedEdition", currentEdition.lettersLimit, true);
     var newDefaultStats = createDefaultStats(currentEdition.attemptsLimit);
-    tryLoadingFromLocalStorage("stats", stats, {
+    var localStats = tryLoadingFromLocalStorage("stats", stats, {
       setter: setStats,
       defaultValue: newDefaultStats
     });
-    // Fix stats
-    // let localStats = tryLoadingFromLocalStorage("stats", stats, {skipSetting: true, defaultValue: newDefaultStats});
-    // const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
-    // if (["lzsalk2p2kgt9hy16","lc12a10211u4pjwwd","lot4x82o3e13t3w0x","lj4bpsyp1sqkdihu0","ltfnz6n621z2mwfdn","m1gx087d2qxgq7u7q","lqavsnmd31f7rmhjw","m1ujsvvp2kjn4mhzv","lu6sp23z1jxh47upr","m19ttl0134vidyfj7","lw16aa95vlu2qah9","lzuy54zd2vv3pc79k","m16bvdep2d8wqd9tm","m15572443cq1vzj4g","lzik7sf7zp4ero1w","lz2jru7kyz819p2v","lxu6i0yx33r0yvytk","m07cn8tao5n0ih82","lc1x6pfg1st83cicm","lc1t36af1hs4j9q8c","lppnuldyh0lusqar","m1w9n6fhkf3mdyhq","m1f1oqbs14q25u3da","m1kc6pqs3fad2r12c","m0c0mlou1bn75tz1c","m1s1u9pr2hexwq1uv","lbzroob1267vg78hc","lucr2953tcb9p5cs","lu0380go2xdvngeg2","m1ged9mk331yyk3m6","lvp9f9jm2bljvl5zy","lxh4t5lf1tm6bdvoy","lofd1k6w1dxo7t1d4","lztpxn2o25rt7uk9k","lu4fwdtoz6m99mrl","m0c57fib2jenn3e64","lcaflonz1c2jiiilh","lpyn5kiof897ra98","lyn2houjlfe4ho5t","m068fsb335r0iuxhu","lcuhi4pd3446dqe43","lktd42j91o8v1nlhk","ls7jkqhz1v8cz5zmn","luu0b9iixs6kdpi1","lzc8jx6929fyh34lu","lz5r5mau1pvfe64k3","ldx2mep7141c4dcux","lx8egbyf2igfqr3bo","lzc0pgvv2nsoai06t","m18r6saf18eit855j","lwjmowsy35a7fgxwh","m0u50a8c2iwg6nr9d","lw5ftv4d2zdipkj6v","m16tdfze2i8bqu4f1","lr7qk1yr37vlq0k0s","lvl87t4a238cdnxro","lu9epi2u305t4y5k2","m1cdzqto24z0xljma","lutk2kti234wxqpq7","lgfu5so3qedad6hp","ljds9jeg22ect9s1y","lt01cggfpf87phx6","m0igqx9i15jj8q1dt","lxo9wwyq1ioaopd6z","lc2t2nf31vekoneud","lc1b91vs1hptbdfz2","m0r1ctgn2prxoltoq","m1igp5hy3i4gmlqaw","lc0b5cyb2ls7e4n8v","m18ompyq3h4fc1t2s","lpcsjly01pb8nibki","m099pi871n69kbn1e","lenka1wd20rdsw3aw","lc474aad2u4d3slwt","lzbultq52j9zec919","m1v9fcw43a9aatkfu","ltuooork24lr7zbpl","m1rfmmm21ffl0uvxq","m0nocskk2l39sapxg","ltuonhkm2thj6th9v","liaua8xanjbt08wu","li55956w1gz6bose8","m16y2ed21ccc60s2a","m1quk1dp266gzi7fc","lzkxenpg37fwmugjk","m117gcwgsykx9jgy","logep45l16l6h2lu4"].includes(localUID)) {
-    //   if (currentEdition.lettersLimit == 6 && localStats.streak <= (getIssueNumber(6) - 26) && localStats.maxStreak > 0) {
-    //     localStats.maxStreak += localStats.streak + 1;
-    //     localStats.streak = localStats.maxStreak;
-    //     setMessage({ msg: "7 жовтня в цій версії гри стався збій. Всім, хто втратив через це статистику виграшів підряд, повертаємо її назад! 🐹🐹🐹" });
-    //   }
-
-    //   if (localStats.won < localStats.streak) {
-    //     localStats.won = localStats.streak;
-    //     localStats.attempts[3] += 1
-    //   }
-    // } else {
-    //   setMessage(null);
-    // }
-    // setStats(localStats);
-
+    // Fix individual user's stats
+    var localUID = tryLoadingFromLocalStorage("UID", UID, {
+      skipSetting: true,
+      ignoreLettersLimit: true
+    });
+    if (localUID == "lw6indui1tkixs0y0" && currentEdition.lettersLimit == 6 && localStats.games <= 52) {
+      localStats.streak = localStats.won;
+      localStats.maxStreak = localStats.won;
+      setStats(localStats);
+    }
     if (getFromLocalStorage("lastPlayedIssueNumber") == getIssueNumber(currentEdition.lettersLimit)) {
       var localAttempts = tryLoadingFromLocalStorage("attempts", attempts, {
         setter: setAttempts,
@@ -351,27 +342,6 @@ function App(props) {
   }, [result]);
   React.useEffect(function () {
     saveToLocalStorage("UID", UID, true);
-    // Fix individual user's stats
-    // if (UID == "lsea70ez1vf70q6tr" && stats.games < 523) {
-    //   saveToLocalStorage(
-    //     "stats", 
-    //     {
-    //       games:523,
-    //       won:513,
-    //       streak:8,
-    //       maxStreak:151,
-    //       attempts:{
-    //         1:5,
-    //         2:39,
-    //         3:111,
-    //         4:161,
-    //         5:146,
-    //         6:51
-    //       }
-    //     },
-    //     true
-    //   );
-    // }
   }, [UID]);
 
   // Update theme and save to local storage
@@ -468,7 +438,7 @@ function App(props) {
     if (window.location.href.includes("wordle-ua.net")) {
       url = "https://ukr.warspotting.net/wordle/";
     } else {
-      url = "http://192.168.0.213:8000/wordle/";
+      url = "http://127.0.0.1:8000/wordle/";
     }
     var request = new Request(url);
     fetch(request, {

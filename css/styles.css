@@ -985,7 +985,7 @@ header #btn-settings {
   margin: 0 2rem;
   border-radius: var(--border-radius-button);
   text-align: center;
-  z-index: 900;
+  z-index: 1010;
   text-align: left;
   background-color: var(--text);
   color: var(--text-inverted);
