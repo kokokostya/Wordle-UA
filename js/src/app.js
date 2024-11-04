@@ -129,8 +129,8 @@ function App(props) {
         localStats.streak = localStats.won;
         localStats.maxStreak = localStats.won;
         setStats(localStats);
-      } else if (localUID == "lc0mxyq1vk1ewkfj") {
-        setStats({
+      } else if ((localUID == "lc0mxyq1vk1ewkfj") && localStats.maxStreak > 31) {
+        const newStats = {
           games: 45, 
           won: 44,
           streak: 4,
@@ -143,7 +143,9 @@ function App(props) {
             5: 13,
             6: 4
           }
-        });
+        }
+        setStats(newStats);
+        saveToLocalStorage("stats", newStats);
       }
     }
 
@@ -195,7 +197,7 @@ function App(props) {
       localStats = null
     }
     // Never override valid local stats, only update if new game released or streak was broken
-    if (!localStats || localStats.games <= stats.games || (UID == "lc0mxyq1vk1ewkfj")) {
+    if (!localStats || localStats.games <= stats.games) {
       saveToLocalStorage("stats", stats);
     }
     settings.shareStats && UID && stats.games > 0 && updateAverageStats(stats);
