@@ -124,7 +124,7 @@ function App(props) {
     let localStats = tryLoadingFromLocalStorage("stats", stats, {setter: setStats, defaultValue: newDefaultStats});
     // Fix individual user's stats
     const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
-    if (localUID == "lw6indui1tkixs0y0" && currentEdition.lettersLimit == 6 && localStats.games <= 52) {
+    if ((localUID == "lw6indui1tkixs0y0") && (currentEdition.lettersLimit == 6)) {
       localStats.streak = localStats.won;
       localStats.maxStreak = localStats.won;
       setStats(localStats);
