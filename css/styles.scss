@@ -397,7 +397,6 @@ header {
 }
 
 #board-container {
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1123,12 +1122,11 @@ background-color: var(--button-primary);
   bottom: 0;
   max-width: 33rem;
   padding: .5rem 1rem;
-  margin: 0 2rem;
+  margin: 0 2rem 2rem;
   border-radius: var(--border-radius-button);
   text-align: center;
   z-index: 1010;
   text-align: left;
-  // white-space: nowrap;
   background-color: var(--text);
   color: var(--text-inverted);
 

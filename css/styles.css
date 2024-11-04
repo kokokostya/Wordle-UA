@@ -353,7 +353,6 @@ header #btn-settings {
 }
 
 #board-container {
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -982,7 +981,7 @@ header #btn-settings {
   bottom: 0;
   max-width: 33rem;
   padding: 0.5rem 1rem;
-  margin: 0 2rem;
+  margin: 0 2rem 2rem;
   border-radius: var(--border-radius-button);
   text-align: center;
   z-index: 1010;
