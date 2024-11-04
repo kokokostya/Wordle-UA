@@ -124,10 +124,27 @@ function App(props) {
     let localStats = tryLoadingFromLocalStorage("stats", stats, {setter: setStats, defaultValue: newDefaultStats});
     // Fix individual user's stats
     const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
-    if ((localUID == "lw6indui1tkixs0y0") && (currentEdition.lettersLimit == 6)) {
-      localStats.streak = localStats.won;
-      localStats.maxStreak = localStats.won;
-      setStats(localStats);
+    if (currentEdition.lettersLimit == 6) {
+      if (localUID == "lw6indui1tkixs0y0") {
+        localStats.streak = localStats.won;
+        localStats.maxStreak = localStats.won;
+        setStats(localStats);
+      } else if (localUID == "lc0mxyq1vk1ewkfj") {
+        setStats({
+          games: 45, 
+          won: 44,
+          streak: 4,
+          maxStreak: 30,
+          attempts: {
+            1: 0,
+            2: 1,
+            3: 12,
+            4: 14,
+            5: 13,
+            6: 4
+          }
+        });
+      }
     }
 
     if (getFromLocalStorage("lastPlayedIssueNumber") == getIssueNumber(currentEdition.lettersLimit)) {
@@ -178,7 +195,7 @@ function App(props) {
       localStats = null
     }
     // Never override valid local stats, only update if new game released or streak was broken
-    if (!localStats || localStats.games <= stats.games) {
+    if (!localStats || localStats.games <= stats.games || (UID == "lc0mxyq1vk1ewkfj")) {
       saveToLocalStorage("stats", stats);
     }
     settings.shareStats && UID && stats.games > 0 && updateAverageStats(stats);
@@ -302,7 +319,7 @@ function App(props) {
     if (window.location.href.includes("wordle-ua.net")) {
       url = "https://ukr.warspotting.net/wordle/"
     } else {
-      url = "http://127.0.0.1:8000/wordle/"
+      url = "http://192.168.0.38:8000/wordle/"
     }
     const request = new Request(url);
     fetch(request, {
