@@ -129,23 +129,6 @@ function App(props) {
         localStats.streak = localStats.won;
         localStats.maxStreak = localStats.won;
         setStats(localStats);
-      } else if ((localUID == "lc0mxyq1vk1ewkfj") && localStats.maxStreak > 31) {
-        const newStats = {
-          games: 45, 
-          won: 44,
-          streak: 4,
-          maxStreak: 30,
-          attempts: {
-            1: 0,
-            2: 1,
-            3: 12,
-            4: 14,
-            5: 13,
-            6: 4
-          }
-        }
-        setStats(newStats);
-        saveToLocalStorage("stats", newStats);
       }
     }
 
@@ -262,7 +245,6 @@ function App(props) {
       newStats.streak = 0;
       setStats(newStats);
     }
-    console.log("Game reset: " + lastPlayed + " → " + currentlyPlayed);
 
     setAttempts([]);
     setFeedback([]);
