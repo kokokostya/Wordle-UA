@@ -122,17 +122,18 @@ function App(props) {
     saveToLocalStorage("lastPlayedEdition", currentEdition.lettersLimit, true);
     const newDefaultStats = createDefaultStats(currentEdition.attemptsLimit);
     let localStats = tryLoadingFromLocalStorage("stats", stats, {setter: setStats, defaultValue: newDefaultStats});
+    const lastPlayedIssueNumber = getFromLocalStorage("lastPlayedIssueNumber");
     // Fix individual user's stats
-    // const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
-    // if (currentEdition.lettersLimit == 6) {
-    //   if (localUID == "lw6indui1tkixs0y0") {
-    //     localStats.streak = localStats.won;
-    //     localStats.maxStreak = localStats.won;
-    //     setStats(localStats);
-    //   }
-    // }
+    const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
+    if (currentEdition.lettersLimit == 6) {
+      if ((localUID == "lc0im2bc2ddbwcuph") && (localStats.games >= 712)) {
+        let localStats = createDefaultStats(6);
+        setStats(localStats);
+        saveToLocalStorage("stats", localStats);
+      }
+    }
 
-    if (getFromLocalStorage("lastPlayedIssueNumber") == getIssueNumber(currentEdition.lettersLimit)) {
+    if (lastPlayedIssueNumber == getIssueNumber(currentEdition.lettersLimit)) {
       var localAttempts = tryLoadingFromLocalStorage("attempts", attempts, {setter: setAttempts, defaultValue: [], skipUpdating: true});
       var localFeedback = tryLoadingFromLocalStorage("feedback", feedback, {setter: setFeedback, defaultValue: [], skipUpdating: true});
       tryLoadingFromLocalStorage("result", result, {setter: setResult, defaultValue: null});
@@ -303,7 +304,7 @@ function App(props) {
     if (window.location.href.includes("wordle-ua.net")) {
       url = "https://ukr.warspotting.net/wordle/"
     } else {
-      url = "http://192.168.0.38:8000/wordle/"
+      url = "http://127.0.0.1:8000/wordle/"
     }
     const request = new Request(url);
     fetch(request, {
@@ -461,18 +462,21 @@ function App(props) {
         
         // Game over
         if (newResult != null) {
-          let newStats = {...stats};
-          newStats.games += 1;    
-          if (newResult == "won") {
-            newStats.won += 1;
-            newStats.streak += 1;
-            if (newStats.streak > newStats.maxStreak) newStats.maxStreak = newStats.streak;
-            newStats.attempts[cursor.attempt+1] += 1;
-          } else {
-            newStats.streak = 0;
+          // Don't go over number of issues
+          if (stats.games < getIssueNumber(currentEdition.lettersLimit)) {
+            let newStats = {...stats};
+            newStats.games += 1;    
+            if (newResult == "won") {
+              newStats.won += 1;
+              newStats.streak += 1;
+              if (newStats.streak > newStats.maxStreak) newStats.maxStreak = newStats.streak;
+              newStats.attempts[cursor.attempt+1] += 1;
+            } else {
+              newStats.streak = 0;
+            }
+            setStats(newStats);
           }
           setResult(newResult);
-          setStats(newStats);
         // Game continues
         } else {
           setCursor({attempt: cursor.attempt+1, letter: 0});
