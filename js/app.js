@@ -254,11 +254,11 @@ function App(props) {
       skipSetting: true,
       ignoreLettersLimit: true
     });
-    if (currentEdition.lettersLimit == 6) {
-      if (localUID == "lc0im2bc2ddbwcuph" && localStats.games >= 712) {
-        var _localStats = createDefaultStats(6);
-        setStats(_localStats);
-        saveToLocalStorage("stats", _localStats);
+    if (currentEdition.lettersLimit == 5) {
+      if (localUID == "lc0yofsc2ujwuv554" && localStats.streak < 717) {
+        localStats.streak = localStats.streak + localStats.maxStreak;
+        localStats.maxStreak = localStats.streak;
+        setStats(localStats);
       }
     }
     if (lastPlayedIssueNumber == getIssueNumber(currentEdition.lettersLimit)) {
