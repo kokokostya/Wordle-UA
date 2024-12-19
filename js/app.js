@@ -202,7 +202,7 @@ function App(props) {
       ignoreLettersLimit: true
     });
     if (currentEdition.lettersLimit == 6) {
-      if (localUID == "lc0yofsc2ujwuv554" && localStats.streak < 98) {
+      if (localUID == "lc0yofsc2ujwuv554" && localStats.streak < localStats.maxStreak) {
         localStats.streak = localStats.streak + localStats.maxStreak;
         localStats.maxStreak = localStats.streak;
         setStats(localStats);
