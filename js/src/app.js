@@ -121,14 +121,19 @@ function App(props) {
     let localStats = tryLoadingFromLocalStorage("stats", stats, {setter: setStats, defaultValue: newDefaultStats});
     const lastPlayedIssueNumber = getFromLocalStorage("lastPlayedIssueNumber");
     // Fix individual user's stats
-    // const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
-    // if (currentEdition.lettersLimit == 6) {
-    //   if ((localUID == "lc0yofsc2ujwuv554") && (localStats.streak < localStats.maxStreak)) {
-    //     localStats.streak = localStats.streak + localStats.maxStreak;
-    //     localStats.maxStreak = localStats.streak;
-    //     setStats(localStats);
-    //   }
-    // }
+    const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
+    if (currentEdition.lettersLimit == 6) {
+      let diff = getIssueNumber(6) - localStats.games;
+      let localResult = tryLoadingFromLocalStorage("result", result, {skipSetting: true});
+      if ((localUID == "lc0yofsc2ujwuv554") && ((localResult == "won") && (diff > 0) || !localResult && (diff > 1))) {
+        localStats.games = getIssueNumber(6);
+        localStats.won = getIssueNumber(6);
+        localStats.streak = getIssueNumber(6);
+        localStats.maxStreak = getIssueNumber(6);
+        localStats.attempts[3] = getIssueNumber(6) - localStats.attempts[1] - localStats.attempts[2] - localStats.attempts[4] - localStats.attempts[5] - localStats.attempts[6];
+        setStats(localStats);
+      }
+    }
 
     if (lastPlayedIssueNumber == getIssueNumber(currentEdition.lettersLimit)) {
       var localAttempts = tryLoadingFromLocalStorage("attempts", attempts, {setter: setAttempts, defaultValue: [], skipUpdating: true});
