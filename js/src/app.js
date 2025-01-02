@@ -140,19 +140,17 @@ function App(props) {
     window.history.replaceState({}, "", url);
 
     // Fix individual user's stats
-    // const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
-    // if (currentEdition.lettersLimit == 6) {
-    //   let diff = getIssueNumber(6) - localStats.games;
-    //   let localResult = tryLoadingFromLocalStorage("result", result, {skipSetting: true});
-    //   if ((localUID == "lc0yofsc2ujwuv554") && ((localResult == "won") && (diff > 0) || !localResult && (diff > 1))) {
-    //     localStats.games = getIssueNumber(6);
-    //     localStats.won = getIssueNumber(6);
-    //     localStats.streak = getIssueNumber(6);
-    //     localStats.maxStreak = getIssueNumber(6);
-    //     localStats.attempts[3] = getIssueNumber(6) - localStats.attempts[1] - localStats.attempts[2] - localStats.attempts[4] - localStats.attempts[5] - localStats.attempts[6];
-    //     setStats(localStats);
-    //   }
-    // }
+    const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
+    if (currentEdition.lettersLimit == 5) {
+      if (localUID == "lc0yofsc2ujwuv554" && localStats.games - localStats.won == 1) {
+        localStats.games = getIssueNumber(5);
+        localStats.won = getIssueNumber(5);
+        localStats.streak = getIssueNumber(5);
+        localStats.maxStreak = getIssueNumber(5);
+        localStats.attempts[3] = getIssueNumber(5) - localStats.attempts[1] - localStats.attempts[2] - localStats.attempts[4] - localStats.attempts[5] - localStats.attempts[6];
+        setStats(localStats);
+      }
+    }
 
     // Keep track of time and reset once new game is out
     timer = setInterval(() => {
@@ -315,6 +313,10 @@ function App(props) {
       body: JSON.stringify({
         uid: UID,
         edition: currentEdition.lettersLimit,
+        played: getIssueNumber(currentEdition.lettersLimit),
+        answer: currentEdition.answer(),
+        result: result,
+        attempt: attempts.length,
         ...stats
       })
     })
