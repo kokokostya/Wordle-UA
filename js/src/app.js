@@ -142,13 +142,14 @@ function App(props) {
     // Fix individual user's stats
     const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
     if (currentEdition.lettersLimit == 5) {
-      if (localUID == "lc0yofsc2ujwuv554" && localStats.games - localStats.won == 1) {
-        localStats.games = getIssueNumber(5);
-        localStats.won = getIssueNumber(5);
-        localStats.streak = getIssueNumber(5);
-        localStats.maxStreak = getIssueNumber(5);
-        localStats.attempts[3] = getIssueNumber(5) - localStats.attempts[1] - localStats.attempts[2] - localStats.attempts[4] - localStats.attempts[5] - localStats.attempts[6];
+      if (localUID == "lc0yofsc2ujwuv554" && localStats.games == 1079) {
+        localStats.games = getIssueNumber(5) - 322;
+        localStats.won = getIssueNumber(5) - 322;
+        localStats.streak = getIssueNumber(5) - 322;
+        localStats.maxStreak = getIssueNumber(5) - 322;
+        localStats.attempts[3] = getIssueNumber(5) - 322 - localStats.attempts[1] - localStats.attempts[2] - localStats.attempts[4] - localStats.attempts[5] - localStats.attempts[6];
         setStats(localStats);
+        saveToLocalStorage("stats", stats);
       }
     }
 
