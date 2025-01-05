@@ -140,18 +140,18 @@ function App(props) {
     window.history.replaceState({}, "", url);
 
     // Fix individual user's stats
-    const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
-    if (currentEdition.lettersLimit == 5) {
-      if (localUID == "lc0yofsc2ujwuv554" && localStats.games == 1079) {
-        localStats.games = getIssueNumber(5) - 322;
-        localStats.won = getIssueNumber(5) - 322;
-        localStats.streak = getIssueNumber(5) - 322;
-        localStats.maxStreak = getIssueNumber(5) - 322;
-        localStats.attempts[3] = getIssueNumber(5) - 322 - localStats.attempts[1] - localStats.attempts[2] - localStats.attempts[4] - localStats.attempts[5] - localStats.attempts[6];
-        setStats(localStats);
-        saveToLocalStorage("stats", stats);
-      }
-    }
+    // const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
+    // if (currentEdition.lettersLimit == 5) {
+    //   if (localUID == "lc0yofsc2ujwuv554" && localStats.games == 1079) {
+    //     localStats.games = getIssueNumber(5) - 322;
+    //     localStats.won = getIssueNumber(5) - 322;
+    //     localStats.streak = getIssueNumber(5) - 322;
+    //     localStats.maxStreak = getIssueNumber(5) - 322;
+    //     localStats.attempts[3] = getIssueNumber(5) - 322 - localStats.attempts[1] - localStats.attempts[2] - localStats.attempts[4] - localStats.attempts[5] - localStats.attempts[6];
+    //     setStats(localStats);
+    //     saveToLocalStorage("stats", stats);
+    //   }
+    // }
 
     // Keep track of time and reset once new game is out
     timer = setInterval(() => {
