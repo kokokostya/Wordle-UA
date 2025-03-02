@@ -228,11 +228,10 @@ function App(props) {
       skipSetting: true,
       ignoreLettersLimit: true
     });
-    if (localUID == "lsea70ez1vf70q6tr" && currentEdition.lettersLimit == 6 && localStats.games == 166) {
-      localStats.won = 166;
-      localStats.streak = 73;
-      localStats.maxStreak = 73;
-      localStats.attempts[5] = 55;
+    if (localUID == "lsea70ez1vf70q6tr" && currentEdition.lettersLimit == 6 && localStats.streak < 73) {
+      localStats.streak = 72 + localStats.streak;
+      localStats.maxStreak = localStats.streak;
+      localStats.attempts[5] = localStats.won - localStats.attempts[6] - localStats.attempts[4] - localStats.attempts[3] - localStats.attempts[2] - localStats.attempts[1];
       setStats(localStats);
       saveToLocalStorage("stats", stats);
     }
