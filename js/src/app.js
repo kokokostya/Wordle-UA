@@ -140,14 +140,14 @@ function App(props) {
     window.history.replaceState({}, "", url);
 
     // Fix individual user's stats
-    const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
-    if (localUID == "lsea70ez1vf70q6tr" && currentEdition.lettersLimit == 6 && localStats.streak < 73) {
-        localStats.streak = 72 + localStats.streak;
-        localStats.maxStreak = localStats.streak;
-        localStats.attempts[5] = localStats.won - localStats.attempts[6] - localStats.attempts[4] - localStats.attempts[3] - localStats.attempts[2] - localStats.attempts[1];
-        setStats(localStats);
-        saveToLocalStorage("stats", stats);
-    }
+    // const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
+    // if (localUID == "lsea70ez1vf70q6tr" && currentEdition.lettersLimit == 6 && localStats.streak < 73) {
+    //     localStats.streak = 72 + localStats.streak;
+    //     localStats.maxStreak = localStats.streak;
+    //     localStats.attempts[5] = localStats.won - localStats.attempts[6] - localStats.attempts[4] - localStats.attempts[3] - localStats.attempts[2] - localStats.attempts[1];
+    //     setStats(localStats);
+    //     saveToLocalStorage("stats", stats);
+    // }
 
     // Keep track of time and reset once new game is out
     timer = setInterval(() => {
