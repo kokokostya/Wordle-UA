@@ -235,7 +235,7 @@ function App(props) {
     //     setStats(localStats);
     //     saveToLocalStorage("stats", stats);
     // }
-    if (localUID == "lsea70ez1vf70q6tr") {
+    if (localUID == "m836423m2c70fltha") {
       if (currentEdition.lettersLimit == 5 && localStats.games < 437) {
         localStats.games = localStats.games + 436;
         localStats.won = localStats.won + 425;
