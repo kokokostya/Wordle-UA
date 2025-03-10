@@ -224,7 +224,10 @@ function App(props) {
     window.history.replaceState({}, "", url);
 
     // Fix individual user's stats
-    // const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
+    var localUID = tryLoadingFromLocalStorage("UID", UID, {
+      skipSetting: true,
+      ignoreLettersLimit: true
+    });
     // if (localUID == "lsea70ez1vf70q6tr" && currentEdition.lettersLimit == 6 && localStats.streak < 73) {
     //     localStats.streak = 72 + localStats.streak;
     //     localStats.maxStreak = localStats.streak;
@@ -232,6 +235,33 @@ function App(props) {
     //     setStats(localStats);
     //     saveToLocalStorage("stats", stats);
     // }
+    if (localUID == "lsea70ez1vf70q6tr") {
+      if (currentEdition.lettersLimit == 5 && localStats.games < 437) {
+        localStats.games = localStats.games + 436;
+        localStats.won = localStats.won + 425;
+        localStats.streak = localStats.streak + 22;
+        localStats.maxStreak = localStats.maxStreak + 117;
+        localStats.attempts[1] = localStats.attempts[1];
+        localStats.attempts[2] = localStats.attempts[2] + 29;
+        localStats.attempts[3] = localStats.attempts[3] + 96;
+        localStats.attempts[4] = localStats.attempts[4] + 183;
+        localStats.attempts[5] = localStats.attempts[5] + 84;
+        localStats.attempts[6] = localStats.attempts[6] + 33;
+      } else if (currentEdition.lettersLimit == 6 && localStats.games < 168) {
+        localStats.games = localStats.games + 168;
+        localStats.won = localStats.won + 168;
+        localStats.streak = localStats.streak + 1;
+        localStats.maxStreak = localStats.maxStreak + 59;
+        localStats.attempts[1] = localStats.attempts[1];
+        localStats.attempts[2] = localStats.attempts[2] + 11;
+        localStats.attempts[3] = localStats.attempts[3] + 69;
+        localStats.attempts[4] = localStats.attempts[4] + 62;
+        localStats.attempts[5] = localStats.attempts[5] + 25;
+        localStats.attempts[6] = localStats.attempts[6] + 1;
+      }
+      setStats(localStats);
+      saveToLocalStorage("stats", stats);
+    }
 
     // Keep track of time and reset once new game is out
     timer = setInterval(function () {
