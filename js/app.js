@@ -235,32 +235,47 @@ function App(props) {
     //     setStats(localStats);
     //     saveToLocalStorage("stats", stats);
     // }
-    if (localUID == "m836423m2c70fltha") {
-      if (currentEdition.lettersLimit == 5 && localStats.games < 437) {
-        localStats.games = localStats.games + 436;
-        localStats.won = localStats.won + 425;
-        localStats.streak = localStats.streak + 22;
-        localStats.maxStreak = localStats.maxStreak + 117;
-        localStats.attempts[1] = localStats.attempts[1];
-        localStats.attempts[2] = localStats.attempts[2] + 29;
-        localStats.attempts[3] = localStats.attempts[3] + 96;
-        localStats.attempts[4] = localStats.attempts[4] + 183;
-        localStats.attempts[5] = localStats.attempts[5] + 84;
-        localStats.attempts[6] = localStats.attempts[6] + 33;
-      } else if (currentEdition.lettersLimit == 6 && localStats.games < 168) {
-        localStats.games = localStats.games + 168;
-        localStats.won = localStats.won + 168;
-        localStats.streak = localStats.streak + 1;
-        localStats.maxStreak = localStats.maxStreak + 59;
-        localStats.attempts[1] = localStats.attempts[1];
-        localStats.attempts[2] = localStats.attempts[2] + 11;
-        localStats.attempts[3] = localStats.attempts[3] + 69;
-        localStats.attempts[4] = localStats.attempts[4] + 62;
-        localStats.attempts[5] = localStats.attempts[5] + 25;
-        localStats.attempts[6] = localStats.attempts[6] + 1;
+
+    if (localUID == "m7g5hgb22r65w6lan") {
+      if (currentEdition.lettersLimit == 5 && localStats.games < 1052) {
+        localStats.games = 1052;
+        localStats.won = 1048;
+        localStats.streak = 553;
+        localStats.maxStreak = 553;
+        localStats.attempts[1] = 5;
+        localStats.attempts[2] = 39;
+        localStats.attempts[3] = 223;
+        localStats.attempts[4] = 475;
+        localStats.attempts[5] = 237;
+        localStats.attempts[6] = 69;
+      } else if (currentEdition.lettersLimit == 6 && localStats.games < 183) {
+        localStats.games = 183;
+        localStats.won = 183;
+        localStats.streak = 183;
+        localStats.maxStreak = 183;
+        localStats.attempts[1] = 0;
+        localStats.attempts[2] = 2;
+        localStats.attempts[3] = 23;
+        localStats.attempts[4] = 72;
+        localStats.attempts[5] = 77;
+        localStats.attempts[6] = 9;
       }
       setStats(localStats);
-      saveToLocalStorage("stats", stats);
+      saveToLocalStorage("stats", localStats);
+    }
+    if (localUID == "m836423m2c70fltha" && currentEdition.lettersLimit == 6 && localStats.games > 400) {
+      localStats.games = 169;
+      localStats.won = 169;
+      localStats.streak = 2;
+      localStats.maxStreak = 60;
+      localStats.attempts[1] = 0;
+      localStats.attempts[2] = 11;
+      localStats.attempts[3] = 69;
+      localStats.attempts[4] = 63;
+      localStats.attempts[5] = 25;
+      localStats.attempts[6] = 1;
+      setStats(localStats);
+      saveToLocalStorage("stats", localStats);
     }
 
     // Keep track of time and reset once new game is out
