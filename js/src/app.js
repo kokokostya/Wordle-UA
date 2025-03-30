@@ -140,7 +140,7 @@ function App(props) {
     window.history.replaceState({}, "", url);
 
     // Fix individual user's stats
-    const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
+    // const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
     
     // if (localUID == "lsea70ez1vf70q6tr" && currentEdition.lettersLimit == 6 && localStats.streak < 95) {
     //   localStats.won = 188;
@@ -151,22 +151,22 @@ function App(props) {
     //   saveToLocalStorage("stats", stats);
     // }
 
-    if (localUID == "lc0yofsc2ujwuv554") {
-      if (currentEdition.lettersLimit == 6 && localStats.streak < 198) {
-        localStats.games = 198;
-        localStats.won = 198;
-        localStats.streak = 198;
-        localStats.maxStreak = 198;
-        localStats.attempts[1] = 0;
-        localStats.attempts[2] = 39;
-        localStats.attempts[3] = 74;
-        localStats.attempts[4] = 42;
-        localStats.attempts[5] = 31;
-        localStats.attempts[6] = 12;
-        setStats(localStats);
-        saveToLocalStorage("stats", localStats);
-      }
-    }
+    // if (localUID == "lc0yofsc2ujwuv554") {
+    //   if (currentEdition.lettersLimit == 6 && localStats.streak < 198) {
+    //     localStats.games = 198;
+    //     localStats.won = 198;
+    //     localStats.streak = 198;
+    //     localStats.maxStreak = 198;
+    //     localStats.attempts[1] = 0;
+    //     localStats.attempts[2] = 39;
+    //     localStats.attempts[3] = 74;
+    //     localStats.attempts[4] = 42;
+    //     localStats.attempts[5] = 31;
+    //     localStats.attempts[6] = 12;
+    //     setStats(localStats);
+    //     saveToLocalStorage("stats", localStats);
+    //   }
+    // }
 
     // Keep track of time and reset once new game is out
     timer = setInterval(() => {
