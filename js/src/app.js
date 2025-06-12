@@ -142,14 +142,20 @@ function App(props) {
     // Fix individual user's stats
     const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
     
-    // if (localUID == "lsea70ez1vf70q6tr" && currentEdition.lettersLimit == 6 && localStats.streak < 95) {
-    //   localStats.won = 188;
-    //   localStats.streak = 95;
-    //   localStats.maxStreak = 95;
-    //   localStats.attempts[5] = 188 - localStats.attempts[6] - localStats.attempts[4] - localStats.attempts[3] - localStats.attempts[2] - localStats.attempts[1];
-    //   setStats(localStats);
-    //   saveToLocalStorage("stats", stats);
-    // }
+    if (localUID == "lteazf7j1nuvpix7k" && currentEdition.lettersLimit == 6 && localStats.maxStreak > 300) {
+      localStats.games = 274;
+      localStats.won = 274;
+      localStats.streak = 274;
+      localStats.maxStreak = 274;
+      localStats.attempts[1] = 0;
+      localStats.attempts[2] = 43;
+      localStats.attempts[3] = 123;
+      localStats.attempts[4] = 84;
+      localStats.attempts[5] = 19;
+      localStats.attempts[6] = 5;
+      setStats(localStats);
+      saveToLocalStorage("stats", stats);
+    }
 
     // if (localUID == "ls5sigsj18sfrc9tr") {
     //   if (currentEdition.lettersLimit == 5 && localStats.games < 856) {
