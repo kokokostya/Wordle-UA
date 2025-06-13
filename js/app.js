@@ -228,8 +228,8 @@ function App(props) {
       skipSetting: true,
       ignoreLettersLimit: true
     });
-    var issue = getIssueNumber(6);
-    if (localUID == "lteazf7j1nuvpix7k" && currentEdition.lettersLimit == 6 && localStats.maxStreak > issue) {
+    if (localUID == "lteazf7j1nuvpix7k" && currentEdition.lettersLimit == 6 && localStats.maxStreak > getIssueNumber(6)) {
+      var issue = getIssueNumber(6);
       localStats.games = issue;
       localStats.won = issue;
       localStats.streak = issue;
@@ -241,7 +241,7 @@ function App(props) {
       localStats.attempts[5] = 19;
       localStats.attempts[6] = 5;
       setStats(localStats);
-      saveToLocalStorage("stats", stats);
+      saveToLocalStorage("stats", localStats);
     }
 
     // if (localUID == "ls5sigsj18sfrc9tr") {
