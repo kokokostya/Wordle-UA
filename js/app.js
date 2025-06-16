@@ -228,7 +228,7 @@ function App(props) {
       skipSetting: true,
       ignoreLettersLimit: true
     });
-    if (localUID == "lteazf7j1nuvpix7k" && currentEdition.lettersLimit == 6 && localStats.maxStreak > getIssueNumber(6)) {
+    if (localUID == "lteazf7j1nuvpix7k" && currentEdition.lettersLimit == 6 && localStats.games > getIssueNumber(6)) {
       var issue = getIssueNumber(6);
       localStats.games = issue;
       localStats.won = issue;
@@ -437,7 +437,8 @@ function App(props) {
         played: getIssueNumber(currentEdition.lettersLimit),
         answer: currentEdition.answer(),
         result: result,
-        attempt: attempts.length
+        attempt: attempts.length,
+        msg: "test"
       }, stats))
     }).then(function (response) {
       return response.json();

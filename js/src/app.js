@@ -113,7 +113,6 @@ function App(props) {
     tryLoadingFromLocalStorage("UID", UID, {setter: setUID, defaultValue: Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36), ignoreLettersLimit: true});
     tryLoadingFromLocalStorage("settings", settings, {setter: setSettings, ignoreLettersLimit: true});
   }, []);
-
   
   React.useEffect(() => {
     // Load last game if still valid
@@ -142,7 +141,7 @@ function App(props) {
     // Fix individual user's stats
     const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
     
-    if (localUID == "lteazf7j1nuvpix7k" && currentEdition.lettersLimit == 6 && localStats.maxStreak > getIssueNumber(6)) {
+    if (localUID == "lteazf7j1nuvpix7k" && currentEdition.lettersLimit == 6 && localStats.games > getIssueNumber(6)) {
       let issue = getIssueNumber(6);
       localStats.games = issue;
       localStats.won = issue;
@@ -354,6 +353,7 @@ function App(props) {
         answer: currentEdition.answer(),
         result: result,
         attempt: attempts.length,
+        msg: "test",
         ...stats
       })
     })
