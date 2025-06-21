@@ -110,7 +110,7 @@ function App(props) {
 
   // Load edition independent settings from local storage
   React.useEffect(() => {
-    tryLoadingFromLocalStorage("UID", UID, {setter: setUID, defaultValue: Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36), ignoreLettersLimit: true});
+    tryLoadingFromLocalStorage("UID", null, {setter: setUID, defaultValue: Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36), ignoreLettersLimit: true});
     tryLoadingFromLocalStorage("settings", settings, {setter: setSettings, ignoreLettersLimit: true});
   }, []);
   
@@ -118,13 +118,13 @@ function App(props) {
     // Load last game if still valid
     saveToLocalStorage("lastPlayedEdition", currentEdition.lettersLimit, true);
     const newDefaultStats = createDefaultStats(currentEdition.attemptsLimit);
-    const localStats = tryLoadingFromLocalStorage("stats", stats, {setter: setStats, defaultValue: newDefaultStats});
+    const localStats = tryLoadingFromLocalStorage("stats", newDefaultStats, {setter: setStats, defaultValue: newDefaultStats});
     const lastPlayedIssueNumber = getFromLocalStorage("lastPlayedIssueNumber");
 
     if (lastPlayedIssueNumber == getIssueNumber(currentEdition.lettersLimit)) {
-      var localAttempts = tryLoadingFromLocalStorage("attempts", attempts, {setter: setAttempts, defaultValue: [], skipUpdating: true});
-      var localFeedback = tryLoadingFromLocalStorage("feedback", feedback, {setter: setFeedback, defaultValue: [], skipUpdating: true});
-      tryLoadingFromLocalStorage("result", result, {setter: setResult, defaultValue: null});
+      var localAttempts = tryLoadingFromLocalStorage("attempts", null, {setter: setAttempts, defaultValue: [], skipUpdating: true});
+      var localFeedback = tryLoadingFromLocalStorage("feedback", null, {setter: setFeedback, defaultValue: [], skipUpdating: true});
+      tryLoadingFromLocalStorage("result", null, {setter: setResult, defaultValue: null});
       setCursor({
         attempt: (localFeedback) ? localFeedback.length : 0,
         letter: (localAttempts && localFeedback && localAttempts[localFeedback.length]) ? localAttempts[localFeedback.length].length : 0
@@ -139,24 +139,8 @@ function App(props) {
     window.history.replaceState({}, "", url);
 
     // Fix individual user's stats
-    const localUID = tryLoadingFromLocalStorage("UID", UID, {skipSetting: true, ignoreLettersLimit: true});
+    // const localUID = tryLoadingFromLocalStorage("UID", null, {skipSetting: true, ignoreLettersLimit: true});
     
-    if (localUID == "lteazf7j1nuvpix7k" && currentEdition.lettersLimit == 6 && localStats.games > getIssueNumber(6)) {
-      let issue = getIssueNumber(6);
-      localStats.games = issue;
-      localStats.won = issue;
-      localStats.streak = issue;
-      localStats.maxStreak = issue;
-      localStats.attempts[1] = 0;
-      localStats.attempts[2] = 43;
-      localStats.attempts[3] = issue - 151;
-      localStats.attempts[4] = 84;
-      localStats.attempts[5] = 19;
-      localStats.attempts[6] = 5;
-      setStats(localStats);
-      saveToLocalStorage("stats", localStats);
-    }
-
     // if (localUID == "ls5sigsj18sfrc9tr") {
     //   if (currentEdition.lettersLimit == 5 && localStats.games < 856) {
     //     localStats.games = 854 + localStats.games;

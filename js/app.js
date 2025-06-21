@@ -176,7 +176,7 @@ function App(props) {
 
   // Load edition independent settings from local storage
   React.useEffect(function () {
-    tryLoadingFromLocalStorage("UID", UID, {
+    tryLoadingFromLocalStorage("UID", null, {
       setter: setUID,
       defaultValue: Date.now().toString(36) + Math.floor(Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)).toString(36),
       ignoreLettersLimit: true
@@ -190,23 +190,23 @@ function App(props) {
     // Load last game if still valid
     saveToLocalStorage("lastPlayedEdition", currentEdition.lettersLimit, true);
     var newDefaultStats = createDefaultStats(currentEdition.attemptsLimit);
-    var localStats = tryLoadingFromLocalStorage("stats", stats, {
+    var localStats = tryLoadingFromLocalStorage("stats", newDefaultStats, {
       setter: setStats,
       defaultValue: newDefaultStats
     });
     var lastPlayedIssueNumber = getFromLocalStorage("lastPlayedIssueNumber");
     if (lastPlayedIssueNumber == getIssueNumber(currentEdition.lettersLimit)) {
-      var localAttempts = tryLoadingFromLocalStorage("attempts", attempts, {
+      var localAttempts = tryLoadingFromLocalStorage("attempts", null, {
         setter: setAttempts,
         defaultValue: [],
         skipUpdating: true
       });
-      var localFeedback = tryLoadingFromLocalStorage("feedback", feedback, {
+      var localFeedback = tryLoadingFromLocalStorage("feedback", null, {
         setter: setFeedback,
         defaultValue: [],
         skipUpdating: true
       });
-      tryLoadingFromLocalStorage("result", result, {
+      tryLoadingFromLocalStorage("result", null, {
         setter: setResult,
         defaultValue: null
       });
@@ -224,25 +224,7 @@ function App(props) {
     window.history.replaceState({}, "", url);
 
     // Fix individual user's stats
-    var localUID = tryLoadingFromLocalStorage("UID", UID, {
-      skipSetting: true,
-      ignoreLettersLimit: true
-    });
-    if (localUID == "lteazf7j1nuvpix7k" && currentEdition.lettersLimit == 6 && localStats.games > getIssueNumber(6)) {
-      var issue = getIssueNumber(6);
-      localStats.games = issue;
-      localStats.won = issue;
-      localStats.streak = issue;
-      localStats.maxStreak = issue;
-      localStats.attempts[1] = 0;
-      localStats.attempts[2] = 43;
-      localStats.attempts[3] = issue - 151;
-      localStats.attempts[4] = 84;
-      localStats.attempts[5] = 19;
-      localStats.attempts[6] = 5;
-      setStats(localStats);
-      saveToLocalStorage("stats", localStats);
-    }
+    // const localUID = tryLoadingFromLocalStorage("UID", null, {skipSetting: true, ignoreLettersLimit: true});
 
     // if (localUID == "ls5sigsj18sfrc9tr") {
     //   if (currentEdition.lettersLimit == 5 && localStats.games < 856) {
