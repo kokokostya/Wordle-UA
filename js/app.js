@@ -224,38 +224,41 @@ function App(props) {
     window.history.replaceState({}, "", url);
 
     // Fix individual user's stats
-    // const localUID = tryLoadingFromLocalStorage("UID", null, {skipSetting: true, ignoreLettersLimit: true});
-
-    // if (localUID == "ls5sigsj18sfrc9tr") {
-    //   if (currentEdition.lettersLimit == 5 && localStats.games < 856) {
-    //     localStats.games = 854 + localStats.games;
-    //     localStats.won = 852 + localStats.won;
-    //     localStats.streak = 38 + localStats.streak;
-    //     localStats.maxStreak = 598;
-    //     localStats.attempts[1] = 0 + localStats.attempts[1];
-    //     localStats.attempts[2] = 53 + localStats.attempts[2];
-    //     localStats.attempts[3] = 256 + localStats.attempts[3];
-    //     localStats.attempts[4] = 346 + localStats.attempts[4];
-    //     localStats.attempts[5] = 154 + localStats.attempts[5];
-    //     localStats.attempts[6] = 43 + localStats.attempts[6];
-    //     setStats(localStats);
-    //     saveToLocalStorage("stats", localStats);
-    //   }
-    //   if (currentEdition.lettersLimit == 6 && localStats.games < 187) {
-    //     localStats.games = 185 + localStats.games;
-    //     localStats.won = 185 + localStats.won;
-    //     localStats.streak = 16 + localStats.streak;
-    //     localStats.maxStreak = 52;
-    //     localStats.attempts[1] = 0 + localStats.attempts[1];
-    //     localStats.attempts[2] = 8 + localStats.attempts[2];
-    //     localStats.attempts[3] = 50 + localStats.attempts[3];
-    //     localStats.attempts[4] = 83 + localStats.attempts[4];
-    //     localStats.attempts[5] = 37 + localStats.attempts[5];
-    //     localStats.attempts[6] = 7 + localStats.attempts[6];
-    //     setStats(localStats);
-    //     saveToLocalStorage("stats", localStats);
-    //   }
-    // }
+    var localUID = tryLoadingFromLocalStorage("UID", null, {
+      skipSetting: true,
+      ignoreLettersLimit: true
+    });
+    if (localUID == "lteazf7j1nuvpix7k") {
+      // if (currentEdition.lettersLimit == 5 && localStats.games < 856) {
+      //   localStats.games = 854 + localStats.games;
+      //   localStats.won = 852 + localStats.won;
+      //   localStats.streak = 38 + localStats.streak;
+      //   localStats.maxStreak = 598;
+      //   localStats.attempts[1] = 0 + localStats.attempts[1];
+      //   localStats.attempts[2] = 53 + localStats.attempts[2];
+      //   localStats.attempts[3] = 256 + localStats.attempts[3];
+      //   localStats.attempts[4] = 346 + localStats.attempts[4];
+      //   localStats.attempts[5] = 154 + localStats.attempts[5];
+      //   localStats.attempts[6] = 43 + localStats.attempts[6];
+      //   setStats(localStats);
+      //   saveToLocalStorage("stats", localStats);
+      // }
+      if (currentEdition.lettersLimit == 6 && localStats.games > getIssueNumber(6)) {
+        var issueNumber = getIssueNumber(6);
+        localStats.games = issueNumber;
+        localStats.won = issueNumber;
+        localStats.streak = issueNumber;
+        localStats.maxStreak = issueNumber;
+        localStats.attempts[1] = 0;
+        localStats.attempts[2] = 43;
+        localStats.attempts[3] = issueNumber - 151;
+        localStats.attempts[4] = 84;
+        localStats.attempts[5] = 19;
+        localStats.attempts[6] = 5;
+        setStats(localStats);
+        saveToLocalStorage("stats", localStats);
+      }
+    }
 
     // Keep track of time and reset once new game is out
     timer = setInterval(function () {
@@ -289,7 +292,10 @@ function App(props) {
     if (!localStats || localStats.games <= stats.games) {
       saveToLocalStorage("stats", stats);
     }
-    settings.shareStats && UID && stats.games > 0 && updateAverageStats(stats);
+    if (settings.shareStats && UID && stats.games > 0) {
+      var msg = "letters: " + currentEdition.lettersLimit + ", games: " + stats.games;
+      updateAverageStats(stats, msg);
+    }
 
     // Hide average stats if loaded stats indicate they're not allowed yet
     if (modal == "avg-stats" && stats.games < 10) {
@@ -403,6 +409,7 @@ function App(props) {
     return loadedObj || options.defaultValue;
   }
   function updateAverageStats(stats) {
+    var msg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     console.log("Запит статистики для гри на " + currentEdition.lettersLimit + " букв...");
     var url;
     if (window.location.href.includes("wordle-ua.net")) {
@@ -420,7 +427,7 @@ function App(props) {
         answer: currentEdition.answer(),
         result: result,
         attempt: attempts.length,
-        msg: "test"
+        msg: msg
       }, stats))
     }).then(function (response) {
       return response.json();
