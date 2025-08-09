@@ -228,33 +228,19 @@ function App(props) {
       skipSetting: true,
       ignoreLettersLimit: true
     });
-    if (localUID == "lteazf7j1nuvpix7k") {
-      // if (currentEdition.lettersLimit == 5 && localStats.games < 856) {
-      //   localStats.games = 854 + localStats.games;
-      //   localStats.won = 852 + localStats.won;
-      //   localStats.streak = 38 + localStats.streak;
-      //   localStats.maxStreak = 598;
-      //   localStats.attempts[1] = 0 + localStats.attempts[1];
-      //   localStats.attempts[2] = 53 + localStats.attempts[2];
-      //   localStats.attempts[3] = 256 + localStats.attempts[3];
-      //   localStats.attempts[4] = 346 + localStats.attempts[4];
-      //   localStats.attempts[5] = 154 + localStats.attempts[5];
-      //   localStats.attempts[6] = 43 + localStats.attempts[6];
-      //   setStats(localStats);
-      //   saveToLocalStorage("stats", localStats);
-      // }
-      if (currentEdition.lettersLimit == 6 && localStats.games > getIssueNumber(6)) {
+    if (localUID == "mctcoa2ymkiv48h2") {
+      if (currentEdition.lettersLimit == 6 && localStats.games < getIssueNumber(6)) {
         var issueNumber = getIssueNumber(6);
         localStats.games = issueNumber;
         localStats.won = issueNumber;
         localStats.streak = issueNumber;
         localStats.maxStreak = issueNumber;
         localStats.attempts[1] = 0;
-        localStats.attempts[2] = 43;
-        localStats.attempts[3] = issueNumber - 151;
-        localStats.attempts[4] = 84;
-        localStats.attempts[5] = 19;
-        localStats.attempts[6] = 5;
+        localStats.attempts[2] = 56;
+        localStats.attempts[3] = issueNumber - 230;
+        localStats.attempts[4] = 78;
+        localStats.attempts[5] = 72;
+        localStats.attempts[6] = 24;
         setStats(localStats);
         saveToLocalStorage("stats", localStats);
       }
