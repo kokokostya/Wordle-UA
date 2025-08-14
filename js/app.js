@@ -224,11 +224,7 @@ function App(props) {
     window.history.replaceState({}, "", url);
 
     // Fix individual user's stats
-    var localUID = tryLoadingFromLocalStorage("UID", null, {
-      skipSetting: true,
-      ignoreLettersLimit: true
-    });
-
+    // const localUID = tryLoadingFromLocalStorage("UID", null, {skipSetting: true, ignoreLettersLimit: true});
     // if (localUID == "mctcoa2ymkiv48h2") {
     //   if (currentEdition.lettersLimit == 6 && localStats.games < getIssueNumber(6)) {
     //     let issueNumber = getIssueNumber(6)
