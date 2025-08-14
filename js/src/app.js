@@ -141,23 +141,23 @@ function App(props) {
     // Fix individual user's stats
     const localUID = tryLoadingFromLocalStorage("UID", null, {skipSetting: true, ignoreLettersLimit: true});
     
-    if (localUID == "mctcoa2ymkiv48h2") {
-      if (currentEdition.lettersLimit == 6 && localStats.games < getIssueNumber(6)) {
-        let issueNumber = getIssueNumber(6)
-        localStats.games = issueNumber;
-        localStats.won = issueNumber;
-        localStats.streak = issueNumber;
-        localStats.maxStreak = issueNumber;
-        localStats.attempts[1] = 0;
-        localStats.attempts[2] = 56;
-        localStats.attempts[3] = issueNumber - 230;
-        localStats.attempts[4] = 78;
-        localStats.attempts[5] = 72;
-        localStats.attempts[6] = 24;
-        setStats(localStats);
-        saveToLocalStorage("stats", localStats);
-      }
-    }
+    // if (localUID == "mctcoa2ymkiv48h2") {
+    //   if (currentEdition.lettersLimit == 6 && localStats.games < getIssueNumber(6)) {
+    //     let issueNumber = getIssueNumber(6)
+    //     localStats.games = issueNumber;
+    //     localStats.won = issueNumber;
+    //     localStats.streak = issueNumber;
+    //     localStats.maxStreak = issueNumber;
+    //     localStats.attempts[1] = 0;
+    //     localStats.attempts[2] = 56;
+    //     localStats.attempts[3] = issueNumber - 230;
+    //     localStats.attempts[4] = 78;
+    //     localStats.attempts[5] = 72;
+    //     localStats.attempts[6] = 24;
+    //     setStats(localStats);
+    //     saveToLocalStorage("stats", localStats);
+    //   }
+    // }
 
     // Keep track of time and reset once new game is out
     timer = setInterval(() => {
