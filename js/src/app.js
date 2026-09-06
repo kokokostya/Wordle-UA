@@ -139,39 +139,39 @@ function App(props) {
     window.history.replaceState({}, "", url);
 
     // Fix individual user's stats
-    const localUID = tryLoadingFromLocalStorage("UID", null, {skipSetting: true, ignoreLettersLimit: true});
-    if (localUID == "lc1t36af1hs4j9q8c") {
-      if (currentEdition.lettersLimit == 5 && localStats.games < 1594) {
-        // let issueNumber = getIssueNumber(5)
-        localStats.games = 1593;
-        localStats.won = 1590;
-        localStats.streak = 1094;
-        localStats.maxStreak = 1094;
-        localStats.attempts[1] = 14;
-        localStats.attempts[2] = 45;
-        localStats.attempts[3] = 293;
-        localStats.attempts[4] = 752;
-        localStats.attempts[5] = 381;
-        localStats.attempts[6] = 105;
-        setStats(localStats);
-        saveToLocalStorage("stats", localStats);
-      }
-      if (currentEdition.lettersLimit == 6 && localStats.games < 726) {
-        // let issueNumber = getIssueNumber(6)
-        localStats.games = 724;
-        localStats.won = 724;
-        localStats.streak = 724;
-        localStats.maxStreak = 724;
-        localStats.attempts[1] = 4;
-        localStats.attempts[2] = 4;
-        localStats.attempts[3] = 63;
-        localStats.attempts[4] = 295;
-        localStats.attempts[5] = 288;
-        localStats.attempts[6] = 70;
-        setStats(localStats);
-        saveToLocalStorage("stats", localStats);
-      }
-    }
+    // const localUID = tryLoadingFromLocalStorage("UID", null, {skipSetting: true, ignoreLettersLimit: true});
+    // if (localUID == "lc1t36af1hs4j9q8c") {
+    //   if (currentEdition.lettersLimit == 5 && localStats.games < 1594) {
+    //     // let issueNumber = getIssueNumber(5)
+    //     localStats.games = 1593;
+    //     localStats.won = 1590;
+    //     localStats.streak = 1094;
+    //     localStats.maxStreak = 1094;
+    //     localStats.attempts[1] = 14;
+    //     localStats.attempts[2] = 45;
+    //     localStats.attempts[3] = 293;
+    //     localStats.attempts[4] = 752;
+    //     localStats.attempts[5] = 381;
+    //     localStats.attempts[6] = 105;
+    //     setStats(localStats);
+    //     saveToLocalStorage("stats", localStats);
+    //   }
+    //   if (currentEdition.lettersLimit == 6 && localStats.games < 726) {
+    //     // let issueNumber = getIssueNumber(6)
+    //     localStats.games = 724;
+    //     localStats.won = 724;
+    //     localStats.streak = 724;
+    //     localStats.maxStreak = 724;
+    //     localStats.attempts[1] = 4;
+    //     localStats.attempts[2] = 4;
+    //     localStats.attempts[3] = 63;
+    //     localStats.attempts[4] = 295;
+    //     localStats.attempts[5] = 288;
+    //     localStats.attempts[6] = 70;
+    //     setStats(localStats);
+    //     saveToLocalStorage("stats", localStats);
+    //   }
+    // }
 
     // Keep track of time and reset once new game is out
     timer = setInterval(() => {
@@ -406,8 +406,18 @@ function App(props) {
     const firstDay = editions.find(e => e.lettersLimit == editionLettersLimit).firstDay;
     return Math.ceil((getKyivDateTimeIgnoringGMT(new Date())-getKyivDateTimeIgnoringGMT(firstDay))/(1000*60*60*24));
   }
+
+  function isCurrentIssue() {
+    return getFromLocalStorage("lastPlayedIssueNumber") ===
+      getIssueNumber(currentEdition.lettersLimit);
+  }
   
   function enterLetter(letter) {
+    if (!isCurrentIssue()) {
+      resetGame();
+      return;
+    }
+
     if ((result == null) && (cursor.attempt < currentEdition.attemptsLimit) && (cursor.letter < currentEdition.lettersLimit)) {
       const newAttempts = [...attempts];
       let newString = newAttempts[cursor.attempt] || "";
@@ -445,6 +455,11 @@ function App(props) {
   }
 
   function checkWord() {
+    if (!isCurrentIssue()) {
+      resetGame();
+      return;
+    }
+
     var attempt = attempts[cursor.attempt];
     var answer = currentEdition.answer();
 
